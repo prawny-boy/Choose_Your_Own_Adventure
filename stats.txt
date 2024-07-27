@@ -1,0 +1,10 @@
+User: /test
+Endings: //Still Here.../School/win,Still Here.../School/win,LIGMA BALLS/School/fail
+Achievements: //
+Fails: /0
+Wins: /0
+User: /new
+Endings: //
+Achievements: //
+Fails: /0
+Wins: /0

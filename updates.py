@@ -1,0 +1,42 @@
+updates = """
+----------Update 1.0----------
+Added first story: African Jungle
+Basic Functions
+  - If statements for story with input
+              
+----------Update 1.1----------
+Added new functions and commands
+  - Inventory
+  - Readanswer
+  - Commands (readcommand)
+              
+----------Update 2.0----------
+New updated readanswer function: choice
+*Old story african jungle has not been changed to use new choice function*
+Better inventory with printing of inventory (toggleable)
+Aesthetics:
+  - Nicer printing
+  - Cleaner Code
+Game rename to CYOA
+New story
+  - Space Story (Uncomplete)
+  
+----------Update 2.0.1----------
+Added credits
+  - Version Number
+  - Logo Design
+  - Testers
+
+----------Update 2.1----------
+changed 'african jungle' to 'amazon adventure'
+Coverted amazon adventure to use choice function
+Fixed bugs in choice and inventory functions
+Removed timeout
+Started on a user interface that gets username and saves stats
+
+----------Update 2.2----------
+Adding Time Travel and School
+Added saving, deleting, resetting and printing of stats with colour and sorting (for endings only)
+Changed deaths to fails
+More commands
+"""

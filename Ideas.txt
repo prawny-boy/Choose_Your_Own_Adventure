@@ -1,0 +1,51 @@
+Achievements:
+    Story Exclusive:
+        Africa's Jungle:
+            - Keep the Gem (Finish the story still with a gem in your inventory)
+            - Pilot Buddy (Finish the story with the pilot still with you & alive)
+            - Die of Boredom (Get the ending: Died of Boredom)
+            - Bad Choices (Get the ending: Bad choices)
+            - Win Africa's Jungle (Get the ending: Passenger Escape or Defeated a Monster)
+            - Again?! (Get the ending: Crashed again)
+            - Beginner Jungle (Play this story 1 time)
+            - Intermediate Jungle (Play this story 10 times)
+            - Advanced Jungle (Play this story 50 times)
+            - All Endings [Africa's Jungle] (Get all the endings in africa's jungle)
+        Space Story:
+            - Bob the alien (Get the ending: bob the ending)
+            - Beginner Space (Play this story 1 time)
+            - Intermediate Space (Play this story 10 times)
+            - Advanced Space (Play this story 50 times)
+            - All Endings [Space Story] (Get all the endings in space story)
+        Time travel:
+            - Use the bonker (Credit: josh)
+            - Get bonked by the bonker (Credit: josh)
+            - Stuck in the past (Get all the stuck with... endings)
+            - Time Traveller (Play this story 1 time)
+            - Better Time Traveller (Play this story 10 times)
+            - Doctor Who (Play this story 50 times)
+            - All Endings [School] (Get all the endings in school)
+        School:
+            - Fight a god with your school bag (You fight a god and beat him with a school bag)
+            - Beginner School (Play this story 1 time)
+            - Intermediate School (Play this story 10 times)
+            - Advanced School (Play this story 50 times)
+            - All Endings [School] (Get all the endings in school)
+    All Stories:
+        - Newbie (Play 1 time)
+        - Good (Play 10 times)
+        - Pro (Play 100 times)
+        - Hacker (Play 1000 times)
+        - Taster (Play all the stories at least once)
+        - Bookworm (Get all of the story exclusive achievements)
+        - Sean's Collection (Play all the stories made by Sean Chan)
+        - Oliver's Collection (Play all the stories made by Oliver Liu)
+    Special:
+        - Command Master (Use all types of commands)
+        - Command Maniac (Use 100 commands)
+        - Supporter (Use the credits command)
+        - Saved (Save your progress)
+        Easter Eggs:
+            - Oliver's Egg (Find the easter egg made by oliver liu)
+            - Sean's Egg (Find the easter egg made my sean chan)
+        - Are you a developer? (Get all of the special achievements, not including this one)

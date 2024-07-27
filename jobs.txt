@@ -1,0 +1,9 @@
+Jobs if you have nothing to do:
+    - add commands list to record the commands used
+    - add more achievements
+    - use the easter egg dict
+    - add all stats to initial stats and edit commands
+    - write time travel story
+    - make up some more achievements
+    - understand code
+    - TEST TEST TEST
