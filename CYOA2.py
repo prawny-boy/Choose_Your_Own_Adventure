@@ -9,7 +9,7 @@ yn = ['Y', 'N'] # just for shortcutting
 statlines = 5 # amount of lines needed for 1 user in stats file
 s = 'stats.txt'
 inventoryList = []
-storyList = ["amazon adventure", '1', "space story", '2', '3', 'time travel', 'school', '4', 'quit']
+storyList = ["amazon adventure", '1', "space story", '2', '3', 'time travel', 'school', '4', "tomb story", "5", 'quit']
 achievements = { #name: [description, code, class]
     "Sean's Easter Egg": ["Sean's Easter Egg", "Find the Easter Egg made by Sean Chan", "sean-1", "special"],
     "Breaking The Game": ['Breaking the Game', 'Find the Easter Egg made by Oliver Liu', 'oliver-1', "special"]
@@ -286,7 +286,6 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int):
 
 def choice(question:str, outcomes:list, options:list = yn, end:list = []):
     choice = ''
-    died = False
     print(question)
     option = str(options)
     option = option.replace('[', '')
@@ -375,7 +374,8 @@ def checkcommand(command:str):
   1. Amazon Adventure
   2. Space Story
   3. Time Travel
-  4. School""")
+  4. School
+  5. Tomb Story""")
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -397,6 +397,9 @@ def checkcommand(command:str):
         elif story == "school" or story == "4":
             cprint("\nSCHOOL - Made By Jayden Li", "yellow", attrs=["bold"])
             story_school(user)
+        elif story == "tomb story" or story == "5":
+            cprint("\nTutankhamun's Tomb - Made By Ethan Wei", "magenta", attrs=["bold"])
+            story_tomb()
     elif command in ["save", "reset", "delete", "stats"]:
         if not user == "":
             if command == "save":
@@ -457,8 +460,9 @@ Testers: Aaron Zhang, Nelson Yan, Ethan Wei
 Story Writers: 
     Amazon Adventure - Sean Chan
     Space Story - Oliver Liu
-    Time Travel - Sean Chan, Oliver Liu
+    Time Travel - Sean Chan
     School - Jayden Li, imported by Oliver Liu
+    Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
 ------------------------------------------------""")
     else: 
         print("That is an invalid command. Try Again.")
@@ -630,7 +634,7 @@ When you wake up, you remember what happened and wish that you never went to Afr
     if x == 0:
         x = choice("Do you want to drink it?", ["When you drink the liquid, you pass out and wake up in a jail like cell. You are told that you will be used in an great experiment, if that is great or not. " + colored("\n(Ending 6/20 'Great Experiments')", "red"), "You put down the drink and hurridly leave the hut. There's something suspicious about the drink. You decide to start a new life, by yourself. The town leader sees your intelligence and offers you a job: a town advisor. On the other hand, a independent company offers you another path: a secret spy."])
         if x == 1:
-            x = choice("Which will you take?", ["You become an advisor for the town, and earn a lot of money, soon becoming rich. You live a happy life in the town." + colored("\n(Ending 7/20 'Rich boi')", "red"), "You become a spy against the town, but you are not too good at it. After a week, you are caught and sent to jail." + colored("\n(Ending 8/20 'Jail Time')"), "red"], ["advisor", "spy"])
+            x = choice("Which will you take?", ["You become an advisor for the town, and earn a lot of money, soon becoming rich. You live a happy life in the town." + colored("\n(Ending 7/20 'Rich boi')", "red"), "You become a spy against the town, but you are not too good at it. After a week, you are caught and sent to jail." + colored("\n(Ending 8/20 'Jail Time')", "red")], ["advisor", "spy"])
     else:
         x = choice("Do you want to see what is inside?", ["You walk towards the plane, opening the door to see the body of your pilot on the seats.", "I don't know why you would not want to see what has inside a plane, but ok. You can't survive with nothing so you died. """ + colored("\n(Ending 20/20 'Bad Choices')", "red")])
         if x == 0:
@@ -683,7 +687,12 @@ You pass out. After waking up you look around to meet an unfamiliar place. Inste
             elif x == 2:
                 ending("Stuck with the dinosaurs", 3, 20, "time travel")
         else:
-            x = choice("Do you want to go to it?", ["You hop into your time machine box thing, looking at the last time you will see the dinosaurs.", ""])
+            x = choice("Do you want to go to it?", ["You hop into your time machine box thing, looking at the last time you will see the dinosaurs.", "The machine get fried as a fire-breathing dinosaur blows on it. I guess you are stuck in the past..."])
+            if x == 0:
+                pass
+                # some new time
+            else:
+                ending("Burnt with the dinosaurs", 3, 20, "time travel") # add alternative option
     else:
         x = choice("Do you want to pick the berries then eat it, just pick the berries for later, or no berries?", ["", "", ""], ["eat", "pick", "no"])
         # finish
@@ -694,10 +703,10 @@ You pass out. After waking up you look around to meet an unfamiliar place. Inste
 def story_school(user:str):
     if user.lower() == 'pancake' or user.lower() == 'ethan':
         name = 'Ethan Wei'
-        o = ''
+        o = ' (still no girlfriend though)'
     else:
         name = 'Eefen Wedge'
-        o = ' (still no girlfriend though)'
+        o = ''
     print(f"""You start the school year, fresh and ready. You got new shoes, new laptop and hopefully a new start.
 As you get on the train, you notice that your best friend {name} isn’t there, and he isn’t responding to your messages, which is a bit weird but then again, {name} is weird, so you don’t worry too much. 
 When you get to Leederville station, you realise that there are no students around you. Feeling uneasy, you walk into school, hoping that this is all just a coincidence…
@@ -740,7 +749,7 @@ BUT!!!
 
 Because he was yapping for six billion years, that gave you the chance to reach into your bag and choose a weapon.''')
                 #add achievement (fight a god with your school bag.)
-                c = choice('Choose your weapon: ', ['You summon your inner Kendrick Lamar and Start roasting him. It seems to be working, as he catches on fire until your laptops battery dies. Ligma Lord recovers, then blasts your body into ashes.', 'As You find the Formula to solving any immortal, Mr White randomly spawns and says to use the formula you must solve this quadratic equation. While You are figuring it out, Ligma Lord Burns your maths notebook, and then opens a black hole that destroys you immediately.', 'You pitch the mochi and it lands perfectly into his throat. As he is choking, you grab your empty fire extinguisher and slam it at him, causing him to fall. As you stand over his helpless body, he whispers some final words.', 'You make a mad dash into for the portal, and plunge through, but you hear Ligma Lord laugh as you burst into the fresh air.'], ['Laptop', 'Math Book', 'Mochi', "Portal"])
+                c = choice('Choose your weapon: ', ['You summon your inner Kendrick Lamar and start roasting him. It seems to be working, as he catches on fire until your laptops battery dies. Ligma Lord recovers, then blasts your body into ashes.', 'As You find the Formula to solving any immortal, Mr White randomly spawns and says to use the formula you must solve this quadratic equation. While You are figuring it out, Ligma Lord Burns your maths notebook, and then opens a black hole that destroys you immediately.', 'You pitch the mochi and it lands perfectly into his throat. As he is choking, you grab your empty fire extinguisher and slam it at him, causing him to fall. As you stand over his helpless body, he whispers some final words.', 'You make a mad dash into for the portal, and plunge through, but you hear Ligma Lord laugh as you burst into the fresh air.'], ['Laptop', 'Math Book', 'Mochi', "Portal"])
 
                 if c == 0:
                     cprint('FAIL', attrs=['bold'], color='red')
@@ -775,6 +784,119 @@ then step through the portal, awaiting your first day of school.''')
     
     cprint("\nTHE END", attrs=['bold'])
 
+# ETHAN - TUTANKHAMUN'S TOMB
+def story_tomb():
+    print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun’s tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
+    x = choice("""Choices:
+1. You can explore the tomb without any food or water
+2. Leave exploring the tomb for later, and search for food and water in the plane’s wreckage""", ["You pick up all of your tools, and slowly walk towards the tomb’s entrance. You dust the sand away from the tomb entrance, and some of the sand gets blown into your face and up your nose, choking you. You have no water to clear your throat, so you suffocate.", "You walk towards the plane wreckage and discover that everyone inside the plane got burnt alive from the fire. You carefully walk into the plane’s storage unit from a side door and haul out a box of food and water. After walking out the plane, you discover the captain of the plane is still alive, but badly injured. He asks for food and water."], ["1", "2"])
+    if x == 0:
+        ending("Bad Choices", 1, 15, "tomb")
+    else:
+        inventory("Food", 2, "add", False)
+        inventory("Water", 2, "add", True)
+        x = choice("""Choices:
+1. You give the captain some food and water.
+2. You leave the captain to die, because you need all the food and water you have, to explore the tomb.								                  
+3. You realize that even if you give the captain food and water he I still going to die, so you give up your mission of exploring the cave and take him to a hospital.""", ["You tear open your box of resources you got from the plane and give some food and water to the captain, but you realise that most of the food is burnt and inedible, meaning you now only have enough supplies to last a few days maximum.", "You leave for the tomb, not looking back even once at the pleading captain. You feel no guilt as to what you have just done, but on the bright side you have enough supplies for a whole week. You reach the tomb entrance.", "Throwing down your backpack full of your tools, you feed the captain then you give him a piggyback ride to the nearest town."], ["1", "2", "3"])
+        if x == 0:
+            inventory("Food", 1, "lose", False)
+            inventory("Water", 1, "lose", False)
+            x = choice("""Choices:
+1. You decide that the captain is too much of a burden to bring along to the tomb, so you tell him the directions to the nearest town and set off to the tomb.
+2. You decide to bring along the captain, thinking it would be useful to have another pair of hands to help you carry your stuff.""", ["After helping the captain, you pack up all your stuff and make your way to the tomb. When you reach the tomb you dust away the sand, and some of it gets in your nose, but some water washes it down. You descend the stairs, and you are officially in the tomb of Tutankhamun. As you walk down the corridor, you reach inside your bag to get a flashlight, but a mummy jumps out of a trapdoor and growls at you.", "Helping the captain up, you guys make for the tomb entrance, and reach it in no time, dusting away the sand, some of it gets into your nose, but some water helps wash it down. You descend the stairs, and you are now officially in the tomb of Tutankhamun. As you walk down the corridor, you reach inside your bag to get a flashlight, but a mummy jumps out of a trapdoor and growls at you."], ["1", "2"])
+            if x == 1:
+                x = choice("""Choices:
+1. You grab onto the captain’s hand and run from the mummy, but the captain slows you down.
+2. You choose to save yourself, so you push the captain towards the mummy, and you run.""", ["As you run, you hear the mummy slowly gaining on you. The captain is slowing you down and there is no hope for you and the captain, you are both doomed.", "You push the captain towards the mummy and run. The captain screams at you, but that is suddenly cut short. You run quickly out of the tomb. You feel bad, and that you are going to be haunted about what happened for the rest of your life, but at least you stayed alive."], ["1", "2"])
+                if x == 0:
+                    ending("Infinitely Doomed", 3, 15, "tomb")
+                else:
+                    ending("Sacrifices must be made", 4, 15, "tomb")
+            else:
+                x = choice("""Choices:
+1. Stay and fight the mummy with the metal rod at the bottom of your backpack.
+2. Run.""", ["You reach inside your bag, and you fumble for the metal rod, but it is hooked on something. The mummy jumps on top of you, and the bag tumbles out of your reach. You close your eyes for the inevitable.", "You turn around and run, and you hear the mummy’s footsteps slowly fading away. You make it out alive, but you are traumatized forever."], ["1", "2"])
+                if x == 0:
+                    ending("R.I.P", 5, 15, "tomb")
+                else:
+                    ending("Mentally unstable 🤣 womp womp", 6, 15, "tomb")
+        elif x == 1:
+            print("\nAfter entering the tomb, you slowly walk down the corridor, wary of any traps or ambushes from the undead. You reach inside your bag to get a flashlight, but you hear a footstep coming from ahead.")
+            x = choice("""Choices:
+1. You pull out your metal rod and wait for whatever it is ahead to show itself.
+2. You pull out your metal rod and hide in a gap in the wall and wait for whatever it is to go away.
+3. Run.""", ["You hold your weapon in one hand, and you prepare for whatever is coming towards you. The mummy appears much closer than you expected, but you still whack it on its head multiple times until it finally falls at your feet.", "You take out your metal rod and hide in the gap in the wall. The mummy walks right past you, and you let out the breath you were holding. You sneak behind the mummy and knock its head off.", "You turn around and run, and you hear the mummy’s footsteps slowly fading away. You make it out alive, but you are traumatized forever."], ["1", "2", "3"])
+            if x == 0:
+                story_tomb_passageway()
+            elif x == 1:
+                story_tomb_passageway()
+            else:
+                ending("Mentally unstable... womp womp", 6, 15, "tomb")
+        else:
+            ending("A Good Citizen", 2, 15, "tomb", "win")
+
+def story_tomb_passageway():
+    x = choice("""Choices:
+1. Continue down the passageway into the antechamber as fast as possible, before any other mummies appear.
+2. Advance slowly, checking for any traps.""", ["You sprint down the passageway, but you catch your foot on a tripwire, and you fall flat on your face. You land on a mound of sand, and a mummy jumps right on top of you. It pushes you further into the sand, and you choke on the sand that gets in your mouth and down your throat.", "You get out your flashlight, and you slowly walk forward, scanning the wall and floor for any traps. You avoid a tripwire, and with some luck you step over the pressure plate. You make it to the door of the antechamber."], ["1", "2"])
+    if x == 0:
+        ending("5-Star Meal", 7, 15, "tomb")
+    else: 
+        x = choice("""Choices:
+1. Go into the antechamber and eat some of the food inside your bag, so you can restore some energy.
+2. Walk through the antechamber without stopping, because there might be traps""", ["You open the door of the antechamber, and you sit on the closest spiritual animal couch. This angers the God of Tutankhamun, Anubis, but you are not aware of that, so you open a pack of beans, and you eat them. While you eat, a voice inside your head tells you to get off the couch...", "You walk swiftly through the antechamber, although you stop to admire one of the spiritual animal couches, the one which belonged to Anubis. This makes Anubis happy. Maybe he will help you later..."], ["1", "2"])
+        if x == 0:
+            inventory("Food", 1, "lose", True)
+            x = choice("""Choices:
+1. Ignore the voice and keep on eating, thinking it must be a random thought inside your head.
+2. You get off the couch, realizing a God just spoke to you...""", ["You ignore the voice inside your head, and angers Anubis even more. He fires a beam of energy at your supplies, destroying all your tools and food, and he grants the beans that you just ate with powers. The beans burst out of your belly, causing many holes inside you.", "You get off the couch, but this doesn’t make Anubis any happier. He decides to let you go for now, until you do something else to anger him."], ["1", "2"])
+            if x == 0:
+                ending("The turns have tabled", 8, 15, "tomb")
+            else:
+                x = choice("""Choices:
+1. You abandon your food, having lost your appetite, and you make for the burial chamber.							
+2. You decide to go to the Annexe to find some utensils to finish your meal, as you are still hungry.""", ["When you enter the burial chamber, you notice that the coffin is sealed with magical markings, but you fail to notice the mummy behind the tomb staring at you, until it slashes your neck with an ancient weapon.", "You go into the annexe, and you spot some utensils with Anubis’s marking on them. Without thinking, you scoop up some more of your beans and eat them. This angers Anubis even more, so he sends a blast of energy right at your face."], ["1", "2"])
+                if x == 0:
+                    ending("So close but so far...", 9, 15, "tomb")
+                else:
+                    ending("Deep Fried", 10, 15, "tomb")
+        else:
+            x = choice("""Choices:
+1. Continue into the annexe.
+2. Go straight to the Burial Chamber, because anything inside the annexe won’t be useful.""", ["You go to the annexe, and you spot utensils with Anubis’s marking on them. You pick these up to admire.", "You go straight to the burial chamber of Tutankhamun and find the coffin tightly sealed with magical markings. You then spot another mummy standing behind the coffin, looking at you without its malicious eyes."], ["1", "2"])
+            if x == 0:
+                x = choice("""Choices:
+1. Knowing these will be valuable, you pick them up and put them in your bag
+2. You think that if you keep these, Anubis might get mad at you, so you put them safely on a stand.""", ["You put the utensils carefully into your bag, and you cross over to the burial chamber. The coffin is sealed with magical markings, so you ask Anubis how to open it. All this time you fail to notice the mummy behind you. It taps you on the shoulder, and you spin around with your metal rod in hand, but this time the mummy dodges your attack and slashes your neck.", "9d. You carefully set the utensils on the stand, making Anubis twice as happy with you! You cross over to the burial chamber, and you see the coffin sealed with magic. You also notice the mummy standing behind it."], ["1", "2"])
+                if x == 0:
+                    ending("Beheaded", 11, 15, "tomb")
+                else:
+                    x = choice("""Choices:
+1. You ask Anubis to open the coffin while you take care of the mummy.
+2. You ask Anubis to take care of the mummy while you try to open the coffin.
+3. ??? (mystery)""", ["Anubis slowly works undoing the magical binding on the coffin’s lid, while you pull out your weapon and kill the mummy. But this time the mummy knows how to beat you. It dodges your first attack and slashes your neck.", "Anubis sends a beam of energy at the mummy, sending it flying, and it stops moving. You get to work on figuring out the magical binding, but you accidentally say the wrong hieroglyph and the coffin fires a magic bolt at your face.", "You remember that Anubis now owes you two favours, so you ask him to kill the mummy and unlock the coffin. Hearing your request, Anubis zaps the mummy and unlocks the coffin, revealing the mummified Tutankhamun and countless valuables."], ["1", "2", "3"]) # continue
+                    if x == 0:
+                        ending("At least you tried...", 12, 15, "tomb")
+                    elif x == 1:
+                        ending("Should've Studied Harder", 13, 15, "tomb")
+                    else:
+                        x = choice("""Choices:
+1. You take all the valuables inside Tutankhamun’s coffin and escape from the tomb.
+2. Not satisfied, you want to explore the last room inside Tutankhamun’s tomb, the treasury.""", ["You pick up all the gold bracelets, masks and other valuables inside Tutankhamun’s coffin, admiring each and every carving on them. You quickly put them in your bag and retrace your steps out of the tomb. You reach daylight again, and you heave a sigh of relief, having completed your most dangerous heist yet.", "You turn to your right to face the treasury of Tutankhamun’s tomb, which must contain a huge amount of treasure. Excited, you enter the treasury, imagining all the riches that should be inside. But when you open your eyes, instead of treasure, 4 mummies stood there staring at you..."], ["1", "2"])
+                        if x == 0:
+                            ending("The rich", 14, 15, "tomb", "win")
+                        else:
+                            ending("Got too Greedy", 15, 15, "tomb")
+            else:
+                x = choice("""Choices:
+1. Ask Anubis to tell you how to open Tutankhamun’s coffin, and deal with the mummy yourself.
+2. Ask Anubis to kill the mummy, while you try to open Tutankhamun’s coffin.""", ["Anubis slowly works undoing the magical binding on the coffin’s lid, while you pull out your weapon and kill the mummy. But this time the mummy knows how to beat you. It dodges your first attack and slashes your neck.", "Anubis sends a beam of energy at the mummy, sending it flying, and it stops moving. You get to work on figuring out the magical binding, but you accidentally say the wrong hieroglyph and the coffin fires a magic bolt at your face."], ["1", "2"])
+                if x == 0:
+                    ending("At least you tried...", 12, 15, "tomb")
+                else:
+                    ending("Should've Studied Harder", 13, 15, "tomb")
+
 # GAME LOOP
 while True:
     user = user_system()
@@ -785,4 +907,5 @@ while True:
         print("")
         checkcommand(input("Enter a command ('Help' for options) > "))
         if not user == "":
+            userach = updateachievements(userach, achievements)
             update_stats(user)

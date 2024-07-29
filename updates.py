@@ -35,7 +35,7 @@ Removed timeout
 Started on a user interface that gets username and saves stats
 
 ----------Update 2.2----------
-Adding Time Travel and School
+Adding Time Travel, Tomb story and School
 Added saving, deleting, resetting and printing of stats with colour and sorting (for endings only)
 Changed deaths to fails
 More commands

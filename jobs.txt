@@ -5,5 +5,6 @@ Jobs if you have nothing to do:
     - add all stats to initial stats and edit commands
     - write time travel story
     - make up some more achievements
+    - add alternative input to the ending for alternaative endings
     - understand code
     - TEST TEST TEST
