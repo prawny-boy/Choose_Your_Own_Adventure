@@ -1,1 +1,10 @@
 User: /test
+Endings: //Bad Choices/tomb/fail,Master of Fear/School/win,Still Here.../School/win,LIGMA BALLS/School/fail,LIGMA BALLS/School/fail
+Achievements: //
+Fails: /0
+Wins: /0
+User: /sean
+Endings: //
+Achievements: //
+Fails: /0
+Wins: /0

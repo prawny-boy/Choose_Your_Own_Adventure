@@ -1,10 +1,11 @@
-Jobs if you have nothing to do:
-    - add commands list to record the commands used
-    - add more achievements
-    - use the easter egg dict
-    - add all stats to initial stats and edit commands
-    - write time travel story
-    - make up some more achievements
-    - add alternative input to the ending for alternaative endings
-    - understand code
-    - TEST TEST TEST
+Jobs to do:
+    - Add commands list to record the commands used
+    - Add more achievements to the achievements list
+    - Add story_endings list to save endings in each story
+    - Add all stats to initial stats and edit commands
+    - Write time travel story
+    - Make up some more achievements
+    - Add alternative input to the ending for alternative endings
+    - Change endings saving to use ending numbers and story names
+    - Add 2 player mode
+    - Add more stories (mountain, underwater + finish school)

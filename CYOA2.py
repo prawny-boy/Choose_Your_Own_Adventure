@@ -6,13 +6,13 @@ from time import sleep
 
 # Program preset variables:
 yn = ['Y', 'N'] # just for shortcutting
-statlines = 5 # amount of lines needed for 1 user in stats file
 s = 'stats.txt'
 inventoryList = []
 storyList = ["amazon adventure", '1', "space story", '2', '3', 'time travel', 'school', '4', "tomb story", "5", 'quit']
 achievements = { #name: [description, code, class]
-    "Sean's Easter Egg": ["Sean's Easter Egg", "Find the Easter Egg made by Sean Chan", "sean-1", "special"],
-    "Breaking The Game": ['Breaking the Game', 'Find the Easter Egg made by Oliver Liu', 'oliver-1', "special"]
+    # Special
+    # Easter Eggs
+    "The Long Egg": ["The Long Egg", "Find the longest Easter Egg in the game.", "egg.long-1", "special"]
 }
 linesperuser = 5 # lines of stats per 1 user
 initialstats = ['Endings: //', 'Achievements: //', 'Fails: /0', 'Wins: /0'] # preset of stats of a new user, / is normal int/str, while // is list
@@ -55,7 +55,7 @@ def user_system():
                 else:
                     print("Username must be 3 to 20 characters, with no special characters.\n")
                     if newuser.lower() == "new":
-                        print("New is invalid because that is a function")
+                        print("New is invalid because that is a function, but since you are smart...\nhttps://scratch.mit.edu/users/_ChoosUrAdventure_/\nFind the code for the special command...")
         elif username == "":
             print("Stayed anonymous.")
             break
@@ -81,6 +81,8 @@ def resetstats(user:str):
     
     for i in range(len(lines)):
         lines[i] = lines[i].strip() # remove newline characters
+
+    for i in range(len(lines)):
         if lines[i] == "User: /" + user:
             userline = i
             break
@@ -130,8 +132,8 @@ def checkachievement(code:str):
     if len(n) > 1:
         name2 = n[1]
     amount = c[1]
-    if name1 == "oliver" or name1 == "sean":
-        if name1 in eastereggs:
+    if name1 == "egg":
+        if name2 in eastereggs:
             completed = True
     
     return completed
@@ -163,8 +165,11 @@ def checkusername(user:str):
 def grab_stats(user:str):
     file = open(s, 'r')
     lines = file.readlines()
+
     for i in range(len(lines)):
         lines[i] = lines[i].strip() # remove newline characters
+
+    for i in range(len(lines)):
         if lines[i] == "User: /" + user:
             userline = i
             break
@@ -188,9 +193,11 @@ def update_stats(user:str):
     with open(s, 'r') as file:
         lines = file.readlines()
 
+    for i in range(len(lines)):
+        lines[i] = lines[i].strip() # remove newlines
+    
     # finds the user in the stats.txt file
     for i in range(len(lines)):
-        lines[i] = lines[i].strip()
         if lines[i] == "User: /" + user:
             userline = i
             break
@@ -464,6 +471,23 @@ Story Writers:
     School - Jayden Li, imported by Oliver Liu
     Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
 ------------------------------------------------""")
+    elif command == "198234":
+        win = False
+        answer = input("Question 1/4: How many times did you have to click the flag to win? ").strip()
+        if answer == "100":
+            answer = input("Question 2/4: How many checkpoints were in the minecraft hunt? ").strip()
+            if answer == "10":
+                answer = input("Question 3/4: What was the Youtube channel name you were directed to? ").lower().strip()
+                if answer == "thebestcoolnelsonyan":
+                    answer = input("Question 4/4: What was the third scratch game titled? ").lower().strip()
+                    if answer == "special":
+                        win = True
+        if win:
+            print("Success!")
+            eastereggs.append("long")
+        else:
+            print("Wrong. Answer all questions correctly.")
+
     else: 
         print("That is an invalid command. Try Again.")
 
@@ -701,12 +725,25 @@ You pass out. After waking up you look around to meet an unfamiliar place. Inste
 
 # JAYDEN - SCHOOL STORY
 def story_school(user:str):
+    global name, o, hass, math, eng
     if user.lower() == 'pancake' or user.lower() == 'ethan':
         name = 'Ethan Wei'
         o = ' (still no girlfriend though)'
     else:
         name = 'Eefen Wedge'
         o = ''
+    while True:
+        hass = input('HASS Teacher: ')
+        if 'mr' in hass.lower() or 'mrs' in hass.lower():
+            break
+    while True:
+        math = input('Math Teacher: ')
+        if 'mr' in math.lower() or 'mrs' in math.lower() or 'dr' in math.lower():
+            break
+    while True:
+        eng = input('English Teacher: ')
+        if 'mr' in eng.lower() or 'mrs' in eng.lower() or 'ms' in eng.lower():
+            break
     print(f"""You start the school year, fresh and ready. You got new shoes, new laptop and hopefully a new start.
 As you get on the train, you notice that your best friend {name} isn’t there, and he isn’t responding to your messages, which is a bit weird but then again, {name} is weird, so you don’t worry too much. 
 When you get to Leederville station, you realise that there are no students around you. Feeling uneasy, you walk into school, hoping that this is all just a coincidence…
@@ -776,7 +813,7 @@ You take one last look behind you, to see the platform and clouds turn into a st
 then step through the portal, awaiting your first day of school.''')
                     ending('Master of Fear', 7, 20, 'School', 'win')
                 elif c == 3:
-                    pass #unfinished
+                    pass
 
     elif c == 1:
         print(f'You live a normal life {o}.')
@@ -820,7 +857,7 @@ def story_tomb():
                 if x == 0:
                     ending("R.I.P", 5, 15, "tomb")
                 else:
-                    ending("Mentally unstable 🤣 womp womp", 6, 15, "tomb")
+                    ending("Mentally unstable... womp womp", 6, 15, "tomb")
         elif x == 1:
             print("\nAfter entering the tomb, you slowly walk down the corridor, wary of any traps or ambushes from the undead. You reach inside your bag to get a flashlight, but you hear a footstep coming from ahead.")
             x = choice("""Choices:
