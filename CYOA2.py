@@ -133,20 +133,25 @@ def deleteuser(user:str):
     with open(s, 'w') as file:
         file.writelines(lines)
     
-def addachievement(currentach:list, allach:list):
-    # here we check which advancements have been completed using variables
-    # completedach = []
-    # keys = list(allach.keys())
-    # for i in range(len(keys)):
-    #     if checkachievements(allach[keys[i]][2]):
-    #         if not allach[keys[i]][0] in currentach:
-    #             cprint(f"Completed {allach[keys[i]][3]} achievement: {allach[keys[i]][0]}", "yellow")
-    #             completedach.append(allach[keys[i]][0])
+def addachievement(achname:str):
+    done = False
+    for achdict in achievements.keys():
+        for ach in list(dict(achievements[achdict]).keys()):
+            if str(ach).lower() == achname.lower():
+                achname = ach
+                achtype = achdict
+                done = True
+                break
+        if done:
+            break
+    if not done:
+        print("Error: Achievement not found. Key: " + achname)
+    else:
+        if not (achname + "/" + achtype) in userach:
+            userach.append(achname + "/" + achtype)
+            cprint(f"Completed {achtype.capitalize()} achievement: {achname}", "yellow")
 
-    # return completedach
-    pass
-
-def checkachievements(code:str):
+def checkachievements():
     # here we check the check-nessessary achievements, such as the number of commands, times played, etc.
     pass
 
@@ -295,7 +300,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int):
             initialstory = endingsdict[item][0]
         print(f"      - '{str(item).capitalize()}' {endingsdict[item][1]} times")
 
-    # try implement type sorting later
+    # implement type and story sorting later
     cprint("  Achievements:", "yellow")
     for item in achievements:
         print("    - " + str(item))
@@ -1112,6 +1117,8 @@ while True:
     if user != "":
         endings, userach, fails, wins = grab_stats(user)
         # resetendingfile()
+        # addachievement("Hello testing if achievements work")
+        # update_stats(user)
     running_commands = True
     while running_commands:
         print("")

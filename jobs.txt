@@ -1,5 +1,5 @@
 Jobs to do: (ordered in most to least piority)
-    - Re-make achievements to use the class and also make a function that just adds achievements, and a function to check for more completed achievements.
+    - Make a function to check for check neccesary achievements, like amount of times played etc.
     - Make printing of achievements sort by type
     - Fix the printing stats bug when there are no endings/achievements
     - Add commands list to record the commands used
