@@ -1,11 +1,11 @@
-Jobs to do:
+Jobs to do: (ordered in most to least piority)
+    - Re-make achievements to use the class and also make a function that just adds achievements, and a function to check for more completed achievements.
+    - Make printing of achievements sort by type
+    - Fix the printing stats bug when there are no endings/achievements
     - Add commands list to record the commands used
+    - Add alternative input to the ending function for alternative endings
     - Add more achievements to the achievements list
-    - Add story_endings list to save endings in each story
-    - Add all stats to initial stats and edit commands
-    - Write time travel story
-    - Make up some more achievements
-    - Add alternative input to the ending for alternative endings
-    - Change endings saving to use ending numbers and story names
-    - Add 2 player mode
-    - Add more stories (mountain, underwater + finish school)
+    - Do stories (mountain, underwater (2 player?), school + time travel)
+    - Songs for stories using pygame.mixer()
+    - Visual Pygame
+    - Turtle map for stories

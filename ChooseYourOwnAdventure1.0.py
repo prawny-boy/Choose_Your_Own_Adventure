@@ -48,7 +48,7 @@ def readanswer(answer1, answer2, answer3="\n"):
                 print("Nothing. Get some stuff to see them here.")
             for item in range(len(inventoryList)):
                 cprint("  1 " + str(inventoryList[item]), "green")
-            print("\n")
+            print("\n") #hi levi  # hi sean
     print("")
 
 def inventory(addItem, amount=1, type="add"):

@@ -24,7 +24,7 @@ Achievements:
             - Time Traveller (Play this story 1 time)
             - Better Time Traveller (Play this story 10 times)
             - Doctor Who (Play this story 50 times)
-            - All Endings [School] (Get all the endings in school)
+            - All Endings [Time Travel] (Get all the endings in school)
         School:
             - Beginner School (Play this story 1 time)
             - Intermediate School (Play this story 10 times)

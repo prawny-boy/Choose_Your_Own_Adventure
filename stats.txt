@@ -1,10 +1,11 @@
-User: /test
-Endings: //Bad Choices/tomb/fail,Master of Fear/School/win,Still Here.../School/win,LIGMA BALLS/School/fail,LIGMA BALLS/School/fail
-Achievements: //
-Fails: /0
-Wins: /0
 User: /sean
 Endings: //
 Achievements: //
 Fails: /0
 Wins: /0
+User: /test
+Endings: //1/School/win,14/tomb/win,6/tomb/fail,15/tomb/fail,15/tomb/fail,7/tomb/fail,1/tomb/fail,6/tomb/fail,2/tomb/win,3/tomb/fail,5/tomb/fail,7/tomb/fail,8/tomb/fail,9/tomb/fail,10/tomb/fail,13/tomb/fail,12/tomb/fail,11/tomb/fail,12/tomb/fail,11/tomb/fail,11/tomb/fail,13/tomb/fail,7/School/win,1/School/win,4/time travel/fail,2/time travel/fail
+Achievements: //
+Fails: /0
+Wins: /0
+
