@@ -1,6 +1,7 @@
 Jobs to do: (ordered in most to least piority)
-    - Make a function to check for check neccesary achievements, like amount of times played etc.
+    - Add achievements listing function (and make a command for it)
     - Make printing of achievements sort by type
+    - Add ending function to amazon jungle and space story
     - Fix the printing stats bug when there are no endings/achievements
     - Add commands list to record the commands used
     - Add alternative input to the ending function for alternative endings

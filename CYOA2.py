@@ -7,7 +7,7 @@ from achievements import achievements
 from pygame import mixer
 import sys
 
-#inits
+# Inits
 mixer.init()
 
 # Program preset variables:
@@ -15,7 +15,8 @@ yn = ['Y', 'N'] # just for shortcutting
 s = 'stats.txt'
 e = 'allendings.txt'
 inventoryList = []
-stories = {"tomb": 15, "africa's jungle": 20, "space story": 11, 'time travel': 5, 'school': 20} # name of story: amount of endings
+stories = {"tomb": 15, "amazon jungle": 20, "space story": 11, 'time travel': 5, 'school': 20} # name of story: amount of endings
+# if you edit the above list also call the resetendingfile() function!!!!
 storyList = ['1', '2', '3', '4', "5", 'quit'] + list(stories.keys())
 linesperuser = 5 # lines of stats per 1 user
 initialstats = ['Endings: //', 'Achievements: //', 'Fails: /0', 'Wins: /0'] # preset of stats of a new user, / is normal int/str, while // is list
@@ -30,7 +31,7 @@ fails = 0
 wins = 0
 eastereggs = []
 
-def slowprint(str:str, speed:float, attr:list, c='white'):
+def slowprint(str:str, speed:float, attr:list, c='white') -> None:
     for char in str:
         cprint(char, end='', attrs=attr, color=c)
         sys.stdout.flush()
@@ -38,10 +39,10 @@ def slowprint(str:str, speed:float, attr:list, c='white'):
     sleep(speed)
     print()
 
-def get_color_escape(r, g, b, background=False):
+def get_color_escape(r, g, b, background=False) -> str:
     return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
 
-def user_system():
+def user_system() -> str:
     done = False
     # where we ask for username and save, get stats etc.
     print("Enter your username (Not case sensitive), or enter 'new' to make a new account, empty to stay anonymous.")
@@ -89,7 +90,7 @@ def user_system():
             break
     return username.lower()
 
-def resetstats(user:str):
+def resetstats(user:str) -> None:
     # here we edit the stats file and reset everything
     with open(s, 'r') as file:
         lines = file.readlines()
@@ -111,14 +112,14 @@ def resetstats(user:str):
     with open(s, 'w') as file:
         file.writelines(lines)
 
-def resetendingfile():
+def resetendingfile() -> None:
     resetlines = ""
     for story in stories.keys():
         resetlines += str(story) + ":" + (stories[story]-1) * "|" + "\n"
     with open(e, "w") as file:
         file.writelines(resetlines)
 
-def deleteuser(user:str):
+def deleteuser(user:str) -> None:
     # here we edit the stats file and reset everything
     with open(s, 'r') as file:
         lines = file.readlines()
@@ -133,7 +134,7 @@ def deleteuser(user:str):
     with open(s, 'w') as file:
         file.writelines(lines)
     
-def addachievement(achname:str):
+def addachievement(achname:str) -> None:
     done = False
     for achdict in achievements.keys():
         for ach in list(dict(achievements[achdict]).keys()):
@@ -151,11 +152,35 @@ def addachievement(achname:str):
             userach.append(achname + "/" + achtype)
             cprint(f"Completed {achtype.capitalize()} achievement: {achname}", "yellow")
 
-def checkachievements():
+def checkachievements() -> None:
     # here we check the check-nessessary achievements, such as the number of commands, times played, etc.
+    for achdict in achievements.keys():
+        for ach in achievements[achdict].keys():
+            if len(achievements[achdict][ach]) == 2:
+                done = False
+                code = achievements[achdict][ach][1]
+                atype = code.split(".")[0]
+                key = code.split(".")[1].split("-")[0]
+                if key == "allendings":
+                    amount = stories[str(achdict).lower()]
+                else:
+                    amount = int(code.split(".")[1].split("-")[1])
+                if atype in stories.keys():
+                    endingscount = countendings(atype, key)
+                    if endingscount >= amount:
+                        done = True
+                else:
+                    print("Error. Type not valid:", atype)
+                if done:
+                    addachievement(ach)
+            else:
+                continue
+
+def listachievements() -> None:
+    # when the user wants to see other achievements, special achievements are hidden until you get them
     pass
 
-def checkusername(user:str):    
+def checkusername(user:str) -> bool:    
     x = ''
     file = open(s, 'r')
     content = file.read()
@@ -179,7 +204,7 @@ def checkusername(user:str):
         elif x == 'n':
             return False
 
-def grab_stats(user:str):
+def grab_stats(user:str) -> tuple:
     file = open(s, 'r')
     lines = file.readlines()
 
@@ -206,7 +231,7 @@ def grab_stats(user:str):
     
     return tuple(stats)
 
-def update_stats(user:str):
+def update_stats(user:str) -> None:
     global linesperuser, endings, userach, fails, wins
     # opens the file and saves the lines to a list
     with open(s, 'r') as file:
@@ -274,7 +299,7 @@ def update_stats(user:str):
     with open(s, 'w') as file:
         file.writelines(lines)
 
-def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int):
+def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) -> None:
     cprint(f"{str(user).capitalize()}'s Stats:", "green", attrs=["bold"])
     cprint("  Endings:", "red")
     # converts the list into a dictionary
@@ -311,7 +336,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int):
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = yn):
+def choice(question:str, outcomes:list, options:list = yn) -> int:
     choice = ''
     print(question)
     option = str(options)
@@ -336,7 +361,7 @@ def choice(question:str, outcomes:list, options:list = yn):
     print("\n" + outcomes[x])
     return x
 
-def inventory(addItem, amount=1, type="add", toggle:bool = True):
+def inventory(addItem, amount=1, type="add", toggle:bool = True) -> None:
     stop = False
     if type == "add":
         startamount = amount
@@ -370,7 +395,7 @@ def inventory(addItem, amount=1, type="add", toggle:bool = True):
             cprint("\nYour inventory is empty.", attrs=["bold"])
         print()
 
-def ending(name:str, number:int, totalendings:int, story:str, type:str = "fail"):
+def ending(name:str, number:int, totalendings:int, story:str, type:str = "fail") -> None:
     # end and add it to the endings list
     colour = ""
     if type.lower().strip() == "win":
@@ -382,7 +407,7 @@ def ending(name:str, number:int, totalendings:int, story:str, type:str = "fail")
     endings.append(str(number)+"/"+story+"/"+type)
     addnewending(number, name, story.lower())
 
-def addnewending(ending_num:int, ending_name:str, story:str):
+def addnewending(ending_num:int, ending_name:str, story:str) -> None:
     # if the name doesnt exist yet, add it.
     with open(e, 'r') as file:
         lines = file.readlines()
@@ -404,7 +429,7 @@ def addnewending(ending_num:int, ending_name:str, story:str):
     with open(e, 'w') as file:
         file.writelines(lines)
 
-def getendingname(ending_num:int, story:str):
+def getendingname(ending_num:int, story:str) -> str:
     with open(e, "r") as file:
         lines = file.readlines()
     for line in lines:
@@ -414,7 +439,31 @@ def getendingname(ending_num:int, story:str):
             return storyendings[ending_num-1]
     return "Error, story invalid."
 
-def checkcommand(command:str):
+def countendings(story:str, mode:str) -> int:
+    # 4 modes, plays, all endings, fails and wins (not done all)
+    count = 0
+    if mode == "play":
+        for ending in endings:
+            try:
+                if str(ending).split("/")[1].lower() == story.lower():
+                    count += 1
+            except IndexError:
+                continue
+    elif mode == "allendings":
+        foundendings = []
+        for ending in endings:
+            try:
+                if str(ending).split("/")[1].lower() == story.lower():
+                    if str(ending).split("/")[0] not in foundendings:
+                        foundendings.append(str(ending).split("/")[0])
+            except IndexError:
+                continue
+        count = len(foundendings)
+    else:
+        print("Error. Mode not valid:", mode)
+    return count
+
+def checkcommand(command:str) -> None:
     global user, inventoryList, running_commands, user, endings, userach, fails, wins
     command = command.lower()
     story = ''
@@ -897,9 +946,9 @@ and so they are not students anymore. You feel sadness as you remember that you 
 With a heavy heart, you trudge past Beasley and into Andrews, hoping to find someone. """], ['1', '2', '3'])
     
     if c == 0:
-        ending('My watch is 1 minute slow', 8, 20)
+        ending('My watch is 1 minute slow', 8, 20, "school")
     elif c == 1:
-        ending('Absolute !^*#@?” Nerds', 9, 20)
+        ending('Absolute !^*#@?” Nerds', 9, 20, "school")
     elif c == 2:
         sleep(1)
         #add achievement: With Great Power Comes Great Responsibility - Confucius (I think) 
@@ -1119,9 +1168,12 @@ while True:
         # resetendingfile()
         # addachievement("Hello testing if achievements work")
         # update_stats(user)
+        # checkachievements()
     running_commands = True
     while running_commands:
         print("")
         checkcommand(input("Enter a command ('Help' for options) > "))
         if not user == "":
+            update_stats(user)
+            checkachievements()
             update_stats(user)
