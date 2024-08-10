@@ -1,11 +1,11 @@
 User: /sean
-Endings: //
-Achievements: //
+Endings: //1/tomb/fail
+Achievements: //Explorer/tomb
 Fails: /0
 Wins: /0
 User: /test
-Endings: //
-Achievements: //
+Endings: //5/tomb/fail
+Achievements: //Explorer/tomb
 Fails: /0
 Wins: /0
 

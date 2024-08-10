@@ -78,10 +78,9 @@ def user_system() -> str:
         elif username == "quit":
             exit()
         else:
-            file = open(s, 'r')
-            content = file.read()
-            if ('User: /' + username.lower()) in content:
-                file.close()
+            with open(s, 'r') as file:
+                content = file.readlines()
+            if any(('User: /' + username.lower()) == i.strip("\n") for i in content):
                 print(f"Successfully signed in as {username}.")
                 break
             else:
@@ -177,8 +176,12 @@ def checkachievements() -> None:
                 continue
 
 def listachievements() -> None:
-    # when the user wants to see other achievements, special achievements are hidden until you get them
-    pass
+    # when the user wants to see other achievements
+    cprint("\nACHIEVEMENTS", "yellow", attrs=["bold", "underline"])
+    for achdict in achievements.keys():
+        cprint(f"{achdict.capitalize()}:", attrs=["bold"])
+        for ach in achievements[achdict].keys():
+            cprint(f"    - {ach}: {achievements[achdict][ach][0]}", color=("white" if (ach+"/"+achdict in userach) else "dark_grey"))
 
 def checkusername(user:str) -> bool:    
     x = ''
@@ -306,29 +309,52 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     endingsdict = {}
     foundendings = []
     for item in endings:
-        itemlist = str(item).split("/")
-        itemlist[0] = getendingname(int(itemlist[0]), itemlist[1])
-        if not itemlist[0] in foundendings:
-            num = endings.count(item)
-            endingsdict[itemlist[0]] = [itemlist[1], num]
-            foundendings.append(itemlist[0])
+        if not str(item).strip() == "":
+            itemlist = str(item).split("/")
+            itemlist[0] = getendingname(int(itemlist[0]), itemlist[1])
+            if not itemlist[0] in foundendings:
+                num = endings.count(item)
+                endingsdict[itemlist[0]] = [itemlist[1], num]
+                foundendings.append(itemlist[0])
 
     # prints the stats, sorted with how many times you have gotten it.
     # sorts stats
     endingsdict = dict(sorted(endingsdict.items(), key=lambda x:x[1]))
 
     # prints stats
-    initialstory = ""
-    for item in endingsdict.keys():
-        if initialstory == "" or initialstory != endingsdict[item][0]:
-            print(f"    {str(endingsdict[item][0]).capitalize()}:")
-            initialstory = endingsdict[item][0]
-        print(f"      - '{str(item).capitalize()}' {endingsdict[item][1]} times")
+    if endingsdict == {}:
+        print("     No Endings for this User")
+    else:
+        initialstory = ""
+        for item in endingsdict.keys():
+            if initialstory == "" or initialstory != endingsdict[item][0]:
+                print(f"    {str(endingsdict[item][0]).capitalize()}:")
+                initialstory = endingsdict[item][0]
+            print(f"      - '{str(item).capitalize()}' {endingsdict[item][1]} times")
 
     # implement type and story sorting later
     cprint("  Achievements:", "yellow")
+    # converts the list into a dictionary
+    achdict = {}
     for item in achievements:
-        print("    - " + str(item))
+        if not str(item).strip() == "":
+            itemlist = str(item).split("/")
+            achdict[itemlist[0]] = itemlist[1]
+
+    # prints the stats, sorted with how many times you have gotten it.
+    # sorts stats
+    achdict = dict(sorted(achdict.items(), key=lambda x:x[1]))
+
+    # prints stats
+    if achdict == {}:
+        print("     No Achievements for this User")
+    else:
+        initialtype = ""
+        for item in achdict.keys():
+            if initialtype == "" or initialtype != achdict[item]:
+                print(f"    {str(achdict[item]).capitalize()}:")
+                initialtype = achdict[item]
+            print(f"      - {str(item).capitalize()}")
     
     # print fails & wins
     cprint(f"  Fails: ", "red", end="")
@@ -475,6 +501,7 @@ def checkcommand(command:str) -> None:
   Save - saves the user's current stats
   Reset - resets the current user's stats (Dangerous)
   Delete - Deletes the current account, after goes back to sign in (Dangerous)
+  Achievements - Shows a list of all the achievements, can be shortcutted with 'a'
   Quit - quits the story when in the story, if out of story quits program
   Credits - shows the credits & project info""")
     elif command == "start":
@@ -549,6 +576,8 @@ def checkcommand(command:str) -> None:
                 print_stats(user, endings, userach, fails, wins)
         else:
             print("You need to be signed in into a account to use this function.")
+    elif command == "achievements" or command == "a":
+        listachievements()
     elif command == "quit":
         exit()
     elif command == 'updates':
@@ -587,7 +616,7 @@ Story Writers:
                         win = True
         if win:
             print("Success!")
-            eastereggs.append("long")
+            addachievement("The Long Egg")
         else:
             print("Wrong. Answer all questions correctly.")
     else: 
