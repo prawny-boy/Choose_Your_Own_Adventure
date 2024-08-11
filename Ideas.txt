@@ -5,9 +5,10 @@ Achievements:
         Space Story:
             - 
         Time travel:
-            - Use the bonker (Credit: josh)
-            - Get bonked by the bonker (Credit: josh)
+            - 
         School:
+            - 
+        Tomb:
             - 
     All Stories:
         - Newbie (Play 1 time)
@@ -21,10 +22,8 @@ Achievements:
     Special:
         - Command Master (Use all types of commands)
         - Command Maniac (Use 100 commands)
-        - Supporter (Use the credits command)
-        - Saved (Save your progress)
         Easter Eggs:
-            - The Long Egg (Get the long easter egg)
+            - 
 
         - Are you a developer? (Get all of the special achievements, not including this one and 100%)
         - 100% (Get all achievements)

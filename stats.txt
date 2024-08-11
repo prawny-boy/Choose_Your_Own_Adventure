@@ -4,8 +4,8 @@ Achievements: //Explorer/tomb
 Fails: /0
 Wins: /0
 User: /test
-Endings: //5/tomb/fail
-Achievements: //Explorer/tomb
+Endings: //5/tomb/fail,8/space story/fail
+Achievements: //Explorer/tomb,Bad Choices/amazon jungle,Die of Boredom/amazon jungle,Saved/special,Supporter/special,Technician/special,Beginner space/space story
 Fails: /0
 Wins: /0
 
