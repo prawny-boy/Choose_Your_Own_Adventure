@@ -15,21 +15,29 @@ yn = ['Y', 'N'] # just for shortcutting
 s = 'stats.txt'
 e = 'allendings.txt'
 inventoryList = []
-stories = {"tomb": 15, "amazon jungle": 20, "space story": 12, 'time travel': 5, 'school': 20} # name of story: amount of endings
-# if you edit the above list also call the resetendingfile() function!!!!
-storyList = ['1', '2', '3', '4', "5", 'quit'] + list(stories.keys())
-linesperuser = 5 # lines of stats per 1 user
-initialstats = ['Endings: //', 'Achievements: //', 'Fails: /0', 'Wins: /0'] # preset of stats of a new user, / is normal int/str, while // is list
+stories = {
+    "tomb": 15,
+    "amazon jungle": 20,
+    "space story": 12,
+    'time travel': 14,
+    'school': 20,
+    'mountain': 1,
+} # name of story: amount of endings
+storyList = ['quit'] + list(stories.keys())
+for i in range(len(stories.keys())): storyList.append(str(i+1))
+linesperuser = 4 # lines of stats per 1 user
+initialstats = ['Endings: //', 'Achievements: //', 'Commands: //'] # preset of stats of a new user, / is normal int/str, while // is list
 play = False
 Reset = '\033[0m'
+commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "switch"] # if add command also add in this unless it is an admin command, or quit, delete or reset
 
 # Stat Variables
 user = ""
 endings = []
 userach = [] # user achievments
+usercommands = [] # user commands
 fails = 0
 wins = 0
-eastereggs = []
 
 def slowprint(str:str, speed:float, attr:list, c='white') -> None:
     for char in str:
@@ -168,6 +176,20 @@ def checkachievements() -> None:
                     endingscount = countendings(atype, key)
                     if endingscount >= amount:
                         done = True
+                elif atype == "commands":
+                    if key == "amount":
+                        if len(usercommands) >= amount:
+                            done = True
+                    elif key == "allcommands":
+                        alldone = True
+                        for command in commandlist:
+                            if any((str(command).lower()) == i for i in usercommands):
+                                continue
+                            else:
+                                alldone = False
+                                break
+                        if alldone:
+                            done = True
                 else:
                     print("Error. Type not valid:", atype)
                 if done:
@@ -186,8 +208,8 @@ def listachievements() -> None:
 def checkusername(user:str) -> bool:    
     x = ''
     file = open(s, 'r')
-    content = file.read()
-    if ('User: /' + user.lower()) in content:
+    content = file.readlines()
+    if any(('User: /' + user.lower()) == i.strip("\n") for i in content):
         print('Username taken.')
         file.close()
     else:
@@ -207,7 +229,7 @@ def checkusername(user:str) -> bool:
         elif x == 'n':
             return False
 
-def grab_stats(user:str) -> tuple:
+def grab_stats(user:str) -> tuple[list, list, list, int, int]:
     file = open(s, 'r')
     lines = file.readlines()
 
@@ -231,11 +253,15 @@ def grab_stats(user:str) -> tuple:
     for i in range(len(stats)): # This converts strings with more than one value to lists
         if stats[i][0] == "/":
             stats[i] = list(str(stats[i][1:]).split(","))
+
+    # count endings for fails and wins
+    stats.append(int(countendings(None, "fail", stats[0])))
+    stats.append(int(countendings(None, "win", stats[0])))
     
     return tuple(stats)
 
 def update_stats(user:str) -> None:
-    global linesperuser, endings, userach, fails, wins
+    global linesperuser, fails, wins
     # opens the file and saves the lines to a list
     with open(s, 'r') as file:
         lines = file.readlines()
@@ -263,10 +289,8 @@ def update_stats(user:str) -> None:
             stat = endings
         elif "Achievements" in line:
             stat = userach
-        elif "Fails" in line:
-            stat = fails
-        elif "Wins" in line:
-            stat = wins
+        elif "Commands" in line:
+            stat = usercommands
 
         # checks for / and // to see stats and if it is a string or a list - '//' is list, '/' is string
         for n in range(len(line)):
@@ -330,7 +354,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
             if initialstory == "" or initialstory != endingsdict[item][0]:
                 print(f"    {str(endingsdict[item][0]).capitalize()}:")
                 initialstory = endingsdict[item][0]
-            print(f"      - '{str(item).capitalize()}' {endingsdict[item][1]} times")
+            print(f"      - '{str(item)}' {endingsdict[item][1]} times")
 
     # implement type and story sorting later
     cprint("  Achievements:", "yellow")
@@ -421,17 +445,25 @@ def inventory(addItem, amount=1, type="add", toggle:bool = True) -> None:
             cprint("\nYour inventory is empty.", attrs=["bold"])
         print()
 
-def ending(name:str, number:int, story:str, type:str = "fail") -> None:
+def ending(name:str, number:int, story:str, type:str = "fail", alt:bool=False, altname:str="") -> None:
+    global fails, wins
     # end and add it to the endings list
     colour = ""
     if type.lower().strip() == "win":
         colour = "green"
+        wins += 1
     elif type.lower().strip() == "fail":
         colour = "red"
-    cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} '{str(name)}')", colour)
-
-    endings.append(str(number)+"/"+story+"/"+type)
-    addnewending(number, name, story.lower())
+        fails += 1
+    if not alt:
+        cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} '{str(name)}')", colour)
+        endings.append(str(number)+"/"+story+"/"+type)
+        addnewending(number, name, story.lower())
+    else:
+        cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} Alternative '{str(name)}')", colour)
+        cprint("This is an alternative ending. It will save as the normal ending.\n", "dark_grey")
+        endings.append(str(number)+"/"+story+"/"+type)
+        addnewending(number, altname, story.lower())
 
 def addnewending(ending_num:int, ending_name:str, story:str) -> None:
     # if the name doesnt exist yet, add it.
@@ -465,8 +497,8 @@ def getendingname(ending_num:int, story:str) -> str:
             return storyendings[ending_num-1]
     return "Error, story invalid."
 
-def countendings(story:str, mode:str) -> int:
-    # 4 modes, plays, all endings, fails and wins (not done all)
+def countendings(story:str, mode:str, endinglist:list = None) -> int:
+    # 4 modes, plays, all endings, fails and wins
     count = 0
     if mode == "play":
         for ending in endings:
@@ -485,13 +517,21 @@ def countendings(story:str, mode:str) -> int:
             except IndexError:
                 continue
         count = len(foundendings)
+    elif mode == "fail" or mode == "win":
+        try:
+            for ending in endinglist:
+                if str(ending).split("/")[2] == mode:
+                    count += 1
+        except TypeError:
+            print("Error. Needs endinglist input.")
     else:
         print("Error. Mode not valid:", mode)
     return count
 
 def checkcommand(command:str) -> None:
-    global user, inventoryList, running_commands, user, endings, userach, fails, wins
+    global user, running_commands, fails, wins, endings, userach, usercommands
     command = command.lower()
+    real = True
     story = ''
     if command == "help":
         print("""List of commands:
@@ -501,7 +541,8 @@ def checkcommand(command:str) -> None:
   Save - saves the user's current stats
   Reset - resets the current user's stats (Dangerous)
   Delete - Deletes the current account, after goes back to sign in (Dangerous)
-  Achievements - Shows a list of all the achievements, can be shortcutted with 'a'
+  Achievements - Shows a list of all the achievements
+  Switch - Signs out of the current account
   Quit - quits the story when in the story, if out of story quits program
   Credits - shows the credits & project info""")
     elif command == "start":
@@ -510,7 +551,8 @@ def checkcommand(command:str) -> None:
   2. Space Story
   3. Time Travel
   4. School
-  5. Tomb Story""")
+  5. Tomb Story
+  6. Mountain""")
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -535,6 +577,9 @@ def checkcommand(command:str) -> None:
         elif story == "tomb story" or story == "5":
             cprint(get_color_escape(255, 128, 0) + '\nTutankhamun\'s Tomb - Made By Ethan Wei' + Reset, attrs=["bold"])
             story_tomb()
+        elif story == "mountain" or story == "6":
+            cprint("\nMOUNT EVEREST", "light_grey", attrs=["bold"])
+            story_mountain()
     elif command in ["save", "reset", "delete", "stats"]:
         if not user == "":
             if command == "save":
@@ -547,7 +592,7 @@ def checkcommand(command:str) -> None:
                     confirm = input(colored("Are you sure you want to continue? This will reset ALL of your stats. (y/n) ", "red")).upper()
                     if confirm == "Y":
                         resetstats(user)
-                        endings, userach, fails, wins = grab_stats(user)
+                        endings, userach, usercommands, fails, wins = grab_stats(user)
                         print("Reset stats successfully.")
                         break
                     elif confirm == "quit":
@@ -577,8 +622,25 @@ def checkcommand(command:str) -> None:
                 print_stats(user, endings, userach, fails, wins)
         else:
             print("You need to be signed in into a account to use this function.")
-    elif command == "achievements" or command == "a":
+    elif command == "achievements":
         listachievements()
+    elif command == "switch":
+        print(f"You are signed in as {user}")
+        while True:
+            confirm = input("Do you want to sign out? (y/n) ").upper()
+            if confirm == "Y":
+                update_stats(user)
+                user = ""
+                print("Signed out. Please Sign In.")
+                running_commands = False
+                break
+            elif confirm == "quit":
+                exit()
+            elif confirm == "N":
+                print("Cancelled.")
+                break
+            else:
+                print("Invalid. Enter 'y' or 'n'")
     elif command == "quit":
         exit()
     elif command == 'updates':
@@ -608,24 +670,29 @@ Story Writers:
         addachievement("Supporter")
     elif command == "198234":
         win = False
-        answer = input("Question 1/4: How many times did you have to click the flag to win? ").strip()
+        answer = input("Question 1/5: How many times did you have to click the flag to win? ").strip()
         if answer == "100":
-            answer = input("Question 2/4: How many checkpoints were in the minecraft hunt? ").strip()
-            if answer == "10":
-                answer = input("Question 3/4: What was the Youtube channel name you were directed to? ").lower().strip()
-                if answer == "thebestcoolnelsonyan":
-                    answer = input("Question 4/4: What was the third scratch game titled? ").lower().strip()
-                    if answer == "special":
-                        win = True
+            answer = input("Question 2/5: How many boats were in the minecraft hunt? ").strip()
+            if answer == "5":
+                answer = input("Question 3/5: What was the Youtube channel name you were directed to? ").lower().strip()
+                if answer == "souloftheassassin":
+                    answer = input("Question 4/5: Are you subscribed to said Youtube channel? ").lower().strip()
+                    if answer == "yes":
+                        answer = input("Question 5/5: What was the third scratch game titled? ").lower().strip()
+                        if answer == 'special':
+                            win = True
         if win:
             print("Success!")
             addachievement("The Long Egg")
         else:
             print("Wrong. Answer all questions correctly.")
-    else: 
+    else:
         print("That is an invalid command. Try Again.")
+        real = False
+    if real == True and running_commands:
+        usercommands.append(command)
 
-# SPACE STORY
+# OLIVER - SPACE STORY
 def story_space():
     print('\nYou are an astronaut stranded in space. Your fellow adventurers have all ran out of oxygen, but you still have 3 minutes of oxygen left.')
     inventory('Oxygen', 3)#3 oxygen
@@ -731,7 +798,7 @@ They roar to life, throwing you back and bringing you back to earth.
             
     slowprint('THE END', 0.05, ["bold"])
 
-# AMAZON ADVRENTURE
+# SEAN - AMAZON ADVRENTURE
 foundpilot = False
 end = False
 
@@ -739,14 +806,21 @@ def story_amazon_adventure_pilot():
     x = choice("Do you want to go find a village, continue searching in the plane, or stay and build a shelter next to the plane crash?", ["You and John both leave the crashed plane and after hours of searching you find a village. As you approach the alarm sounds, and you are both captured by the native tribe. You are going to be hanged in 2 hours, unless you have something to give.", "'Do you know about anything else in the plane?' You ask John. 'Yes there is a wrench and a instruction manual in the glove box' John replies, taking the things out. He gives them to you. These could be helpful for fixing the plane...", "You stay at the plane crash site, making a shelter for you and John for the next month. After you run out of food, you face the option of adventuring into the dangerous forest for food, or staying at the shelter to starve."], ['village', 'search', 'stay'])
     if x == 0:
         if "Gem" in inventoryList:
-            print("Luckily, you have that gem that you found in the river, so you offer them it. The tribe accepts you and the pilot as a member, letting you live with them forever." + colored("\n(Ending 1/20 'Accepted into tribe')", "red"))
+            print("Luckily, you have that gem that you found in the river, so you offer them it. The tribe accepts you and the pilot as a member, letting you live with them forever.")
             inventory("Gem", 1, "lose")
+            ending("Accepted into Tribe", 1, "amazon jungle")
         else:
-            print("Well obviously you didn't have anything because you just crashed in a plane. After 2 hours of dread, you and John are hanged. " + colored("\n(Ending 2/20 'Hanged')", "red"))
+            print("Well obviously you didn't have anything because you just crashed in a plane. After 2 hours of dread, you and John are hanged.")
+            ending("Hanged", 2, "amazon jungle")
     elif x == 2:
-        x = choice("Which do you choose?", ["You go into the forest and venture for food. You find mushrooms, but you don't know if they are poisonous. After bringing them back to the crash site, you face the decision: eating the mushroom, or not eating the mushroom and to continue looking for food.", "You stay at the plane crash without food, but don't last long. " + colored("\n(Ending 3/20 'Starved to death')", "red")], ['forest', 'stay'])
+        x = choice("Which do you choose?", ["You go into the forest and venture for food. You find mushrooms, but you don't know if they are poisonous. After bringing them back to the crash site, you face the decision: eating the mushroom, or not eating the mushroom and to continue looking for food.", "You stay at the plane crash without food, but don't last long."], ['forest', 'stay'])
+        ending("Starved To Death", 3, "amazon jungle")
         if x == 0:
-            x = choice("Which will you choose?", ["You decide to eat the mushroom but it ends up being poisonous. Oops! """ + colored("\n(Ending 4/20 'Poisoned')", "red"), "You continue looking but it soon turns night. A flash of bright red fur and a scream from John. Before you can react, you fall victim to the night creature.""" + colored("\n(Ending 5/20 'The creature of the night')", "red")], ['eat', 'continue'])
+            x = choice("Which will you choose?", ["You decide to eat the mushroom but it ends up being poisonous. Oops!""", "You continue looking but it soon turns night. A flash of bright red fur and a scream from John. Before you can react, you fall victim to the night creature."""], ['eat', 'continue'])
+            if x == 0:
+                ending("Poisoned", 4, "amazon jungle")
+            else:
+                ending("The Creature of The Night", 5, "amazon jungle")
     else:
         story_amazon_adventure_search()
 
@@ -766,16 +840,23 @@ def story_amazon_adventure_search():
         story_amazon_adventure_fix()
     else:
         if foundpilot:
-            print("After awhile, You and John get hungry, and have run out of food, so decide to go out to look for some. You both stumble in the forest and fall down a cliff. Maybe look where you step?" + colored("\n(Ending 17/20 Alternative 'Clumsy Buddies')", "red"))
+            print("After awhile, You and John get hungry, and have run out of food, so decide to go out to look for some. You both stumble in the forest and fall down a cliff. Maybe look where you step?")
+            ending("Clumsy Buddies", 17, "amazon jungle", alt=True, altname="Clumsy")
         else:
-            print("After awhile, You get hungry, and have run out of food, so decide to go out to look for some. You stumble in the forest and fall down a cliff. Maybe look where you step?" + colored("\n(Ending 17/20 'Clumsy')", "red"))
+            print("After awhile, You get hungry, and have run out of food, so decide to go out to look for some. You stumble in the forest and fall down a cliff. Maybe look where you step?")
+            ending("Clumsy", 17, "amazon jungle")
 
 def story_amazon_adventure_fix():
     global end, foundpilot
     if "Toolbox" in inventoryList:
         if not foundpilot:
             print("""When you are finished, you jump into the pilot seat, getting ready to escape the forest. Looking at the forest gives you nightmares, so you hurridly start the engine. But right before you can go a dark animal jumps onto the front window, smashing the glass.""")
-            choice("Do you want to defend yourself or go and hide?", ["You collect a pole standing not far off and hit the monster with it. 3 whacks and the monster is gone. Finally, you start the engine and go off in the plane, using the instruction manual as a guide. """ + colored("\n(Ending 14/20 'Defeated a Monster')", "red"), "Go run to the back of the plane, but the creature follows you, breaking down the door and destroying all your hard work in fixing the plane. Before you can blink, you are devoured. """ + colored("\n(Ending 15/20 'So Close, But so devoured')", "red")], ["defend", "hide"])
+            x = choice("Do you want to defend yourself or go and hide?", ["You collect a pole standing not far off and hit the monster with it. 3 whacks and the monster is gone. Finally, you start the engine and go off in the plane, using the instruction manual as a guide.""", "You go and run to the back of the plane, but the creature follows you, breaking down the door and destroying all your hard work in fixing the plane. Before you can blink, you are devoured."""], ["defend", "hide"])
+            if x == 0:
+                ending("Defeated a Monster", 14, "amazon jungle", "win")
+                addachievement("Escape of the Jungle")
+            else:
+                ending("So Close, But so Devoured", 15, "amazon jungle")
             end = True
         else:
             input("""Halfway through your engineering process, a high-pitched scream pierces the air. You run out to see that John has his instruction manual in his hands, but a feral animal is trying to grab it away. (Enter to continue)""")
@@ -783,15 +864,26 @@ def story_amazon_adventure_fix():
                 print("""He stumbles and falls onto the ground, and the animal now procceds to jump on John and tear his flesh. He is long gone. You go and hide in the plane for several hours, but the dog doesn't do away. You are out of food supplies so you face an option.""")
                 inventory("Instruction Manual", 1, "lose")
                 foundpilot = False
-                choice("Would you go and face the monster or stay and starve?", ["You go out to face the monster. You would die anyway, so beter die gloriously. Before you can even glimpse the monster, you are devoured. I don't think that was so glorious... " + colored("\n(Ending 10/20 'Not A Glorious Death')", "red"), ("You decide against fighting the monster, which stays there for a very long time, leading you into a slow and painful death. Starvation." + colored("\n(Ending 9/20 'Starvation')", "red")) if randint(0, 1) == 0 else ("You decide to not fight the monster, and after awhile it wonders away. You sit in the pilot's seat and admire your hard work in fixing the plane. You start the engine and take off successfully. But suddenly, your plane dips and when you realise you never knew how to drive a plane, you crash." + colored("\n(Ending 13/20 'Crashed Again')", "red"))], ['face', 'stay'])
+                x = choice("Would you go and face the monster or stay and starve?", ["You go out to face the monster. You would die anyway, so beter die gloriously. Before you can even glimpse the monster, you are devoured. I don't think that was so glorious...", ""], ['face', 'stay'])
+                if x == 0:
+                    ending("Not A Glorious Death", 10, "amazon jungle")
+                elif randint(0,1) == 0:
+                    print("You decide against fighting the monster, which stays there for a very long time, leading you into a slow and painful death. Starvation.")
+                    ending("Starvation", 9, "amazon jungle")
+                else:
+                    print("You decide to not fight the monster, and after awhile it wonders away. You sit in the pilot's seat and admire your hard work in fixing the plane. You start the engine and take off successfully. But suddenly, your plane dips and when you realise you never knew how to drive a plane, you crash.")
+                    ending("Crashed Again", 13, "amazon jungle")
+                    addachievement("Again?!")
                 end = True
             else:
                 print("""You think fast. Getting the Gem that you found earlier, you wave it in the air, distracing the animal. This successfully distracts the animal,
 making it run away, pulling the book away from John's hands and stealing it. At least you saved John...""")
                 inventory("Instruction Manual", 1, "lose")
         if not end:
-            print("""You sit in the passengers seat and admire your hard work in fixing the plane. John drives the plane away from the forest,
-flying back home. """ + colored("(Ending 11/20 'Passenger Escape')", "red"))
+            print("""You sit in the passengers seat and admire your hard work in fixing the plane. John drives the plane away from the forest, flying back home.""")
+            ending("Passenger Escape", 11, "amazon jungle", "win")
+            addachievement("Pilot Buddy")
+            addachievement("Escape of the Jungle")
     
 def story_amazon_adventure():
     global foundpilot
@@ -802,11 +894,17 @@ the plane suddenly dips and crashes into the trees. You go unconcious.
 When you wake up, you remember what happened and wish that you never went to Africa.""")
     x = choice("Do you want to walk to find the nearest village?", ["You go searching for a village, but instead find a very developed town. A nice citizen invites you to stay with him, and you accept. The citizen hands you a glass of green liquid.", "You stand there, aimlessly looking around for something to do. You see your plane a few feet away."])
     if x == 0:
-        x = choice("Do you want to drink it?", ["When you drink the liquid, you pass out and wake up in a jail like cell. You are told that you will be used in an great experiment, if that is great or not. " + colored("\n(Ending 6/20 'Great Experiments')", "red"), "You put down the drink and hurridly leave the hut. There's something suspicious about the drink. You decide to start a new life, by yourself. The town leader sees your intelligence and offers you a job: a town advisor. On the other hand, a independent company offers you another path: a secret spy."])
-        if x == 1:
-            x = choice("Which will you take?", ["You become an advisor for the town, and earn a lot of money, soon becoming rich. You live a happy life in the town." + colored("\n(Ending 7/20 'Rich boi')", "red"), "You become a spy against the town, but you are not too good at it. After a week, you are caught and sent to jail." + colored("\n(Ending 8/20 'Jail Time')", "red")], ["advisor", "spy"])
+        x = choice("Do you want to drink it?", ["When you drink the liquid, you pass out and wake up in a jail like cell. You are told that you will be used in an great experiment, if that is great or not.", "You put down the drink and hurridly leave the hut. There's something suspicious about the drink. You decide to start a new life, by yourself. The town leader sees your intelligence and offers you a job: a town advisor. On the other hand, a independent company offers you another path: a secret spy."])
+        if x == 0:
+            ending("Great Experiements", 6, "amazon jungle")
+        elif x == 1:
+            x = choice("Which will you take?", ["You become an advisor for the town, and earn a lot of money, soon becoming rich. You live a happy life in the town.", "You become a spy against the town, but you are not too good at it. After a week, you are caught and sent to jail."], ["advisor", "spy"])
+            if x == 0:
+                ending("Rich Boi", 7, "amazon jungle")
+            else:
+                ending("Jail Time", 8, "amazon jungle")
     else:
-        x = choice("Do you want to see what is inside?", ["You walk towards the plane, opening the door to see the body of your pilot on the seats.", "I don't know why you would not want to see what has inside a plane, but ok. You can't survive with nothing so you died. """ + colored("\n(Ending 20/20 'Bad Choices')", "red")])
+        x = choice("Do you want to see what is inside?", ["You walk towards the plane, opening the door to see the body of your pilot on the seats.", "I don't know why you would not want to see what has inside a plane, but ok. You can't survive with nothing so you died."""])
         if x == 0:
             x = choice("Do you want to check out his body or search the plane further?", ["You climb up to the pilot, over the rubble. You hear hoarse, shallow breaths! He is still alive! He opens his eyes and struggles up. 'Wat...er..' he mumbles.", "You keep searching, ignoring the pilots body. He's probably dead anyways. You find a locked storing shelf, but you don't have the key."], ["check", "search"])
             if x == 0:
@@ -821,29 +919,37 @@ When you wake up, you remember what happened and wish that you never went to Afr
                         inventory("Gem")
                         story_amazon_adventure_pilot()
                 else:
-                    x = choice("Do you want to continue searching the plane, or try to find a village?", ["", "You go to a village, a big village with... FLOATING ISLANDS? What?! Apparantly this village is very technologically advanced, so you enter happily. At the gates, a laser (Non-fatal) scans your face and suddenly raises an alarm. The people shout angrily at you, but you don't know what they are saying. It's only when you are about to be killed by lasers (fatal) that they scold you for not saving an innocent life, the pilot's. You wish you had saved the pilot and wonder how the people knew as you are burned by the light, over and over again." + colored("\n(Ending 18/20 'Sins Discovered')", "red")], ["search", "village"])
+                    x = choice("Do you want to continue searching the plane, or try to find a village?", ["", "You go to a village, a big village with... FLOATING ISLANDS? What?! Apparantly this village is very technologically advanced, so you enter happily. At the gates, a laser (Non-fatal) scans your face and suddenly raises an alarm. The people shout angrily at you, but you don't know what they are saying. It's only when you are about to be killed by lasers (fatal) that they scold you for not saving an innocent life, the pilot's. You wish you had saved the pilot and wonder how the people knew as you are burned by the light, over and over again."], ["search", "village"])
                     if x == 0:
                         print("You search the plane and find a toolbox and instruction manual. This may be helpful in fixing the plane...")
                         story_amazon_adventure_search()
+                    else:
+                        ending("Sins Discovered", 18, "amazon jungle")
             else:
                 x = choice("Do you want to search for the key?", ["You go and check in the pilot's pockets and find the key, unlocking the storage. Inside the storage is enough food for 2 months. You know that it won't last forever, but finding more food might be very good.", ""])
                 if x == 0:
-                    x = choice("What do you want to do?", ["You start looking for food but stumble upon a hidden mole-made hole. For some odd reason, you can't get out, so you starve to death." + colored("\n(Ending 12/20 'A Hole By A Mole')", "red"), "You stay at the plane crash site for a month, and start getting bored. Looking at the remains of the plane, you realise that it is easy to fix, by fitting the plane wing on."], ['food', 'stay'])
-                    if x == 1:
-                        x = choice("Do you want to fix it?", ["You start to try to fix it but you need tools to do it. That's quite sad. I've never heard of someone who has died of boredom, so I think your're the first one. Good Night." + colored("\n(Ending 16/20 'Died of Boredom')", "red"), "You start getting hungry once your food supply is used up so go searching for food. While wondering you find some conveniently placed food. 'Someone must have left their lunch behind!' you think. Taking the food, you turn back and... SNAP!!! A bear trap catches you. You scream for help, But after awhile your shouts die down as you lose too much blood." + colored("\n(Ending 19/20 'Tomato Sauce Everywhere')", "red")])
+                    x = choice("What do you want to do?", ["You start looking for food but stumble upon a hidden mole-made hole. For some odd reason, you can't get out, so you starve to death.", "You stay at the plane crash site for a month, and start getting bored. Looking at the remains of the plane, you realise that it is easy to fix, by fitting the plane wing on."], ['food', 'stay'])
+                    if x == 0:
+                        ending("A Hole By A Mole", 12, "amazon jungle")
+                    elif x == 1:
+                        x = choice("Do you want to fix it?", ["You start to try to fix it but you need tools to do it. That's quite sad. I've never heard of someone who has died of boredom, so I think your're the first one. Good Night.", "You start getting hungry once your food supply is used up so go searching for food. While wondering you find some conveniently placed food. 'Someone must have left their lunch behind!' you think. Taking the food, you turn back and... SNAP!!! A bear trap catches you. You scream for help, But after awhile your shouts die down as you lose too much blood."])
                         if x == 0:
+                            ending("Died of Boredom", 16, "amazon jungle")
                             addachievement("Die of Boredom")
                         else:
-                            pass
+                            ending("Tomato Sauce Everywhere", 19, "amazon jungle")
                 else:
                     print("You decide that it will be impossible to find the key. It probably fell off when the plane crashed.")
                     story_amazon_adventure_search()
         else:
+            ending("Bad Choices", 20, "amazon jungle")
             addachievement("Bad Choices")
 
+    if "Gem" in inventoryList:
+        addachievement("Keep The Gem")
     slowprint("\nTHE END", 0.05, ["bold"])
 
-# TIME TRAVEL
+# SEAN - TIME TRAVEL
 def story_timetravel():
     print("""You have lived an ordinary life, so ordinary that nothing has happened to you that has been particularily interesting. At least not until this night. It is very dark, and the rain pours down, battering the windows hard.
 
@@ -867,7 +973,7 @@ You pass out. After waking up you look around to meet an unfamiliar place. Inste
             if x == 0:
                 story_timetravel_2()
             else:
-                ending("Burnt with the dinosaurs", 3, "time travel") # add alternative option
+                ending("Burnt with the dinosaurs", 3, "time travel", alt=True, altname="Stuck with the dinosaurs")
     else:
         x = choice("Do you want to pick the berries then eat it, just pick the berries for later, or no berries?", ["You eat the berries and suddenly feel like you have great power. You start running to the box time travel thing and find that you are faster! You hop into the box and close the lid.", "You pick the berry to be eaten later. You run to the box and hop in, closing the lid.", "A dinosaur sees you from a distance and lumbers towards you. You run for ages, and the dinosaur leaves you. But you are lost."], ["eat", "pick", "no"])
         if x == 0:
@@ -882,6 +988,78 @@ You pass out. After waking up you look around to meet an unfamiliar place. Inste
     slowprint("THE END", 0.05, ["bold"])
 
 def story_timetravel_2():
+    print("The box shakes and rattles loudly as it heads to who knows where. After awhile, you feel a jolt and look out of the box. Around you are small heaps of hay, and by judging the area, you seem to have come to a barn-like building.")
+    print("You hop out of the box, and slowly creep to a small hay door. Peeking out, you see farmers working on the fields that seem to stretch on forever. Looking back, your box seems to have dissapeared.")
+    x = choice("Do you want to go out to adventure?", ["You leave the barn quietly, and manage to sneak out without getting seen. Hiding behind a stack of hay, you peer at the farmers working in the distance. One of them is spying your haybale, but seems to not really care.", "You stay inside the barn, but hear footsteps approaching towards you form the outside."])
+    if x == 0:
+        x = choice("Do you want to show yourself to the farmers?", ["You quietly step out of your hiding place, and at once the farmer watching you gives a startled cry. You say you come it peace, but the farmers don't understand what you are saying.", "You keep hiding in your hiding spot, and spy a large farmhouse in the distance. Looking back, you realise that all the farmers seem to be working and not looking around."])
+        if x == 0:
+            if "Power" in inventoryList:
+                print("\nThe farmers rush towards you, holding their tools to attack you. They are fast, but you are faster as you dash away from them, hiding in a clump of trees until they give up the chase. In running away, you lost your power, but at least you got away safely. You look around and see a dark forest looming ahead of you.")
+                inventory("Power", 1, "lose")
+                x = choice("Do you want to enter the forest?", ["You enter the forest hastily, to make sure that the farmers don't spot you again, as you know that you won't be sble to escape another time. As you wander amongst the trees, you hear a consistant thudding in the distance. You have a few options to decide from: Do you want to investegate the sound, continue walking in the forest, or try to head back just in case there are dangers lurking around?", "You don't want to risk getting attacked by a feral animal in the forest, so you stay at you hiding place for now. After waiting awhile, you get hungry, and wonder where you can get food from. In the distance, there is a farmhouse that might have some food!"])
+                if x == 0:
+                    x = choice("What do you choose?", ["You creep towards the sound of thudding and see a clearing up ahead. As you peek, you see that an lumberjack is cutting trees with wood. Before you can react, the lumberjack spots you and races towards you, misthinking that you are an enemy. He swings his axe and everything goes black.", "You continue walking and find a small campfire area in the forest. Your box thing sits in the middle.", "You start heading back but walk into a simple but smart trap: A extremly well hidden hole. Falling down, you land hard, and break your legs. You sit there for the whole day, getting hungrier and hungrier until you can't take it anymore, with the pain from your leg throbbing and giving you an headache."], ["Investagate", "Continue", "Go Back"])
+                    if x == 0:
+                        ending("Lumberjacked", 5, "time travel")
+                        addachievement("Lumberjacked")
+                    elif x == 1:
+                        x = choice("Do you want to get into the box?", ["You get into the box, and close the lid.", "You decide against getting into the box, and before you can do anything, a feral animal comes and attacks you. A moment later, all that is left of you is... nothing."])
+                        if x == 0:
+                            story_timetravel_3()
+                        else:
+                            ending("Devoured", 7, "time travel")
+                    else:
+                        ending("That One Hole", 6, "time travel")
+                else:
+                    x = choice("Do you want to go to the farmhouse?", ["You head to the farmhouse, stopping to smell some green flowers that look suspiciously like leaves. Anyways, you make it to the farmhouse without getting seen, and find a whole butter cake just sitting on the wooden table. You take the whole cake and creep back out of the house, not getting seen. You see your box in the distance.", "You don't go to the farm-house, but see some red berries that look identical to the ones you ate before."])
+                    if x == 0:
+                        inventory("Cake", 1)
+                        x = choice("Do you want to go to the box?", ["You run quickly to the box, and the farmers see you, but it's too late. You get in and close the lid.", "You don't go to the box, and while you are decide what to do next, you fail to realise that a farmer is standing right behind you..."])
+                        if x == 0:
+                            story_timetravel_3()
+                        else:
+                            ending("Karma", 8, "time travel")
+                    else:
+                        x = choice("Do you want to eat the berries?", ["You eat the berries and it turns out they were poisoned.", "You decide to not eat the berries, because they could be poisoned. Seeing your box in the distance you start heading to it, but find that you are quickly being chased by farmers. They catch up to you and the inevidable happens."])
+                        if x == 0:
+                            ending("Poisoned", 9, "time travel")
+                        else:
+                            ending("Teaming is not fair", 10, "time travel")
+
+            elif "Berry" in inventoryList:
+                print("The farmers rush towards you, and everything seems to fall apart. As a last ditch choice, you eat the berry and realise that you can jump higher than usual! Jumping over the farmers, they stop and stare as you quickly run away from the points of their glistening tools.")
+                inventory("Berry", 1, "lose")
+                print("\nSeeing your box in the distance, you run to it, and get in, closing the lid. Your feel that your power is slowly slipping away, but you have succesfully escaped the farmers.")
+                story_timetravel_3()
+            else:
+                print("The farmers rush towards you with their tools pointed, and you don't stand a chance against them.")
+                ending("Poked by Garden Tools", 11, "time travel")
+        else:
+            x = choice("Do you want to run to the farm house?", ["You take the risk, running silently to the farmhouse. Creeping past the door, you see a bag of gold sitting on the table! You grab it, but a few coins clatter onto the floor. A farmer comes and chases you out of the house.", "Not taking the risk, you stay in our hiding place for quite some time. Pleasantly, you box appears next to you. You hop in, closing the lid behind you as you get ready for the ride."])
+            if x == 0:
+                if "Power" in inventoryList:
+                    print("\nYou have your power, so you outrun the farmer quickly, getting away with the gold. You see your box in the distance, so you sprint to it, getting in and closing the lid. Your power slips away, but you gained an extra bag of gold!")
+                    inventory("Power", 1, "lose", False)
+                    inventory("Gold", 1)
+                    story_timetravel_3()
+                elif "Berry" in inventoryList:
+                    print("\nYou start running, but you can outrun the farmer. As an last effort, you eat the berry and feel some kind of power emerging inside of you. But it is too late, and the farmer catches up to you and knocks you to the ground.")
+                    inventory("Berry", 1, "lose")
+                    ending("Don't Steal Next Time", 12, "time travel")
+                else:
+                    print("\nYou start running, but you can outrun the farmer.")
+                    ending("Slowpoke", 13, "time travel")
+            else:
+                story_timetravel_3()
+    else:
+        x = choice("Do you want to hide or show yourself to the farmer?", ["You decide that the farmers can't do much, so you show yourself to them. After seeing you, they grab hold of you and lock you in a cell.", "You decide to hide because it would be too risky to show yourself. But it doesn't make a difference are you are caught and locked in a cell."], ["hide", "show"])
+        if x == 0:
+            ending("Stuck with the Farmers", 14, "time travel")
+        else:
+            ending("You hid, but your still stuck with the farmers...", 14, "time travel", alt=True, altname="Stuck with the Farmers")
+
+def story_timetravel_3():
     print("You whirl around in the box, as it shakes and moves violently. Peeking out of the box, you see time passing before you eyes, the asteriod crashing into the earth, and the dinosaurs running away.")
     print("\nSuddenly, everything does dark, and all you see and hear is snow and howling winds for quite a long time. As you emerge into brightness again, you blink you eyes, as the box stops with a jolt.")
     print("\nLooking out, you see the dirt paths and road of a very old time. You step out of the box, and the box dissapears. You wonder down the streets and see soldiers patrolling everywhere. Looking at a nearby store, you spy a small bag of money that looks unattended.")
@@ -919,6 +1097,7 @@ What will you do?''', ['You instantly fail, as the man clicks his fingers, and t
         if c == 0:
             slowprint('FAIL', 0.05, ['bold'], 'red')
             ending('LIGMA BALLS', 2, 'School')
+            addachievement('LIGMA BALLS')
         elif c == 1:
             slowprint('FAIL', 0.05, ['bold'], 'red')
             ending('Turned off...', 3, 'School')
@@ -944,7 +1123,7 @@ and he has decided that you will be the first victim of the war.
 BUT!!!
 
 Because he was yapping for six billion years, that gave you the chance to reach into your bag and choose a weapon.''')
-                addachievement('Fight A God With Your School Bag')
+                addachievement('Godslayer')
                 c = choice('Choose your weapon: ', ['You summon your inner Kendrick Lamar and start roasting him. It seems to be working, as he catches on fire until your laptops battery dies. Ligma Lord recovers, then blasts your body into ashes.', 'As You find the Formula to solving any immortal, Mr White randomly spawns and says to use the formula you must solve this quadratic equation. While You are figuring it out, Ligma Lord Burns your maths notebook, and then opens a black hole that destroys you immediately.', 'You pitch the mochi and it lands perfectly into his throat. As he is choking, you grab your empty fire extinguisher and slam it at him, causing him to fall. As you stand over his helpless body, he whispers some final words.', 'You make a mad dash into for the portal, and plunge through, but you hear Ligma Lord laugh as you burst into the fresh air.'], ['Laptop', 'Math Book', 'Mochi', "Portal"])
 
                 if c == 0:
@@ -971,6 +1150,7 @@ then take a deep breath, and slowly walk towards the brightening portal.
 You take one last look behind you, to see the platform and clouds turn into a stream of light, 
 then step through the portal, awaiting your first day of school.''')
                     ending('Master of Fear', 7, 'School', 'win')
+                    addachievement('Ligma Master')
                 elif c == 3:
                     story_school_2()
 
@@ -1089,7 +1269,24 @@ And miss.
 
 Mr Black walks over slowly, and one-hit KOs you."""], ['A', 'B', 'C'])
                 if c == 0:
-                    pass #unfinished
+                    print("""Suddenly, a volleyball comes smashing into the zombies, as it rebounds around. It’s your friends, finally here. PixilPrawn 
+summons a lemonade stand that uses capitalism to cancel out Mr Black’s Ligma communism, making him unable to summon the zombies. 
+Life is Valorant locks in and forces Mr Black into a corner, his shots shredding any possible manoeuvring from Mr Black. 
+Wingsley Kong uses his cheering ability to boost the attack of Soul, who delivers the final blow, a powerful spike that blows off Mr Black’s head. 
+You are in awe as they all stand looking really cool as Mr Black explodes into a shower of light. They tell you that because they were using google maps, 
+they got led to the grand line, but they found the way back after finding the One Piece. They pick up Duffy and start heading back towards the 
+classroom because plot twist, the One Piece was a cure to Karen. """)
+                    addachievement('Luffy, that’s not the real One Piece… that’s Wingsley’s pocket money.')
+                    
+                    print("""You get back to the classroom, where the students are happy to see you alive. The smart girl in your year (that you can’t remember the name of) 
+goes and injects the cure, which makes Mr White awake from his coma. He instantly starts calculating, and then spits out some prophetic lines 
+about how the students need to work together to conquer the remaining buildings to defeat the evil forces of ligma, then proceeds to pass out. 
+The students hold a brief meeting and decide that they should plan an assault on the remaining buildings that Ligma Lord has control over.
+They tell you to get some sleep as you have been thoroughly exhausted by the day’s activities. You find yourself suddenly awaking in a dark void, falling. 
+You try to yell for help, but your lips move soundlessly in the darkness. You hear the evil laughter of Ligma Lord as you feel a rush of wind awaken you 
+from your nightmare. Wingsley Kong is shaking you awake as he explains that the attack groups had decided to strike early morning and left you here 
+because they wanted you to rest. Hearing this news, you know that you must go help them because you have a feeling that they are going to mess up.  
+Wingsley Kong agrees and wakes up Duffy because he is the only other person left in this room, even Mr White has gone.  """)
                 elif c == 1:
                     ending('Cheats were enabled', 14, 'School')
                 elif c == 2:
@@ -1122,6 +1319,7 @@ def story_tomb():
 2. You choose to save yourself, so you push the captain towards the mummy, and you run.""", ["As you run, you hear the mummy slowly gaining on you. The captain is slowing you down and there is no hope for you and the captain, you are both doomed.", "You push the captain towards the mummy and run. The captain screams at you, but that is suddenly cut short. You run quickly out of the tomb. You feel bad, and that you are going to be haunted about what happened for the rest of your life, but at least you stayed alive."], ["1", "2"])
                 if x == 0:
                     ending("Infinitely Doomed", 3, "tomb")
+                    addachievement('I Want My Mummy!')
                 else:
                     ending("Sacrifices must be made", 4, "tomb")
             else:
@@ -1130,6 +1328,7 @@ def story_tomb():
 2. Run.""", ["You reach inside your bag, and you fumble for the metal rod, but it is hooked on something. The mummy jumps on top of you, and the bag tumbles out of your reach. You close your eyes for the inevitable.", "You turn around and run, and you hear the mummy's footsteps slowly fading away. You make it out alive, but you are traumatized forever."], ["1", "2"])
                 if x == 0:
                     ending("R.I.P", 5, "tomb")
+                    addachievement('I Want My Mummy!')
                 else:
                     ending("Mentally unstable... womp womp", 6, "tomb")
         elif x == 1:
@@ -1166,14 +1365,17 @@ def story_tomb_passageway():
 2. You get off the couch, realizing a God just spoke to you...""", ["You ignore the voice inside your head, and angers Anubis even more. He fires a beam of energy at your supplies, destroying all your tools and food, and he grants the beans that you just ate with powers. The beans burst out of your belly, causing many holes inside you.", "You get off the couch, but this doesn't make Anubis any happier. He decides to let you go for now, until you do something else to anger him."], ["1", "2"])
             if x == 0:
                 ending("The turns have tabled", 8, "tomb")
+                addachievement('Killed By [Anubis]')
             else:
                 x = choice("""Choices:
 1. You abandon your food, having lost your appetite, and you make for the burial chamber.							
 2. You decide to go to the Annexe to find some utensils to finish your meal, as you are still hungry.""", ["When you enter the burial chamber, you notice that the coffin is sealed with magical markings, but you fail to notice the mummy behind the tomb staring at you, until it slashes your neck with an ancient weapon.", "You go into the annexe, and you spot some utensils with Anubis's marking on them. Without thinking, you scoop up some more of your beans and eat them. This angers Anubis even more, so he sends a blast of energy right at your face."], ["1", "2"])
                 if x == 0:
                     ending("So close but so far...", 9, "tomb")
+                    addachievement('I Want My Mummy!')
                 else:
                     ending("Deep Fried", 10, "tomb")
+                    addachievement('Killed By [Anubis]')
         else:
             x = choice("""Choices:
 1. Continue into the annexe.
@@ -1184,6 +1386,7 @@ def story_tomb_passageway():
 2. You think that if you keep these, Anubis might get mad at you, so you put them safely on a stand.""", ["You put the utensils carefully into your bag, and you cross over to the burial chamber. The coffin is sealed with magical markings, so you ask Anubis how to open it. All this time you fail to notice the mummy behind you. It taps you on the shoulder, and you spin around with your metal rod in hand, but this time the mummy dodges your attack and slashes your neck.", "9d. You carefully set the utensils on the stand, making Anubis twice as happy with you! You cross over to the burial chamber, and you see the coffin sealed with magic. You also notice the mummy standing behind it."], ["1", "2"])
                 if x == 0:
                     ending("Beheaded", 11, "tomb")
+                    addachievement('I Want My Mummy!')
                 else:
                     x = choice("""Choices:
 1. You ask Anubis to open the coffin while you take care of the mummy.
@@ -1191,6 +1394,7 @@ def story_tomb_passageway():
 3. ??? (mystery)""", ["Anubis slowly works undoing the magical binding on the coffin's lid, while you pull out your weapon and kill the mummy. But this time the mummy knows how to beat you. It dodges your first attack and slashes your neck.", "Anubis sends a beam of energy at the mummy, sending it flying, and it stops moving. You get to work on figuring out the magical binding, but you accidentally say the wrong hieroglyph and the coffin fires a magic bolt at your face.", "You remember that Anubis now owes you two favours, so you ask him to kill the mummy and unlock the coffin. Hearing your request, Anubis zaps the mummy and unlocks the coffin, revealing the mummified Tutankhamun and countless valuables."], ["1", "2", "3"]) # continue
                     if x == 0:
                         ending("At least you tried...", 12, "tomb")
+                        addachievement('I Want My Mummy!')
                     elif x == 1:
                         ending("Should've Studied Harder", 13, "tomb")
                     else:
@@ -1199,26 +1403,39 @@ def story_tomb_passageway():
 2. Not satisfied, you want to explore the last room inside Tutankhamun's tomb, the treasury.""", ["You pick up all the gold bracelets, masks and other valuables inside Tutankhamun's coffin, admiring each and every carving on them. You quickly put them in your bag and retrace your steps out of the tomb. You reach daylight again, and you heave a sigh of relief, having completed your most dangerous heist yet.", "You turn to your right to face the treasury of Tutankhamun's tomb, which must contain a huge amount of treasure. Excited, you enter the treasury, imagining all the riches that should be inside. But when you open your eyes, instead of treasure, 4 mummies stood there staring at you..."], ["1", "2"])
                         if x == 0:
                             ending("The rich", 14, "tomb", "win")
+                            addachievement("The Rich")
                         else:
                             ending("Got too Greedy", 15, "tomb")
+                            addachievement('I Want My Mummy!')
             else:
                 x = choice("""Choices:
 1. Ask Anubis to tell you how to open Tutankhamun's coffin, and deal with the mummy yourself.
 2. Ask Anubis to kill the mummy, while you try to open Tutankhamun's coffin.""", ["Anubis slowly works undoing the magical binding on the coffin's lid, while you pull out your weapon and kill the mummy. But this time the mummy knows how to beat you. It dodges your first attack and slashes your neck.", "Anubis sends a beam of energy at the mummy, sending it flying, and it stops moving. You get to work on figuring out the magical binding, but you accidentally say the wrong hieroglyph and the coffin fires a magic bolt at your face."], ["1", "2"])
                 if x == 0:
                     ending("At least you tried...", 12, "tomb")
+                    addachievement('I Want My Mummy!')
                 else:
                     ending("Should've Studied Harder", 13, "tomb")
+
+# OLIVER - MOUNTAIN
+def story_mountain():
+    print('You are an experienced mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest.')
+    c = choice("""Who will you go with? 
+Derek: Your best friend since 5th grade. You know him best, but it is his first time.
+William: A professional climber that has been climbing since 1994. He is experienced and has all the gear. 
+Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybuilder on steroids.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'])
+    if c == 0:
+        pass
+    elif c == 1:
+        pass
+    elif c == 2:
+        pass
 
 # GAME LOOP
 while True:
     user = user_system()
     if user != "":
-        endings, userach, fails, wins = grab_stats(user)
-        # resetendingfile()
-        # addachievement("Hello testing if achievements work")
-        # update_stats(user)
-        # checkachievements()
+        endings, userach, usercommands, fails, wins = grab_stats(user)
     running_commands = True
     while running_commands:
         print("")

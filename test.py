@@ -1,3 +1,1 @@
-import os
-os.startfile("C:\\Users\\seany\\Downloads\Personal\\Choose_Your_Own_Adventure\\CYOA2.py")
-os.startfile("C:\\Users\\olive\\Downloads\Personal\\p\\CYOA2.py")
+# IN ALL CASES DO NOT RUN THIS FILE CAUSE IT DOES NOTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

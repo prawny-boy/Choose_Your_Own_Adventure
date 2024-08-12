@@ -39,4 +39,15 @@ Adding Time Travel, Tomb story and School
 Added saving, deleting, resetting and printing of stats with colour and sorting (for endings only)
 Changed deaths to fails
 More commands
+
+----------Update 2.3----------
+Changed "amazon adventure" to "amazon jungle"
+Added achievements with saving
+    Story Achievements
+    Special and Easter Egg Achievements
+    Command Achievements
+Finished Easter Egg (Long)
+Added Ending functions across all stories with achievements also
+Added saving, deleting, resetting and printing of stats with colour and sorting (for achievements)
+Added more to some stories
 """

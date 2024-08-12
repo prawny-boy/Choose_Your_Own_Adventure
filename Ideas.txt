@@ -20,8 +20,7 @@ Achievements:
         - Sean's Collection (Play all the stories made by Sean Chan)
         - Oliver's Collection (Play all the stories made by Oliver Liu)
     Special:
-        - Command Master (Use all types of commands)
-        - Command Maniac (Use 100 commands)
+        - 
         Easter Eggs:
             - 
 
@@ -44,5 +43,5 @@ Easter Egg 1: (Long One)
         - 108431857 (Unlisted GD Level ID)
         - https://educationwaeduau-my.sharepoint.com/:f:/g/personal/sean_chan3_student_education_wa_edu_au/EmmcTJMFX8JGk4Go12RtfQUB1HvIpcERzKwIQKZ23cfgxA Minecraft File Onedrive Link for oliver
             - https://educationwaeduau-my.sharepoint.com/:f:/g/personal/sean_chan3_student_education_wa_edu_au/EmmcTJMFX8JGk4Go12RtfQUBIDFFSpy5DpNT0JQ-1ahZjw?e=GlKZ01 Minecraft file onedrive link for others
-        - Oliver's Youtube Channel Video
+        - Oliver's Youtube Channel Video https://youtu.be/_DcYdHhyoPA
         - 198234 is final from youtube, tell to enter as command

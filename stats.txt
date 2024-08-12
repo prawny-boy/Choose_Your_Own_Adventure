@@ -1,11 +1,4 @@
-User: /sean
-Endings: //1/tomb/fail
-Achievements: //Explorer/tomb
-Fails: /0
-Wins: /0
 User: /test
-Endings: //5/tomb/fail,8/space story/fail
-Achievements: //Explorer/tomb,Bad Choices/amazon jungle,Die of Boredom/amazon jungle,Saved/special,Supporter/special,Technician/special,Beginner space/space story
-Fails: /0
-Wins: /0
-
+Endings: //1/tomb/fail,7/School/win,3/time travel/fail,4/time travel/fail,2/School/fail
+Achievements: //Explorer/tomb,First Command/special,Godslayer/school,Ligma Master/school,Year 7/school,Command User/special,Time Traveller/time travel,LIGMA BALLS/school
+Commands: //start,stats,stats,stats,stats,stats,stats,start,stats,start,stats,start,start,stats,start,stats,stats,stats,stats,start,stats

@@ -23,9 +23,9 @@
 2.3 Give an option to delete user, create new user, reset progress
 
 **3. Post-Game**
-3.1 2player mode
+3.1 Two Player mode
 3.1.1 Co-op
 3.1.2 VS
-3.2 Visual TUrtle Map
+3.2 Visual Turtle Map
 3.3 Pygame Visuals
 

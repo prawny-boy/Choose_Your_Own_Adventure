@@ -1,10 +1,6 @@
 Jobs to do: (ordered in most to least piority)
-    - Add ending function to amazon jungle
-    - Add commands list to record the commands used
-    - Add alternative input to the ending function for alternative endings
-    - Add achievement adding after endings in stories, check achievements to do the "not done" ones.
+    - Do stories: mountain, underwater, school + time travel
     - Add more achievements to the achievements list
-    - Do stories: mountain, underwater (2 player), school + time travel
+    - Add achievement adding after endings in stories, check achievements to do the "not done" ones.
     - Songs for stories using pygame.mixer()
-    - Visual Pygame
     - Turtle map for stories
