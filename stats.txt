@@ -6,3 +6,7 @@ User: /dylanchauhan
 Endings: //
 Achievements: //First Command/special,Saved/special,Supporter/special,Technician/special,Command User/special
 Commands: //help,help,help,start,achievements,save,credits,updates,save
+User: /kingsley
+Endings: //5/tomb/fail,11/time travel/fail,11/School/fail,4/School/fail,7/School/win,12/School/fail,3/time travel/fail,1/space story/fail,2/space story/fail,4/space story/fail,3/space story/fail,6/amazon jungle/fail,7/amazon jungle/fail,1/tomb/fail,3/tomb/fail,1/tomb/fail,2/tomb/win,3/School/fail,2/School/fail,10/School/fail,4/School/fail,4/School/fail,8/school/fail,6/School/fail,5/School/fail,8/space story/fail,1/space story/fail,13/tomb/fail,9/tomb/fail,7/tomb/fail,2/tomb/win,8/tomb/fail,2/tomb/win,4/tomb/fail,3/tomb/fail,22/time travel/win,4/time travel/fail
+Achievements: //I Want My Mummy!/tomb,Explorer/tomb,First Command/special,Time Traveller/time travel,With Great Power Comes Great Responsibility - Confucius (I think)/school,Year 7/school,Godslayer/school,Ligma Master/school,Command User/special,Beginner space/space story,Bob the Alien/space story,Beginner Jungle/amazon jungle,LIGMA BALLS/school,Year 9/school,Killed by [Anubis]/tomb,Excavator/tomb,Back to reality/time travel
+Commands: //start,start,start,start,start,start,start,start,start,start,start,help,stats,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,stats,start,start,start,start,start,start,start,start,start,start,stats,start,start,start
