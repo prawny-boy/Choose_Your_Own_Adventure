@@ -12,7 +12,6 @@ from keyboard import is_pressed
 mixer.init()
 
 # Program preset variables:
-yn = ['Y', 'N'] # just for shortcutting
 s = 'stats.txt'
 e = 'allendings.txt'
 inventoryList = []
@@ -221,7 +220,7 @@ def checkusername(user:str) -> bool:
     else:
         print('Username availible.')
         file.close()
-        while x.upper() not in yn:
+        while x.lower() not in ['y', 'n']:
             x = input('Would you like this username? (y/n) ').lower()
             if x == "quit":
                 exit()
@@ -392,7 +391,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = yn) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
     choice = ''
     print(question)
     option = str(options)
