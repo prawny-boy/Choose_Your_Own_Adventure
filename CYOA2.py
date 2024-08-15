@@ -681,15 +681,22 @@ def checkcommand(command:str) -> None:
 Version: 2.2 ("Updates" for latest changes)
 Coded in VS Code, by Oliver Liu and Sean Chan
 Logo: Aaron Zhang
-Testers: Aaron Zhang, Nelson Yan, Ethan Wei
+Testers: Use 'testers' command
 Story Writers: 
     Amazon Adventure - Sean Chan
     Space Story - Oliver Liu
     Time Travel - Sean Chan
     School - Jaden Li, imported by Oliver Liu
     Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
+    Mountain - Levi Laij
+    Underwater - Oliver Liu
 ------------------------------------------------""")
         addachievement("Supporter")
+    elif command == "testers":
+        cprint("TESTERS:", attrs=["bold", "underline"])
+        with open("testers.txt", "r") as file:
+            for line in file.readlines():
+                print(line.strip("\n"))
     elif command == "198234":
         win = False
         answer = input("Question 1/5: How many times did you have to click in the second game to win? ").strip()
