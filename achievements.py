@@ -31,7 +31,7 @@ time = {
     "Lumberjacked": ["Get your head chopped off by an axe."],
     'Bonker': ["Use The Bonker"], # not added
     'Bonked': ["Get Bonked by the Bonker"], # not added
-    "Back to reality": ["Win Time Travel"], # not added
+    "Back to reality": ["Win Time Travel"],
     # Standard Achievements
     'Time Traveller': ['Play this story 1 time', 'time travel.play-1'],
     'Better Time Traveller': ['Play this story 10 times', 'time travel.play-10'],
@@ -82,13 +82,12 @@ special = {
     "Supporter": ["Use the credits command"],
     "Saved": ["Save your progress"],
     "Technician": ["Look at the updates"],
+    "Inspired": ["See the inspirational story"],
     "First Command": ["Use 1 Command", "commands.amount-1"],
     "Command User": ["Use 10 Commands", "commands.amount-10"],
     "God of Commands": ["Use 100 Commands", "commands.amount-100"],
     "Command Master": ["Use all types of commands", "commands.allcommands-1"],
     # Others
-    # "Oliver's Collection": ['Play all stories written by Oliver', 'stories.oliver-1'], #not added
-    # "Sean's Collection": ['Play all stories written by Sean', 'stories.sean-1'], #not added
 }
 
 achievements = { #name: [description, code (Only if neccesary)]

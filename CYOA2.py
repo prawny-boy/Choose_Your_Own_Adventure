@@ -6,6 +6,7 @@ from time import sleep
 from achievements import achievements
 from pygame import mixer
 import sys
+from keyboard import is_pressed
 
 # Inits
 mixer.init()
@@ -19,7 +20,7 @@ stories = {
     "tomb": 15,
     "amazon jungle": 20,
     "space story": 12,
-    'time travel': 14,
+    'time travel': 30,
     'school': 20,
     'mountain': 1,
 } # name of story: amount of endings
@@ -29,7 +30,7 @@ linesperuser = 4 # lines of stats per 1 user
 initialstats = ['Endings: //', 'Achievements: //', 'Commands: //'] # preset of stats of a new user, / is normal int/str, while // is list
 play = False
 Reset = '\033[0m'
-commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "switch"] # if add command also add in this unless it is an admin command, or quit, delete or reset
+commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "inspiration"] # if add command also add in this unless it is an admin command, or quit, delete or reset
 
 # Stat Variables
 user = ""
@@ -39,11 +40,16 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
-def slowprint(str:str, speed:float, attr:list, c='white') -> None:
+def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) -> None:
+    start = 0
     for char in str:
         cprint(char, end='', attrs=attr, color=c)
         sys.stdout.flush()
         sleep(speed)
+        if is_pressed("ctrl") and start > wait and skip:
+            cprint(str[start+1:], end="", color=c, attrs=attr)
+            break
+        start += 1
     sleep(speed)
     print()
 
@@ -67,7 +73,7 @@ def user_system() -> str:
                     exit()
                 invalid = False
                 for char in newuser: # check if the username is valid
-                    if char in ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', '//', ']', '^', '_', '`', '{', '|', '}', '~']:
+                    if char in ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '[', '\\', '//', ']', '^', '`', '{', '|', '}', '~']:
                         invalid = True
                 if len(newuser) < 3 or len(newuser) > 20 or newuser.lower() == "new":
                     invalid = True
@@ -524,25 +530,29 @@ def countendings(story:str, mode:str, endinglist:list = None) -> int:
                     count += 1
         except TypeError:
             print("Error. Needs endinglist input.")
+        except IndexError:
+            pass
     else:
         print("Error. Mode not valid:", mode)
     return count
 
 def checkcommand(command:str) -> None:
-    global user, running_commands, fails, wins, endings, userach, usercommands
+    global user, running_commands, fails, wins, endings, userach, usercommands, inventoryList
     command = command.lower()
     real = True
     story = ''
+    danger = colored('(Dangerous)', 'red')
     if command == "help":
-        print("""List of commands:
+        print(f"""List of commands:
   Help - brings up this list
   Start - starts the story selection
   Stats - prints the current user's stats
   Save - saves the user's current stats
-  Reset - resets the current user's stats (Dangerous)
-  Delete - Deletes the current account, after goes back to sign in (Dangerous)
+  Reset - resets the current user's stats {danger}
+  Delete - Deletes the current account, after goes back to sign in {danger}
   Achievements - Shows a list of all the achievements
   Switch - Signs out of the current account
+  Inspiration - Shows our insipration story with music
   Quit - quits the story when in the story, if out of story quits program
   Credits - shows the credits & project info""")
     elif command == "start":
@@ -641,6 +651,18 @@ def checkcommand(command:str) -> None:
                 break
             else:
                 print("Invalid. Enter 'y' or 'n'")
+    elif command == "inspiration":
+        cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
+        with open("inspirational.txt", "r") as file:
+            paralist = file.read().split("|")
+        print("(Ctrl to skip)")
+        songlist = ["Songs\\Hope.mp3", "Songs\\Happy.mp3", "Songs\\Mystery.mp3"]
+        for i in range(len(paralist)):
+            mixer.music.load(songlist[i])
+            mixer.music.play()
+            slowprint(paralist[i], 0.05, ["bold"], skip=True)
+        addachievement("Inspired")
+        mixer.music.fadeout(1000)
     elif command == "quit":
         exit()
     elif command == 'updates':
@@ -670,9 +692,9 @@ Story Writers:
         addachievement("Supporter")
     elif command == "198234":
         win = False
-        answer = input("Question 1/5: How many times did you have to click the flag to win? ").strip()
+        answer = input("Question 1/5: How many times did you have to click in the second game to win? ").strip()
         if answer == "100":
-            answer = input("Question 2/5: How many boats were in the minecraft hunt? ").strip()
+            answer = input("Question 2/5: How many boats were in the minecraft course? ").strip()
             if answer == "5":
                 answer = input("Question 3/5: What was the Youtube channel name you were directed to? ").lower().strip()
                 if answer == "souloftheassassin":
@@ -1053,7 +1075,7 @@ def story_timetravel_2():
             else:
                 story_timetravel_3()
     else:
-        x = choice("Do you want to hide or show yourself to the farmer?", ["You decide that the farmers can't do much, so you show yourself to them. After seeing you, they grab hold of you and lock you in a cell.", "You decide to hide because it would be too risky to show yourself. But it doesn't make a difference are you are caught and locked in a cell."], ["hide", "show"])
+        x = choice("Do you want to hide or show yourself to the farmer?", ["You decide that the farmers can't do much, so you show yourself to them. After seeing you, they grab hold of you and lock you in a cell.", "You decide to hide because it would be too risky to show yourself. But it doesn't make a difference are you are caught and locked in a cell."], ["show", "hide"])
         if x == 0:
             ending("Stuck with the Farmers", 14, "time travel")
         else:
@@ -1066,11 +1088,78 @@ def story_timetravel_3():
     x = choice("Do you want to make a grab for it?", ["You grab quickly at the bag, turning away to see a tall soldier right behind you.", "You decide against getting the bag, as there are too many soldiers around to try and catch you. Minding your own business, you stroll down the street. A nice person comes and gives you a tasting of cheese, saying something in a different language."])
     if x == 0:
         if "Power" in inventoryList:
-            print("") # finish
+            print("Luckily, you can outrun the soldier, as you gained some power from the berry before. You run away from the soldier, and he gives up the chase. After running for a while, your power slips away, but you are standing in front of a gigantic castle.")
+            inventory("Power", 1, "lose", False)
+            inventory("Gold", 1)
+            x = choice("Do you want to enter the castle?", ["You enter the castle, and see two soldiers guarding the gate. They are sleeping on the job! You enter causiously, trying not to make any noise. Suddenly, you hear a crash from behind, and you realise you bumped the statue in your hurry to get away from the soldiers. The soldiers wake up and catch you, throwing you into jail.", "You decide to not go into the castle, because you are probably wanted for what you stole. Without looking, you walk into a tavern, and look up. The men in the bar stare at you angrily, and start running at you."])
+            if x == 0:
+                ending("Be careful, that's an antique!", 16, "time travel")
+            else:
+                x = choice("Do you want to run or give them your gold to get away?", ["You try to run away, but the men quickly catch up to you.", "Thinking fast, you hold out your bag of gold to the men. They stare at it greedily, and you throw it at them, letting you run away. You come to a beautiful meadow, one that looks amazing and capturing your attention"], ["run", "gold"])
+                if x == 0:
+                    ending("Beaten Up", 17, "time travel")
+                else:
+                    inventory("Gold", 1, "lose")
+                    x = choice("Do you want to check out the meadow?", ["You decide to check out the meadow, and after awhile, you check the time and realise you have been looking for 3 years. Not being able to leave, you are trapped forever.", "You decide not to enter, and you realise that while you were checking out the meadow you completely missed your time machine sitting a few meters ahead. You enter happily, closing the lid to travel to a new time."])
+                    if x == 0:
+                        ending("The meadow of eternity", 18, "time travel")
+                    else:
+                        story_timetravel_4()
         else:
-            print("") # finish
+            print("You start running from the soldier, but you are caught quickly and taken into a jail cell.")
+            ending("Stuck in Medieval", 15, "time travel")
     else:
-        pass # finish later
+        x = choice("Do you want to take it?", ["You decide that you want to eat the cheese as the person seems so nice. When you eat it, you feel something powerful, but don't know what it is. The person asks you if you want to buy the cheese.", "You decline the cheese gratefully, and the seller justs shruggs and goes away. Walking down the street, you come across an interesting store, Time selector."])
+        if x == 0:
+            if "Gold" in inventoryList:
+                x = choice("Do you want to pay for the cheese?", ["You pay for the cheese, and take another bite of it. Suddenly, you feel like you have gained some power. Clicking your fingers, all the soldiers fall down dead. The shopkeeper looks at you, smiling, and you smile back. You hit double jump, and you fly upwards, so suspicously like minecraft. As you fly more and more upwards, and all the shops turn blocky. You try to turn back, but you are trapped forever, the shopkeeper's laugh echoing round and round your head.", "You decline to the shopkeeper, but the shopkeeper just smiles sadly at you and clicks his fingers. Everything goes dark."])
+                if x == 0:
+                    ending("Minecraft", 21, "time travel")
+                else:
+                    ending("Don't decline next time...", 19, "time travel")
+            else:
+                print("You would want to, but you don't have any money. You tell the shopkeeper this and he looks at you sadly. Clicking his fingers, all the soldiers rush to you, holding out their spears angrily.")
+                ending("Broke", 20, "time travel")
+        else:
+            x = choice("Do you want to enter?", ["You enter the store, and a selection bar randomly pops up in front of you. On it are a list of different times. Which do you want to pick?", "You walk past, and see your time machine box ahead. Hopping in, you close the lid and prepare to travel to anotehr time."])
+            if x == 0:
+                x = choice("""Which do you want to pick?
+1. Dinosaurs
+2. Farmers
+3. Medieval
+4. WW2
+5. Modern World
+6. Space Civilisation""", ["", "", "", "", "", ""], ["1", "2", "3", "4", "5", "6"])
+                print("Your box materialises in front of you, and you hop in. The only difference is that it now says the time you picked. Getting ready to leave, you close the lid.")
+                if x == 0:
+                    story_timetravel()
+                elif x == 1:
+                    story_timetravel_2()
+                elif x == 2:
+                    story_timetravel_3()
+                elif x == 3:
+                    story_timetravel_4()
+                elif x == 4:
+                    story_timetravel_5()
+                elif x == 5:
+                    story_timetravel_6()
+            else:
+                story_timetravel_4()
+
+def story_timetravel_4():
+    # WW2
+    print("You are bumped and kicked around in the box as you travel to your next time. As you arrive, you hop out, hoping to see the present, but, sadly, you see a large open field. Looking around, you see nothing.")
+    x = choice("Do you want to explore?", ["", ""]) # finish
+
+def story_timetravel_5():
+    # Present
+    print("The box whirls around again, and when you jump out, you realise that you are back in your cellar. What an adventure!")
+    ending("The Present", 22, "time travel", "win")
+    addachievement("Back to reality")
+
+def story_timetravel_6():
+    # Future
+    pass
 
 # JADEN - SCHOOL
 def story_school(user:str):
@@ -1417,7 +1506,7 @@ def story_tomb_passageway():
                 else:
                     ending("Should've Studied Harder", 13, "tomb")
 
-# OLIVER - MOUNTAIN
+# LEVI - MOUNTAIN
 def story_mountain():
     print('You are an experienced mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest.')
     c = choice("""Who will you go with? 
@@ -1430,6 +1519,10 @@ Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybu
         pass
     elif c == 2:
         pass
+
+# OLIVER - UNDERWATER
+def story_underwater():
+    pass
 
 # GAME LOOP
 while True:
