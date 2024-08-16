@@ -13,16 +13,16 @@ Read through all the code and understand it before moving on.
 So you want to contribute to the code? This is how you can go about it properly.
 ### 2.1 Issues
 Usually, the first thing you do is look at issues, so that you can fix the code. On the repository page, click the "issues" tab. Here are the issues that other people working on the code (contributers) can work on. You will soon become one of them! You can do a few things with issues:
-  1. Create a new issue
+  2.1.1. Create a new issue
      * On the top-right of the issue page, there is a "new issue" button. Clicking this will redirect you to the issue creation page. Here you can enter a title and short description of the  issue. Name the issue in the title slot and add a description. *E.g. Title: Printing bug Des: error raised when printing stats*
      * After this, you can add labels also before creating. (See 4)
      * When you are finished, click on the green "submit new issue" button.
-  3. Assign yourself to an existing issue
+  2.1.2. Assign yourself to an existing issue
      * To assign yourself to an issue, *(which means that you are going to fix it)* click on the issue name on the issues page. This should open the issue's details. At the top of the list on the right of the page there should be a Assignees section. Click the gear icon next to it to open a dropdown menu, where you can assign the issue to yourself.
-  4. Add labels to an issue
+  2.1.3. Add labels to an issue
      * Click on the issue name on the issues page. This should redirect you to the issue's details. On the right side of the page, there is a label section. Click on the gear icon next to it and it should pop up with a dropdown menu. Here you can add or remove issues. Refer to the issue description when deciding which labels to add to the issue.
 ### 2.2 Branches
-When you have assigned yourself to an issue (see 2.1), its time to start coding! <br>
+When you have assigned yourself to an issue (see 2.1.2), its time to start coding! <br>
 Go to VS code and open the folder with the repository. (see 1.1) In the terminal write `git checkout -b "[Your branch name (see next for formatting)]"` You should name your branch as `[Your Name]-[Shortened version of issue]` This should make a new branch, which is where you will edit the code so that you don't edit the main branch. Now you can edit code and fix the issue! <br>
 These are some other commands that are useful:
   * `git checkout -b [branch name]` This is to make a new branch and switch to it. (see above)
