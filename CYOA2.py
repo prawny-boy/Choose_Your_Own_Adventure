@@ -12,8 +12,8 @@ from keyboard import is_pressed
 mixer.init()
 
 # Program preset variables:
-s = 'stats.txt'
-e = 'allendings.txt'
+s = 'Constants\\stats.txt'
+e = 'Constants\\allendings.txt'
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -45,7 +45,7 @@ def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) ->
         cprint(char, end='', attrs=attr, color=c)
         sys.stdout.flush()
         sleep(speed)
-        if is_pressed("ctrl") and start > wait and skip:
+        if is_pressed("shift") and start > wait and skip:
             cprint(str[start+1:], end="", color=c, attrs=attr)
             break
         start += 1
@@ -663,9 +663,9 @@ def checkcommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        with open("inspirational.txt", "r") as file:
+        with open("Constants\\inspirational.txt", "r") as file:
             paralist = file.read().split("|")
-        print("(Ctrl to skip)")
+        print("(shift to skip)")
         songlist = ["Songs\\Hope.mp3", "Songs\\Happy.mp3", "Songs\\Mystery.mp3"]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
@@ -691,15 +691,22 @@ def checkcommand(command:str) -> None:
 Version: 2.2 ("Updates" for latest changes)
 Coded in VS Code, by Oliver Liu and Sean Chan
 Logo: Aaron Zhang
-Testers: Aaron Zhang, Nelson Yan, Ethan Wei
+Testers: Use 'testers' command
 Story Writers: 
     Amazon Adventure - Sean Chan
     Space Story - Oliver Liu
     Time Travel - Sean Chan
     School - Jaden Li, imported by Oliver Liu
     Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
+    Mountain - Levi Laij
+    Underwater - Oliver Liu
 ------------------------------------------------""")
         addachievement("Supporter")
+    elif command == "testers":
+        cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
+        with open("Constants\\testers.txt", "r") as file:
+            for line in file.readlines():
+                print(line.strip("\n"))
     elif command == "198234":
         win = False
         answer = input("Question 1/5: How many times did you have to click in the second game to win? ").strip()

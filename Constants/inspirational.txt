@@ -3,14 +3,14 @@ That person was Sean.
 That person came up with the idea of making a python game.
 Without help, he worked day and night to produce a small but promising game.
 A individual company was formed: S corporation
-Choose Your Adventure (1.0)|
+Choose Your Adventure (1.0, Alpha)|
 After a bit, Sean gave up on the project. 
 It was not until another person joined a year later that he resumes progress.
 That person was Oliver. 
 Another person had joined the company, updating the name to SO corporation.
 Both Sean and Oliver worked hard to produce another better version.
 Oliver contributed with blood, sweat and tears.
-CYOA (2.0)|
+CYOA (2.0, Beta)|
 Well, well, another person joined.
 Someone called Levi, who still doesn't understand the code.
 He works in the back of the code, doing his own thing.
