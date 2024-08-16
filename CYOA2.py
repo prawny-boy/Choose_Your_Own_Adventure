@@ -1,6 +1,5 @@
 from termcolor import cprint, colored
 from sys import exit
-from updates import updates
 from random import randint
 from time import sleep
 from achievements import achievements
@@ -676,7 +675,8 @@ def checkcommand(command:str) -> None:
     elif command == "quit":
         exit()
     elif command == 'updates':
-        print(updates)
+        with open("Constants\\updates.txt", "r") as file:
+            print(file.read())
         addachievement("Technician")
     elif command == 'credits':
         print("""
