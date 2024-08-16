@@ -12,8 +12,14 @@ Read through all the code and understand it before moving on.
 ## 2. Editing
 So you want to contribute to the code? This is how you can go about it properly.
 ### 2.1 Issues
-On the repository page, click the "issues" tab. Here are the issues that other people working on the code (contributers) can work on. You will soon become one of them! You can do a few things with issues:
+Usually, the first thing you do is look at issues, so that you can fix the code. On the repository page, click the "issues" tab. Here are the issues that other people working on the code (contributers) can work on. You will soon become one of them! You can do a few things with issues:
   1. Create a new issue
-  2. 
+       On the top-right of the issue page, there is a "new issue" button. Clicking this will redirect you to the issue creation page. Here you can enter a title and short description of the  issue. Name the issue in the title slot and add a description. *E.g. Title: Printing bug Des: error raised when printing stats*
+       After this, you can add labels also before creating. (See 4)
+       When you are finished, click on the green "submit new issue" button.
+  3. Assign yourself to an existing issue
+       To assign yourself to an issue, *(which means that you are going to fix it)* click on the issue name on the issues page. This should open the issue's details. At the top of the list on the right of the page there should be a Assignees section. Click the gear icon next to it to open a dropdown menu, where you can assign the issue to yourself.
+  4. Add labels to an issue
+       Click on the issue name on the issues page. This should redirect you to the issue's details. On the right side of the page, there is a label section. Click on the gear icon next to it and it should pop up with a dropdown menu. Here you can add or remove issues. Refer to the issue description when deciding which labels to add to the issue.
 ### 2.2 Branches
 ### 2.3 Pull Requests
