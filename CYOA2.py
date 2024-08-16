@@ -12,9 +12,8 @@ from keyboard import is_pressed
 mixer.init()
 
 # Program preset variables:
-yn = ['Y', 'N'] # just for shortcutting
-s = 'stats.txt'
-e = 'allendings.txt'
+s = 'Constants\\stats.txt'
+e = 'Constants\\allendings.txt'
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -46,7 +45,7 @@ def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) ->
         cprint(char, end='', attrs=attr, color=c)
         sys.stdout.flush()
         sleep(speed)
-        if is_pressed("ctrl") and start > wait and skip:
+        if is_pressed("shift") and start > wait and skip:
             cprint(str[start+1:], end="", color=c, attrs=attr)
             break
         start += 1
@@ -221,7 +220,7 @@ def checkusername(user:str) -> bool:
     else:
         print('Username availible.')
         file.close()
-        while x.upper() not in yn:
+        while x.lower() not in ['y', 'n']:
             x = input('Would you like this username? (y/n) ').lower()
             if x == "quit":
                 exit()
@@ -392,8 +391,13 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = yn) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
+    cprint('-----------------------------', attrs=['bold'])
     choice = ''
+    numoptions = []
+    numtype = False
+    for i in range(1, len(options)+1):
+        numoptions.append(str(i))
     print(question)
     option = str(options)
     option = option.replace('[', '')
@@ -403,17 +407,23 @@ def choice(question:str, outcomes:list, options:list = yn) -> int:
         options[a] = str(options[a]).lower()
     print('Options: ' + option)
     while True:
-        choice = input('Choice: ').lower()
+        choice = str(input('Choice: ').lower()) 
         if choice == "quit":
             exit()
         elif choice in options:
             break
+        elif choice in numoptions:
+            numtype = True
+            break
         else:
             print("\033[A"+(" "*(len(choice)+9))+"\033[A")
-    for num in range(0,len(options)):
-        if choice == str(options[num]):
-            x = num
-            break
+    if numtype:
+        x = int(choice)-1
+    else:
+        for num in range(0,len(options)):
+            if choice == str(options[num]):
+                x = num
+                break
     print("\n" + outcomes[x])
     return x
 
@@ -653,9 +663,9 @@ def checkcommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        with open("inspirational.txt", "r") as file:
+        with open("Constants\\inspirational.txt", "r") as file:
             paralist = file.read().split("|")
-        print("(Ctrl to skip)")
+        print("(shift to skip)")
         songlist = ["Songs\\Hope.mp3", "Songs\\Happy.mp3", "Songs\\Mystery.mp3"]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
@@ -693,8 +703,8 @@ Story Writers:
 ------------------------------------------------""")
         addachievement("Supporter")
     elif command == "testers":
-        cprint("TESTERS:", attrs=["bold", "underline"])
-        with open("testers.txt", "r") as file:
+        cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
+        with open("Constants\\testers.txt", "r") as file:
             for line in file.readlines():
                 print(line.strip("\n"))
     elif command == "198234":
