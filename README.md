@@ -22,6 +22,11 @@ Usually, the first thing you do is look at issues, so that you can fix the code.
   4. Add labels to an issue
      * Click on the issue name on the issues page. This should redirect you to the issue's details. On the right side of the page, there is a label section. Click on the gear icon next to it and it should pop up with a dropdown menu. Here you can add or remove issues. Refer to the issue description when deciding which labels to add to the issue.
 ### 2.2 Branches
-When you have assigned yourself to an issue (see 2.1), its time to start coding!
-
-### 2.3 Pull Requests
+When you have assigned yourself to an issue (see 2.1), its time to start coding! <br>
+Go to VS code and open the folder with the repository. (see 1.1) In the terminal write `git checkout -b "[Your branch name (see next for formatting)]"` You should name your branch as `[Your Name]-[Shortened version of issue]` This should make a new branch, which is where you will edit the code so that you don't edit the main branch. Now you can edit code and fix the issue! <br>
+These are some other commands that are useful:
+  * `git checkout -b [branch name]` This is to make a new branch and switch to it. (see above)
+  * `git checkout [branch name]` This is to switch branches. You must commit before you do this. (see 2.3)
+  * `git branch` This gives you a list of all your branches, and highlights the one you are on.
+### 2.3 Commiting and Pushing
+### 2.4 Pull Requests
