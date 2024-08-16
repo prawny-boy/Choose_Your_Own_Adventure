@@ -44,5 +44,11 @@ To save code onto github, you have to push. <br>
 You can do this by running this command in terminal: `git push origin [branch name you are on]` *(If you don't know what branch you are on use `git branch` or see 2.2)*
 
 ### 2.4 Pull Requests
+*Only do this after Commiting & Pushing (see 2.3)*
+#### 2.4.1 Making Pull Requests
+Once you have pushed to github, you can go to the repository page and into the code tab. There you should see a orange-ish bar saying "[branch name] had some recent pushes x minutes ago". *(If this doesn't show up try reloading the page)* Click on the "compare & pull request" button and it should open a page to create a pull request. Name it as "[Your name] - ["Issue/Topic"]". You can also add details but it is not neccessary. Click the green button at the bottom-right "create pull request".
+#### 2.4.2 Adding Issues to Pull requests
+Because Pull Requests are used to solve issues, you need to assign an issue to each Pull Request. To do this, go to the repository page, then click the pull request tab/page, and click the Pull Request that you want to add an issue to. This should redict you to its details. On the right side is a list, and in that list find the Development section. Click the gear icon next the the section and a dropdown menu should appear, so that you can select or deselect the issues that the pull request is fixing. <br>
+**Note: If you see a merge button, please do not click it without Sean's permission.**
 
 ### 2.5 Pulling
