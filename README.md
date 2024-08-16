@@ -52,3 +52,10 @@ Because Pull Requests are used to solve issues, you need to assign an issue to e
 **Note: If you see a merge button, please do not click it without Sean's permission.**
 
 ### 2.5 Pulling
+It is a good practice, to once in awhile, pull from github. Pulling is when you pull from the main branch to update your branch to the newest version of the game. <br>
+You can do this by running: `git pull origin main` <br>
+After doing this there may be merge confilcts, so go through the files and accept which one is best.
+
+## 3. Others
+### 3.1 Testers
+Get testers for the game so that any bugs can be fixed!
