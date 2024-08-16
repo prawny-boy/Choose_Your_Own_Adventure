@@ -392,7 +392,12 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     print(wins)
 
 def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
+    cprint('-----------------------------', attrs=['bold'])
     choice = ''
+    numoptions = []
+    numtype = False
+    for i in range(1, len(options)+1):
+        numoptions.append(str(i))
     print(question)
     option = str(options)
     option = option.replace('[', '')
@@ -402,17 +407,23 @@ def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
         options[a] = str(options[a]).lower()
     print('Options: ' + option)
     while True:
-        choice = input('Choice: ').lower()
+        choice = str(input('Choice: ').lower()) 
         if choice == "quit":
             exit()
         elif choice in options:
             break
+        elif choice in numoptions:
+            numtype = True
+            break
         else:
             print("\033[A"+(" "*(len(choice)+9))+"\033[A")
-    for num in range(0,len(options)):
-        if choice == str(options[num]):
-            x = num
-            break
+    if numtype:
+        x = int(choice)-1
+    else:
+        for num in range(0,len(options)):
+            if choice == str(options[num]):
+                x = num
+                break
     print("\n" + outcomes[x])
     return x
 
