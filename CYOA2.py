@@ -194,6 +194,13 @@ def checkachievements() -> None:
                                 break
                         if alldone:
                             done = True
+                elif atype == "stories":
+                    if key == "totalplays":
+                        playcount = countendings(None, key)
+                        if playcount >= amount:
+                            done = True
+                    else:
+                        pass # implement collections later
                 else:
                     print("Error. Type not valid:", atype)
                 if done:
@@ -513,7 +520,7 @@ def getendingname(ending_num:int, story:str) -> str:
     return "Error, story invalid."
 
 def countendings(story:str, mode:str, endinglist:list = None) -> int:
-    # 4 modes, plays, all endings, fails and wins
+    # 7 modes, plays, all endings, fails, wins. not done -> totalplays, allplays, collections
     count = 0
     if mode == "play":
         for ending in endings:
@@ -541,6 +548,10 @@ def countendings(story:str, mode:str, endinglist:list = None) -> int:
             print("Error. Needs endinglist input.")
         except IndexError:
             pass
+    elif mode == "totalplays":
+        for ending in endings:
+            if ending != "":
+                count += 1
     else:
         print("Error. Mode not valid:", mode)
     return count
