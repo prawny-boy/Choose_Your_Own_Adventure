@@ -1166,7 +1166,46 @@ def story_timetravel_3():
 def story_timetravel_4():
     # WW2
     print("You are bumped and kicked around in the box as you travel to your next time. As you arrive, you hop out, hoping to see the present, but, sadly, you see a large open field. Looking around, you see nothing.")
-    x = choice("Do you want to explore?", ["", ""]) # finish
+    x = choice("Do you want to explore?", ["You start to look around and see a storm of troops coming towards you. They are holding up guns, so you duck and quickly get out of their way. On the other side is another group of soldiers. Lucky you didn't get caught in the crossfire! You hear gunshots as you leave the area, and come across a deserted city.", "You stay at your time machine, which after abit just dissapears. Suddenly, you hear gunshots, but it is too late, and you are caught in the crossfire."])
+    if x == 0:
+        x = choice("Do you want to enter?", ["You enter the abandoned city, and see destruction and collapsed buildings all around you. It looks like some kind of war was here. Out of all the buildings, there are three that still seem intact. One that looks like a great hall, another that looks like a bomb shelter, and one that is a temporary camp.", "You decide to keep walking, and soon find yourself in a massive desert."])
+        if x == 0:
+            x = choice("Which do you want to enter?", ["You enter the hall, and find it deserted. Suddenly, you hear a whistling sound and a large kaboom outside the hall. Before you can wonder what happened, you are incinerated in a blink of an eye.", "You open the heavy metal door to the bomb shelter and enter. Inside are a group of people, huddling, looking scared. They tell you that a bomb is coming, and that you are in WW2. Luckily you are in a bomb shelter, so you are not affected by the large explosion. Suddendly, your box appears in front of you.", "You enter the tent flap of the camp, and a soldier grabs you and holds a gun to your throat."], ["hall", "bomb shelter", "camp"])
+            if x == 0:
+                ending("Incinerated", 24, "time travel")
+            elif x == 1:
+                x = choice("Do you want to go into your box?", ["You enter your box and close the lid, saying bye to the other people in the shelter.", "You decide you won't go in, and after awhile the box dissapears. Suddenly, the door swings open and a gun is pointed straight at your forehead. Pew Pew."])
+                if x == 0:
+                    story_timetravel_6()
+                elif x == 1:
+                    ending("'Pew Pew' - That guy who plays too much Valorant", 25, "time travel")
+            else:
+                if "Gold" in inventoryList:
+                    print("Thinking fast, you pull out your gold that you found earlier. The soldier decides to spare your life in return for the gold, and you hurridly leave the camp and the destructed city. You keep walking and find yourself in a desert. Starting to feel thirsty, you rummage around your bag to find water. Nothing.")
+                    ending("Dehydration", 26, "time travel")
+                else:
+                    print("The soldier shoots his gun once, which is enough to make you go bye bye.")
+                    ending("Sayonara", 27, "time travel")
+        else:
+            if "Cake" in inventoryList:
+                print("You are extremely hungry, so look in your bag to find the cake that you stole earlier. Eating it happily, you continue until you see a small military camp.")
+                inventory("Cake", 1, "lose")
+                x = choice("Do you want to enter?", ["You enter the camp and find no-one inside. Taking a jug of water, you leave. Walking for a few days, you drink you your water, but also find a developed city that looks untouched by war.", "You continue, ignoring the camp. After an hour of hiking, the wind starts to pick up, and you realise you are caught in a sandstorm. You try to escape, but you trip and fall, sand covering your body like a blanket."])
+                if x == 0:
+                    inventory("Water", 1)
+                    x = choice("Do you want to enter the city?", ["You arrive at the city, and see a sign saying 'Hiroshima'. Oops.", "I don't know why you don't want to enter a city when you have run out of water, but sure? You died of thirst."])
+                    if x == 0:
+                        ending("Bombed", 30, "time travel")
+                    else:
+                        ending("Bad Choices", 29, "time travel")
+                        addachievement("Bad Choices")
+                else:
+                    ending("Buried Forever", 28, "time travel")
+            else:
+                print("You are extremely hungry, but there is no food at all. You then proceed to starve to death.")
+                ending("Stranded in the Desert", 23, "time travel")
+    else:
+        ending("Caught in the crossfire", 22, "time travel")
 
 def story_timetravel_5():
     # Present
