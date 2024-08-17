@@ -13,15 +13,7 @@ Achievements:
         Mountain:
             -
     All Stories:
-        - Newbie (Play 1 time)
-        - Good (Play 10 times)
-        - Pro (Play 100 times)
-        - Hacker (Play 1000 times)
-        - Taster (Play all the stories at least once)
         - Bookworm (Get all of the story exclusive achievements)
-        - "Oliver's Collection": ['Play all stories written by Oliver', 'stories.oliver-1'], #not added
-        - "Sean's Collection": ['Play all stories written by Sean', 'stories.sean-1'], #not added
-        - "Levi's Collection": ['Play all stories written by Levi', 'stories.levi-1'], #not added
     Special:
         - 
         Easter Eggs:
