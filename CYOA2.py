@@ -865,9 +865,7 @@ They roar to life, throwing you back and bringing you back to earth.
             
     slowprint('THE END', 0.05, ["bold"])
 
-# SEAN - AMAZON ADVRENTURE
-foundpilot = False
-end = False
+# SEAN - AMAZON ADVENTURE
 
 def story_amazon_adventure_pilot():
     x = choice("Do you want to go find a village, continue searching in the plane, or stay and build a shelter next to the plane crash?", ["You and John both leave the crashed plane and after hours of searching you find a village. As you approach the alarm sounds, and you are both captured by the native tribe. You are going to be hanged in 2 hours, unless you have something to give.", "'Do you know about anything else in the plane?' You ask John. 'Yes there is a wrench and a instruction manual in the glove box' John replies, taking the things out. He gives them to you. These could be helpful for fixing the plane...", "You stay at the plane crash site, making a shelter for you and John for the next month. After you run out of food, you face the option of adventuring into the dangerous forest for food, or staying at the shelter to starve."], ['village', 'search', 'stay'])
@@ -934,7 +932,7 @@ def story_amazon_adventure_fix():
                 x = choice("Would you go and face the monster or stay and starve?", ["You go out to face the monster. You would die anyway, so beter die gloriously. Before you can even glimpse the monster, you are devoured. I don't think that was so glorious...", ""], ['face', 'stay'])
                 if x == 0:
                     ending("Not A Glorious Death", 10, "amazon jungle")
-                elif randint(0,1) == 0:
+                elif randint(1, 2) == 1:
                     print("You decide against fighting the monster, which stays there for a very long time, leading you into a slow and painful death. Starvation.")
                     ending("Starvation", 9, "amazon jungle")
                 else:
@@ -953,7 +951,9 @@ making it run away, pulling the book away from John's hands and stealing it. At 
             addachievement("Escape of the Jungle")
     
 def story_amazon_adventure():
-    global foundpilot
+    global foundpilot, end
+    foundpilot = False
+    end = False
     print("""\nYou are a passenger heading to Africa on a plane. You remember that you went bankrupt after losing while gambling. 
 Your life is falling around you, so you decide to move to Africa to start a new life. While you are thinking about the latest happenings,
 the plane suddenly dips and crashes into the trees. You go unconcious. 
