@@ -1,6 +1,5 @@
 from termcolor import cprint, colored
 from sys import exit
-from updates import updates
 from random import randint
 from time import sleep
 from achievements import achievements
@@ -30,6 +29,12 @@ initialstats = ['Endings: //', 'Achievements: //', 'Commands: //'] # preset of s
 play = False
 Reset = '\033[0m'
 commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "inspiration"] # if add command also add in this unless it is an admin command, or quit, delete or reset
+collections = {
+    "sean": ["amazon jungle", "tomb", "time travel"],
+    "oliver": ['school', "space story"],
+    "levi": ['mountain'],
+    "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
+}
 
 # Stat Variables
 user = ""
@@ -194,6 +199,14 @@ def checkachievements() -> None:
                                 alldone = False
                                 break
                         if alldone:
+                            done = True
+                elif atype == "stories":
+                    if key == "totalplays":
+                        playcount = countendings(None, key)
+                        if playcount >= amount:
+                            done = True
+                    else:
+                        if countendings(key, "collection") == 1:
                             done = True
                 else:
                     print("Error. Type not valid:", atype)
@@ -514,7 +527,7 @@ def getendingname(ending_num:int, story:str) -> str:
     return "Error, story invalid."
 
 def countendings(story:str, mode:str, endinglist:list = None) -> int:
-    # 4 modes, plays, all endings, fails and wins
+    # 6 modes, plays, all endings, fails, wins, totalplays, collection
     count = 0
     if mode == "play":
         for ending in endings:
@@ -542,6 +555,20 @@ def countendings(story:str, mode:str, endinglist:list = None) -> int:
             print("Error. Needs endinglist input.")
         except IndexError:
             pass
+    elif mode == "totalplays":
+        for ending in endings:
+            if ending != "":
+                count += 1
+    elif mode == "collection":
+        rmlist = collections[story]
+        for ending in endings:
+            try:
+                if str(ending).split("/")[1].lower() in rmlist:
+                    rmlist.remove(str(ending).split("/")[1].lower())
+            except IndexError:
+                continue
+        if len(rmlist) == 0:
+            count += 1
     else:
         print("Error. Mode not valid:", mode)
     return count
@@ -676,7 +703,8 @@ def checkcommand(command:str) -> None:
     elif command == "quit":
         exit()
     elif command == 'updates':
-        print(updates)
+        with open("Constants\\updates.txt", "r") as file:
+            print(file.read())
         addachievement("Technician")
     elif command == 'credits':
         print("""

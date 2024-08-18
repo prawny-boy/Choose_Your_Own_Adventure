@@ -1,6 +1,0 @@
-Jobs to do: (ordered in most to least piority)
-    - Do stories: mountain, underwater, school + time travel
-    - Add more achievements to the achievements list
-    - Add achievement adding after endings in stories, check achievements to do the "not done" ones.
-    - Songs for stories using pygame.mixer()
-    - Turtle map for stories
