@@ -75,6 +75,17 @@ mountain = {
     'All Endings [Mountain]': ['Get all endings in Mountain', 'mountain.allendings-1'],
 }
 
+allstories = {
+    "Oliver's Collection": ['Play all stories written by Oliver', 'stories.oliver-1'],
+    "Sean's Collection": ['Play all stories written by Sean', 'stories.sean-1'],
+    "Levi's Collection": ['Play all stories written by Levi', 'stories.levi-1'],
+    "Newbie": ["Play 1 time", "stories.totalplays-1"],
+    "Good": ["Play 10 times", "stories.totalplays-10"],
+    "Pro": ["Play 100 times", "stories.totalplays-100"],
+    "Hacker": ["Play 1000 times", "stories.totalplays-1000"],
+    "Taster": ["Play all the stories at least once.", "stories.allplays-1"],
+}
+
 # Special
 special = {
     # Easter Egg
@@ -98,5 +109,6 @@ achievements = { #name: [description, code (Only if neccesary)]
     "school": school,
     "tomb": tomb,
     "mountain": mountain,
+    "all stories": allstories,
     "special": special,
 }

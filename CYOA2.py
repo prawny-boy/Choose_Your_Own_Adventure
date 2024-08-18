@@ -29,6 +29,12 @@ initialstats = ['Endings: //', 'Achievements: //', 'Commands: //'] # preset of s
 play = False
 Reset = '\033[0m'
 commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "inspiration"] # if add command also add in this unless it is an admin command, or quit, delete or reset
+collections = {
+    "sean": ["amazon jungle", "tomb", "time travel"],
+    "oliver": ['school', "space story"],
+    "levi": ['mountain'],
+    "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
+}
 
 # Stat Variables
 user = ""
@@ -193,6 +199,14 @@ def checkachievements() -> None:
                                 alldone = False
                                 break
                         if alldone:
+                            done = True
+                elif atype == "stories":
+                    if key == "totalplays":
+                        playcount = countendings(None, key)
+                        if playcount >= amount:
+                            done = True
+                    else:
+                        if countendings(key, "collection") == 1:
                             done = True
                 else:
                     print("Error. Type not valid:", atype)
@@ -513,7 +527,7 @@ def getendingname(ending_num:int, story:str) -> str:
     return "Error, story invalid."
 
 def countendings(story:str, mode:str, endinglist:list = None) -> int:
-    # 4 modes, plays, all endings, fails and wins
+    # 6 modes, plays, all endings, fails, wins, totalplays, collection
     count = 0
     if mode == "play":
         for ending in endings:
@@ -541,6 +555,20 @@ def countendings(story:str, mode:str, endinglist:list = None) -> int:
             print("Error. Needs endinglist input.")
         except IndexError:
             pass
+    elif mode == "totalplays":
+        for ending in endings:
+            if ending != "":
+                count += 1
+    elif mode == "collection":
+        rmlist = collections[story]
+        for ending in endings:
+            try:
+                if str(ending).split("/")[1].lower() in rmlist:
+                    rmlist.remove(str(ending).split("/")[1].lower())
+            except IndexError:
+                continue
+        if len(rmlist) == 0:
+            count += 1
     else:
         print("Error. Mode not valid:", mode)
     return count
@@ -837,9 +865,7 @@ They roar to life, throwing you back and bringing you back to earth.
             
     slowprint('THE END', 0.05, ["bold"])
 
-# SEAN - AMAZON ADVRENTURE
-foundpilot = False
-end = False
+# SEAN - AMAZON ADVENTURE
 
 def story_amazon_adventure_pilot():
     x = choice("Do you want to go find a village, continue searching in the plane, or stay and build a shelter next to the plane crash?", ["You and John both leave the crashed plane and after hours of searching you find a village. As you approach the alarm sounds, and you are both captured by the native tribe. You are going to be hanged in 2 hours, unless you have something to give.", "'Do you know about anything else in the plane?' You ask John. 'Yes there is a wrench and a instruction manual in the glove box' John replies, taking the things out. He gives them to you. These could be helpful for fixing the plane...", "You stay at the plane crash site, making a shelter for you and John for the next month. After you run out of food, you face the option of adventuring into the dangerous forest for food, or staying at the shelter to starve."], ['village', 'search', 'stay'])
@@ -906,7 +932,7 @@ def story_amazon_adventure_fix():
                 x = choice("Would you go and face the monster or stay and starve?", ["You go out to face the monster. You would die anyway, so beter die gloriously. Before you can even glimpse the monster, you are devoured. I don't think that was so glorious...", ""], ['face', 'stay'])
                 if x == 0:
                     ending("Not A Glorious Death", 10, "amazon jungle")
-                elif randint(0,1) == 0:
+                elif randint(1, 2) == 1:
                     print("You decide against fighting the monster, which stays there for a very long time, leading you into a slow and painful death. Starvation.")
                     ending("Starvation", 9, "amazon jungle")
                 else:
@@ -925,7 +951,9 @@ making it run away, pulling the book away from John's hands and stealing it. At 
             addachievement("Escape of the Jungle")
     
 def story_amazon_adventure():
-    global foundpilot
+    global foundpilot, end
+    foundpilot = False
+    end = False
     print("""\nYou are a passenger heading to Africa on a plane. You remember that you went bankrupt after losing while gambling. 
 Your life is falling around you, so you decide to move to Africa to start a new life. While you are thinking about the latest happenings,
 the plane suddenly dips and crashes into the trees. You go unconcious. 
