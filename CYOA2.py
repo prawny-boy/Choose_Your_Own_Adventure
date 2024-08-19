@@ -9,14 +9,12 @@ import sys
 from keyboard import is_pressed
 import threading
 import os
-os.getcwd()
 
 # Inits
 mixer.init()
 
 # Program preset variables:
 s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
-#s = 'Constants/stats.txt'
 e = 'Constants/allendings.txt'
 inventoryList = []
 stories = {
@@ -1593,7 +1591,6 @@ Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen wi
                     #bought 5 300L tanks, slow speed
                     friend_speed = 'slow'
                 
-
 
             elif c2 == 1 and alive != False:
                 print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
