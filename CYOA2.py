@@ -6,12 +6,13 @@ from achievements import achievements
 from pygame import mixer
 import sys
 from keyboard import is_pressed
+import os
 
 # Inits
 mixer.init()
 
 # Program preset variables:
-s = 'Constants\\stats.txt'
+s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
 e = 'Constants\\allendings.txt'
 inventoryList = []
 stories = {
@@ -1103,7 +1104,7 @@ def story_timetravel_2():
                 print("The farmers rush towards you with their tools pointed, and you don't stand a chance against them.")
                 ending("Poked by Garden Tools", 11, "time travel")
         else:
-            x = choice("Do you want to run to the farm house?", ["You take the risk, running silently to the farmhouse. Creeping past the door, you see a bag of gold sitting on the table! You grab it, but a few coins clatter onto the floor. A farmer comes and chases you out of the house.", "Not taking the risk, you stay in our hiding place for quite some time. Pleasantly, you box appears next to you. You hop in, closing the lid behind you as you get ready for the ride."])
+            x = choice("Do you want to run to the farm house?", ["You take the risk, running silently to the farmhouse. Creeping past the door, you see a bag of gold sitting on the table! You grab it, but a few coins clatter onto the floor. A farmer comes and chases you out of the house.", "Not taking the risk, you stay in our hiding place for quite some time. Pleasantly, your box appears next to you. You hop in, closing the lid behind you as you get ready for the ride."])
             if x == 0:
                 if "Power" in inventoryList:
                     print("\nYou have your power, so you outrun the farmer quickly, getting away with the gold. You see your box in the distance, so you sprint to it, getting in and closing the lid. Your power slips away, but you gained an extra bag of gold!")
@@ -1111,11 +1112,11 @@ def story_timetravel_2():
                     inventory("Gold", 1)
                     story_timetravel_3()
                 elif "Berry" in inventoryList:
-                    print("\nYou start running, but you can outrun the farmer. As an last effort, you eat the berry and feel some kind of power emerging inside of you. But it is too late, and the farmer catches up to you and knocks you to the ground.")
+                    print("\nYou start running, but you can't outrun the farmer. As an last effort, you eat the berry and feel some kind of power emerging inside of you. But it is too late, and the farmer catches up to you and knocks you to the ground.")
                     inventory("Berry", 1, "lose")
                     ending("Don't Steal Next Time", 12, "time travel")
                 else:
-                    print("\nYou start running, but you can outrun the farmer.")
+                    print("\nYou start running, but you can't outrun the farmer.")
                     ending("Slowpoke", 13, "time travel")
             else:
                 story_timetravel_3()
@@ -1124,7 +1125,7 @@ def story_timetravel_2():
         if x == 0:
             ending("Stuck with the Farmers", 14, "time travel")
         else:
-            ending("You hid, but your still stuck with the farmers...", 14, "time travel", alt=True, altname="Stuck with the Farmers")
+            ending("You hid, but you're still stuck with the farmers...", 14, "time travel", alt=True, altname="Stuck with the Farmers")
 
 def story_timetravel_3():
     print("You whirl around in the box, as it shakes and moves violently. Peeking out of the box, you see time passing before you eyes, the asteriod crashing into the earth, and the dinosaurs running away.")
@@ -1194,7 +1195,46 @@ def story_timetravel_3():
 def story_timetravel_4():
     # WW2
     print("You are bumped and kicked around in the box as you travel to your next time. As you arrive, you hop out, hoping to see the present, but, sadly, you see a large open field. Looking around, you see nothing.")
-    x = choice("Do you want to explore?", ["", ""]) # finish
+    x = choice("Do you want to explore?", ["You start to look around and see a storm of troops coming towards you. They are holding up guns, so you duck and quickly get out of their way. On the other side is another group of soldiers. Lucky you didn't get caught in the crossfire! You hear gunshots as you leave the area, and come across a deserted city.", "You stay at your time machine, which after abit just dissapears. Suddenly, you hear gunshots, but it is too late, and you are caught in the crossfire."])
+    if x == 0:
+        x = choice("Do you want to enter?", ["You enter the abandoned city, and see destruction and collapsed buildings all around you. It looks like some kind of war was here. Out of all the buildings, there are three that still seem intact. One that looks like a great hall, another that looks like a bomb shelter, and one that is a temporary camp.", "You decide to keep walking, and soon find yourself in a massive desert."])
+        if x == 0:
+            x = choice("Which do you want to enter?", ["You enter the hall, and find it deserted. Suddenly, you hear a whistling sound and a large kaboom outside the hall. Before you can wonder what happened, you are incinerated in a blink of an eye.", "You open the heavy metal door to the bomb shelter and enter. Inside are a group of people, huddling, looking scared. They tell you that a bomb is coming, and that you are in WW2. Luckily you are in a bomb shelter, so you are not affected by the large explosion. Suddendly, your box appears in front of you.", "You enter the tent flap of the camp, and a soldier grabs you and holds a gun to your throat."], ["hall", "bomb shelter", "camp"])
+            if x == 0:
+                ending("Incinerated", 24, "time travel")
+            elif x == 1:
+                x = choice("Do you want to go into your box?", ["You enter your box and close the lid, saying bye to the other people in the shelter.", "You decide you won't go in, and after awhile the box dissapears. Suddenly, the door swings open and a gun is pointed straight at your forehead. Pew Pew."])
+                if x == 0:
+                    story_timetravel_6()
+                elif x == 1:
+                    ending("'Pew Pew' - That guy who plays too much Valorant", 25, "time travel")
+            else:
+                if "Gold" in inventoryList:
+                    print("Thinking fast, you pull out your gold that you found earlier. The soldier decides to spare your life in return for the gold, and you hurridly leave the camp and the destructed city. You keep walking and find yourself in a desert. Starting to feel thirsty, you rummage around your bag to find water. Nothing.")
+                    ending("Dehydration", 26, "time travel")
+                else:
+                    print("The soldier shoots his gun once, which is enough to make you go bye bye.")
+                    ending("Sayonara", 27, "time travel")
+        else:
+            if "Cake" in inventoryList:
+                print("You are extremely hungry, so look in your bag to find the cake that you stole earlier. Eating it happily, you continue until you see a small military camp.")
+                inventory("Cake", 1, "lose")
+                x = choice("Do you want to enter?", ["You enter the camp and find no-one inside. Taking a jug of water, you leave. Walking for a few days, you drink you your water, but also find a developed city that looks untouched by war.", "You continue, ignoring the camp. After an hour of hiking, the wind starts to pick up, and you realise you are caught in a sandstorm. You try to escape, but you trip and fall, sand covering your body like a blanket."])
+                if x == 0:
+                    inventory("Water", 1)
+                    x = choice("Do you want to enter the city?", ["You arrive at the city, and see a sign saying 'Hiroshima'. Oops.", "I don't know why you don't want to enter a city when you have run out of water, but sure? You died of thirst."])
+                    if x == 0:
+                        ending("Bombed", 30, "time travel")
+                    else:
+                        ending("Bad Choices", 29, "time travel")
+                        addachievement("Bad Choices")
+                else:
+                    ending("Buried Forever", 28, "time travel")
+            else:
+                print("You are extremely hungry, but there is no food at all. You then proceed to starve to death.")
+                ending("Stranded in the Desert", 23, "time travel")
+    else:
+        ending("Caught in the crossfire", 22, "time travel")
 
 def story_timetravel_5():
     # Present
@@ -1204,7 +1244,22 @@ def story_timetravel_5():
 
 def story_timetravel_6():
     # Future
-    pass
+    print("Once again, you are being travelled to a new time. Hoping to see your attic, you open the lid slowly and find yourself in an endless hallway.")
+    print("\nYou hurry down the corridor quickly, and you realise that futuristic code is engraved onto the walls. You keep walking, but find nothing. It is not until you stumble upon a trapdoor that you get a break from the endless corridors.")
+    x = choice("Do you want to go into the trapdoor?", ["You enter into the trapdoor to see a massive dark room, and a gigantic square floating object above you. For a minute, you stare at the large object, and see electrical orbs pulsing in and out of the square. Looking out from below the enormous cube structure, you see a thick red wire running from the cube to what looks like a super-computer. Looking around you see other coloured wires going into the computer. There is a ladder next to you that seems to lead to the top of the cube.", "You decide to not go into the trapdoor, and continue down the passageway. After a few intersections where you have to turn, you realise that you are lost in the bright, code etched corridors forever."])
+    if x == 0:
+        x = choice("Do you want to climb the ladder?", ["You start the long climb up the ladder and after what seems like a very long time, you reach the top. On the top is a massive printed text that reads: 'AI Supercomputer 3045'. Wondering what that means, you look up at the small supercomputer above you and see that it is pulsing red. There is a thin rope ladder leading to the top.", "You decide not to climb up the ladder, and continue wondering underneath the computer-feeding cubes. After awhile, you come across a large air compressed door. There is 2 buttons that both seem to open the door, but only one can be correct. One is red, and the other is blue."])
+        if x == 0:
+            x = choice("Do you want to climb up it?", ["You climb up to the top, and see the computer screen. On its pixelated display there is the history of what happened. Reading it, you realise that the year is 5002, and pollution has caused the whole world to be unliveable, and humans have gone extinct, except one who's whereabouts are unknown. This computer is the last memory of all the technology that the humans made, and the last memory that might ever exist. The computer auto-scrolls with your eyes, and the last line reads: 'If you are reading this, find the Earth restore gem before it is too late.' A countdown is right below it, reading 2 hours left.", "You decide not to go up to the computer, and suddenly, all the room lights up, and red alarms flash from everywhere. A ten second countdown flashes on the walls, and the structure collapses as a massive earthquake shakes violently. The air is toxic, and you can't breathe, so you don't last long."])
+            if x == 0:
+                pass #finish
+            else:
+                ending("Toxic Fumes", 32, "time travel")
+        else:
+            x = choice("Which button do you pick?", ["", ""], ["red", "blue"]) # finish
+    else:
+        ending("Lost in Code", 31, "time travel")
+
 
 # JADEN - SCHOOL
 def story_school(user:str):
