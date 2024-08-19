@@ -10,12 +10,22 @@ from keyboard import is_pressed
 import threading
 import os
 
-# Inits
+# Initialisations
 mixer.init()
 
-# Program preset variables:
+# file pathnames
+#files
 s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
-e = 'Constants/allendings.txt'
+e = os.getcwd()+('\\Constants\\allendings.txt' if "C:" in os.getcwd() else '/Constants/allendings.txt')
+ins = os.getcwd()+('\\Constants\\inspirational.txt' if "C:" in os.getcwd() else '/Constants/inspirational.txt')
+#songs
+happy = os.getcwd()+('\\Songs\\Happy.mp3' if "C:" in os.getcwd() else '/Songs/Happy.mp3')
+hope = os.getcwd()+('\\Songs\\Hope.mp3' if "C:" in os.getcwd() else '/Songs/Hope.mp3')
+mystery = os.getcwd()+('\\Songs\\Mystery.mp3' if "C:" in os.getcwd() else '/Songs/Hope.mp3')
+wii_music = os.getcwd()+('\\Songs\\Wii-Music.mp3' if "C:" in os.getcwd() else '/Songs/Wii-Music.mp3')
+
+
+# Program presets variables:
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -665,10 +675,11 @@ def checkcommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        with open("Constants\\inspirational.txt", "r") as file:
+        
+        with open(ins, "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = ["Songs\\Hope.mp3", "Songs\\Happy.mp3", "Songs\\Mystery.mp3"]
+        songlist = [hope, happy, mystery]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
             mixer.music.play()
@@ -1337,7 +1348,7 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load('Songs\\Wii-Music.mp3')
+            mixer.music.load(wii_music)
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
@@ -1530,11 +1541,11 @@ def story_mountain():
     alive = True
     current_inventory = []
     def subtract_oxygen(targetList:list = current_inventory):
-        sleep(120)
+        sleep(5)
         try:
             targetList.remove('Oxygen')
             targetList.remove('Oxygen')
-            print('Two oxygen were removed.')
+            cprint('Two oxygen were removed.', 'red')
         except ValueError:
             ending('Suffocated from lack of oxygen...', 1, 'mountain')
             alive = False
@@ -1543,7 +1554,7 @@ def story_mountain():
     def add_oxygen(targetList:list = current_inventory):
         for i in range(0, 3):
             targetList.append('Oxygen')
-        print('Two oxygen gained.')
+        cprint('Two oxygen gained.', 'green')
         
     def main_game():
         friend = ''
@@ -1590,13 +1601,13 @@ Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen wi
                 elif c3 == 2 and alive != False:
                     #bought 5 300L tanks, slow speed
                     friend_speed = 'slow'
-                
 
             elif c2 == 1 and alive != False:
                 print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
                 print('Oh well, at least he has oxygen.')
 
             print('After getting back to the base camp, you are ready to embark on your new journey.')
+            sleep(1)
 
 
         #william    
@@ -1604,11 +1615,18 @@ Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen wi
             print('You chose William.')
             friend == 'William'
             william_inv = ['Oxygen', 'Oxygen', 'Oxygen', 'Oxygen']
+            print('William was prepared, so he has brought oxygen to start camping.')
+
         #pat
         elif c1 == 2 and alive != False:
             print('You chose Pat.')
             friend == 'Pat'
             pat_inv = []
+        
+        #all friends are here
+        print(f'Your altitude is: {altitude}m.')
+        print(f'')
+        
 
 
     #start of mountain game, starts the threads

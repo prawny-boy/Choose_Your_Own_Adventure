@@ -20,5 +20,5 @@ Achievements: //First Command/special,Beginner Jungle/amazon jungle,Escape of th
 Commands: //help,start,start,start,start,start,save
 User: /levi
 Endings: //
-Achievements: //
-Commands: //
+Achievements: //First Command/special
+Commands: //start,help
