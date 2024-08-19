@@ -1353,9 +1353,7 @@ He laughs and you get swallowed in the waves of Ligma. """, """You rush towards 
 readying up your Ultimate move. The man is no other than the new maths teacher Mr Black. He has a deranged look on his face and his veins bulge. 
 He tells you that he is Mr White’s twin brother, and that he never got to be the favourite child. The Ligma Lord had promised him fame and glory 
 if he managed to defeat all the remaining students. Mr Black suddenly has a giant grin as he summons two fireballs in his palms, and you have a 
-sinking feeling that you might just be cooked""", """You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up and go straight 
-for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building into rubble, 
-as your limbs get pulled apart by the intense gravity. """, """You rush towards Duffy, but instantly get knocked back by the man. Realising you must stall for time, you turn towards him, 
+sinking feeling that you might just be cooked""", """""", """You rush towards Duffy, but instantly get knocked back by the man. Realising you must stall for time, you turn towards him, 
 readying up your Ultimate move. The man is no other than the new maths teacher Mr Black. He has a deranged look on his face and his veins bulge. 
 He tells you that he is Mr White’s twin brother, and that he never got to be the favourite child. The Ligma Lord had promised him fame and glory 
 if he managed to defeat all the remaining students. Mr Black suddenly has a giant grin as he summons two fireballs in his palms, and you have a 
@@ -1363,11 +1361,17 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load('Songs\\Wii-Music.mp3')
+            m = randint(1,3)
+            if m == 1:
+                mixer.music.load('Songs\\Wii-Music.mp3')
+            elif m == 2:
+                mixer.music.load('Songs\\Wii-Shop.mp3')
+            elif m == 3:
+                mixer.music.load('Songs\\Wii-Sports.mp3')
+            mixer.music.play()
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
-            sleep(3)
             ending('Bro needs to learn about plot development', 11, 'School')
         elif c == 3 or c == 1:
             slowprint("Hey, what's the formula for defeating old math teachers? ", 0.05, ['bold'])
