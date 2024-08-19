@@ -9,14 +9,15 @@ import sys
 from keyboard import is_pressed
 import threading
 import os
-print(os.getcwd())
+os.getcwd()
 
 # Inits
 mixer.init()
 
 # Program preset variables:
-s = r'Constants\stats.txt'
-e = r'Constants\allendings.txt'
+s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
+#s = 'Constants/stats.txt'
+e = 'Constants/allendings.txt'
 inventoryList = []
 stories = {
     "tomb": 15,
