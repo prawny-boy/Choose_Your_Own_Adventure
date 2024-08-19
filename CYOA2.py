@@ -6,12 +6,13 @@ from achievements import achievements
 from pygame import mixer
 import sys
 from keyboard import is_pressed
+import os
 
 # Inits
 mixer.init()
 
 # Program preset variables:
-s = 'Constants\\stats.txt'
+s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
 e = 'Constants\\allendings.txt'
 inventoryList = []
 stories = {
