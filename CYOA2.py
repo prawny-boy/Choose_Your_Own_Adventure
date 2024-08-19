@@ -1363,9 +1363,9 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         elif c == 2:
             m = randint(1,3)
             if m == 1:
-                mixer.music.load('Songs\\Wii-Music.mp3')
-            elif m == 2:
                 mixer.music.load('Songs\\Wii-Shop.mp3')
+            elif m == 2:
+                mixer.music.load('Songs\\Wii-Music.mp3')
             elif m == 3:
                 mixer.music.load('Songs\\Wii-Sports.mp3')
             mixer.music.play()
