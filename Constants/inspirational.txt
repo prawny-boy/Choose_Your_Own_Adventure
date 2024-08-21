@@ -3,7 +3,7 @@ That person was Sean.
 That person came up with the idea of making a python game.
 Without help, he worked day and night to produce a small but promising game.
 A individual company was formed: S corporation
-Choose Your Adventure (1.0, Alpha)|
+Choose Your Own Adventure (1.0, Alpha)|
 After a bit, Sean gave up on the project. 
 It was not until another person joined a year later that he resumes progress.
 That person was Oliver. 
