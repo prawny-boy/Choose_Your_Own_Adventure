@@ -673,13 +673,17 @@ def checkcommand(command:str) -> None:
     elif command == "achievements":
         listachievements()
     elif command == "switch":
-        print(f"You are signed in as {user}")
+        if user == "":
+            print("You are currently anonymous.")
+        else:
+            print(f"You are signed in as {user}")
         while True:
             confirm = input("Do you want to sign out? (y/n) ").upper()
             if confirm == "Y":
-                update_stats(user)
+                if user != "":
+                    update_stats(user)
                 user = ""
-                print("Signed out. Please Sign In.")
+                print("Signed out. Please sign in.")
                 running_commands = False
                 break
             elif confirm == "quit":
