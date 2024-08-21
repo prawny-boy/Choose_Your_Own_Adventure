@@ -673,13 +673,17 @@ def checkcommand(command:str) -> None:
     elif command == "achievements":
         listachievements()
     elif command == "switch":
-        print(f"You are signed in as {user}")
+        if user == "":
+            print("You are currently anonymous.")
+        else:
+            print(f"You are signed in as {user}")
         while True:
             confirm = input("Do you want to sign out? (y/n) ").upper()
             if confirm == "Y":
-                update_stats(user)
+                if user != "":
+                    update_stats(user)
                 user = ""
-                print("Signed out. Please Sign In.")
+                print("Signed out. Please sign in.")
                 running_commands = False
                 break
             elif confirm == "quit":
@@ -867,7 +871,6 @@ They roar to life, throwing you back and bringing you back to earth.
     slowprint('THE END', 0.05, ["bold"])
 
 # SEAN - AMAZON ADVENTURE
-
 def story_amazon_adventure_pilot():
     x = choice("Do you want to go find a village, continue searching in the plane, or stay and build a shelter next to the plane crash?", ["You and John both leave the crashed plane and after hours of searching you find a village. As you approach the alarm sounds, and you are both captured by the native tribe. You are going to be hanged in 2 hours, unless you have something to give.", "'Do you know about anything else in the plane?' You ask John. 'Yes there is a wrench and a instruction manual in the glove box' John replies, taking the things out. He gives them to you. These could be helpful for fixing the plane...", "You stay at the plane crash site, making a shelter for you and John for the next month. After you run out of food, you face the option of adventuring into the dangerous forest for food, or staying at the shelter to starve."], ['village', 'search', 'stay'])
     if x == 0:
@@ -1256,10 +1259,49 @@ def story_timetravel_6():
             else:
                 ending("Toxic Fumes", 32, "time travel")
         else:
-            x = choice("Which button do you pick?", ["", ""], ["red", "blue"]) # finish
+            x = choice("Which button do you pick?", ["You pick the red button, but red stands for danger, and a laser suddenly zaps you to death.", "You pick the blue button, and the door slides open. Behind it is another door."], ["red", "blue"])
+            if x == 0:
+                ending("Red for Danger", 33, "time travel")
+            else:
+                x = choice("Do you want to open the next door?", ["You open the door, and cold wind gushes in. You start feeling dizzy, and at your last moment, you look forwards to see a completely, different Earth, one that is unliveable and toxic.", "Instead of opening the door, you look at the walls and see wires running everywhere, and a sign saying: 'Danger. Outside is very toxic. Do not open door unless you have a suit.' Luckily you didn't go out! Now begs the question:"])
+                if x == 0:
+                    ending("Pollution", 34, "time travel")
+                else:
+                    x = choice("Do you want to find a suit?", ["You go back through the door and come across a sign saying: 'Suit Storage'. You follow the directions and finally come across rows of suits that probably haven't been used for centuries. There are 5 suits that look good out of the rest that all seem broken.", "You leave the airlock chamber and come across a sign on a door that says: 'Quarantine Room'."])
+                    if x == 0:
+                        x = choice("Will you select a suit?", ["You decide to select a suit so that you can explore the outside.", "You decide not to select suits as they look too risky to use."])
+                        if x == 0:
+                            x = choice("Which suit will you pick?", ["", "", "", "", "Putting the suit on, you follow the signs back to the airlock chamber and open both doors to step outside. After walking for awhile, you see a bunker."], ["1", "2", "3", "4", "5"])
+                            if x == 0 or x == 1:
+                                print("You put the suit on, but start to cough vigourously at the amount of dust in the suit. You choke on the dust particles and your coughs slowly die down to silence.")
+                                ending("Dust Allergy", 38, "time travel")
+                            elif x == 2 or x == 3:
+                                print("You get into the suit, and bugs suddenly start biting you and eating your flesh until you are all gone.")
+                                ending("Eaten By Bugs", 39, "time travel")
+                            else:
+                                x = choice("Do you want to go to the bunker or keep walking outside?", ["You enter the bunker through another double door airlock. Taking off your suit, you see your box again, sitting there in the middle. You hop in and close the lid for (hopefully) the last time.", "You keep walking, but suddenly, you suit malfunctions, and all the air you had is lost."], ["bunker", "walk"])
+                                if x == 0:
+                                    story_timetravel_5()
+                                else:
+                                    ending("I Can't Breathe", 40, "time travel")
+                        else:
+                            if "Cake" in inventoryList:
+                                print("You start feeling very hungry, so check your bag for food. Luckily you have cake in your bag, so you eat it up and feel better. As you keep walking, you come across a sign that says: 'Quarantine Room'.")
+                                story_timetravel_6_1()
+                            else:
+                                print("You start feeling very hungry, but you don't have any food. After walking awhile longer, you run out of energy, so you stop walking and sit down, waiting for your eternal rest.")
+                                ending("Eternally Hungry", 35, "time travel")
+                    else:
+                        story_timetravel_6_1()
     else:
         ending("Lost in Code", 31, "time travel")
 
+def story_timetravel_6_1():
+    x = choice("Do you want to enter?", ["You enter the room, and start smelling the smell of rotten bodies. You faint.", "You decide to not get in the room, but suddenly, the door swings open and a zombie runs out and catches you... forever."])
+    if x == 0:
+        ending("You stink", 37, "time travel")
+    else:
+        ending("Caught by the Zombies", 36, "time travel")
 
 # JADEN - SCHOOL
 def story_school(user:str):
