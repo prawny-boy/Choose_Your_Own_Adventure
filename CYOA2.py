@@ -11,9 +11,16 @@ import os
 # Inits
 mixer.init()
 
-# Program preset variables:
-s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
-e = 'Constants\\allendings.txt'
+# Program Preset Functions
+def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    if 'C:' in os.getcwd():
+        return filepath
+    else:
+        return os.getcwd()+"/"+filepath.replace("\\", "/")
+
+# Program Preset Variables:
+s = convertfilename('Constants\\stats.txt')
+e = convertfilename('Constants\\allendings.txt')
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -695,10 +702,10 @@ def checkcommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        with open("Constants\\inspirational.txt", "r") as file:
+        with open(convertfilename("Constants\\inspirational.txt"), "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = ["Songs\\Hope.mp3", "Songs\\Happy.mp3", "Songs\\Mystery.mp3"]
+        songlist = [convertfilename("Songs\\Hope.mp3"), convertfilename("Songs\\Happy.mp3"), convertfilename("Songs\\Mystery.mp3")]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
             mixer.music.play()
@@ -708,7 +715,7 @@ def checkcommand(command:str) -> None:
     elif command == "quit":
         exit()
     elif command == 'updates':
-        with open("Constants\\updates.txt", "r") as file:
+        with open(convertfilename("Constants\\updates.txt"), "r") as file:
             print(file.read())
         addachievement("Technician")
     elif command == 'credits':
@@ -737,7 +744,7 @@ Story Writers:
         addachievement("Supporter")
     elif command == "testers":
         cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
-        with open("Constants\\testers.txt", "r") as file:
+        with open(convertfilename("Constants\\testers.txt"), "r") as file:
             for line in file.readlines():
                 print(line.strip("\n"))
     elif command == "198234":
