@@ -13,17 +13,21 @@ import os
 # Initialisations
 mixer.init()
 
-# file pathnames
-#files
-s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
-e = os.getcwd()+('\\Constants\\allendings.txt' if "C:" in os.getcwd() else '/Constants/allendings.txt')
-ins = os.getcwd()+('\\Constants\\inspirational.txt' if "C:" in os.getcwd() else '/Constants/inspirational.txt')
+def file_conversion(file) -> str:
+    system = 'windows' if "C:" in os.getcwd() else 'mac/linux'
+    if system == 'windows':
+        return os.getcwd() + file
+    file = file.replace('\\', '/')
+    return os.getcwd() + file
+#file names
+s = file_conversion('\\Constants\\stats.txt')
+e = file_conversion('\\Constants\\allendings.txt')
+ins = file_conversion('\\Constants\\inspirational.txt')
 #songs
-happy = os.getcwd()+('\\Songs\\Happy.mp3' if "C:" in os.getcwd() else '/Songs/Happy.mp3')
-hope = os.getcwd()+('\\Songs\\Hope.mp3' if "C:" in os.getcwd() else '/Songs/Hope.mp3')
-mystery = os.getcwd()+('\\Songs\\Mystery.mp3' if "C:" in os.getcwd() else '/Songs/Hope.mp3')
-wii_music = os.getcwd()+('\\Songs\\Wii-Music.mp3' if "C:" in os.getcwd() else '/Songs/Wii-Music.mp3')
-
+happy = file_conversion('\\Songs\\Happy.mp3')
+hope = file_conversion('\\Songs\\Hope.mp3')
+mystery = file_conversion('\\Songs\\mystery.mp3')
+wii_music = file_conversion('\\Songs\\Wii-Music.mp3')
 
 # Program presets variables:
 inventoryList = []
@@ -33,7 +37,7 @@ stories = {
     "space story": 12,
     'time travel': 30,
     'school': 20,
-    'mountain': 1,
+    'mountain': 2,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
@@ -50,6 +54,8 @@ userach = [] # user achievments
 usercommands = [] # user commands
 fails = 0
 wins = 0
+
+
 
 def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) -> None:
     start = 0
@@ -1536,25 +1542,32 @@ def story_tomb_passageway():
                 else:
                     ending("Should've Studied Harder", 13, "tomb")
 
+global alive
+alive = True
 # LEVI - MOUNTAIN
 def story_mountain():
-    alive = True
     current_inventory = []
-    def subtract_oxygen(targetList:list = current_inventory):
-        sleep(5)
-        try:
-            targetList.remove('Oxygen')
-            targetList.remove('Oxygen')
-            cprint('Two oxygen were removed.', 'red')
-        except ValueError:
-            ending('Suffocated from lack of oxygen...', 1, 'mountain')
-            alive = False
-            return
+    inventory_lock = threading.Lock()
+    def subtract_oxygen(targetList: list = current_inventory):
+        global alive
+        while True:
+            if not alive:
+                return
+            sleep(10)
+            try:
+                targetList.remove('Oxygen')
+                targetList.remove('Oxygen')
+                print()
+                cprint('Two oxygen were removed.', 'red')
+            except ValueError:
+                ending('Suffocated from lack of oxygen...', 1, 'mountain')
+                alive = False
+                return
 
     def add_oxygen(targetList:list = current_inventory):
         for i in range(0, 3):
             targetList.append('Oxygen')
-        cprint('Two oxygen gained.', 'green')
+        cprint('Three oxygen gained.', 'green')
         
     def main_game():
         friend = ''
@@ -1573,36 +1586,35 @@ def story_mountain():
         #Derek
         if c1 == 0 and alive != False:
             print('You chose Derek.')
-            friend == 'Derek'
+            friend = 'Derek'
             derek_inv = []
             print("You check what Derek has, and not to your surprise, he only has mountain apparel. You tell him he needs bottled oxygen, and he quickly finds a market just below where you are talking to buy some oxygen.")
 
-            c2 = choice('''You have some spare time. What do you do?
+            dc2 = choice('''You have some spare time. What do you do?
 Go with Derek to buy oxygen.
 Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen with him.', 'Derek goes off by himself to buy some oxygen.'], ['Go', 'Phone'])
             add_oxygen()
 
-            if c2 == 0 and alive != False:
+            if dc2 == 0 and alive != False:
                 print("On the way to the market, Derek keeps talking about his family and children. You on the other hand, have been annoyed, that you don't have a family, but feel better because you're more experienced in most things.")
                 print('You arrive to the market, and there are multiple bottles for sale.')
-                c3 = choice('''Which bottle and what quantity do you choose?
+                dc3 = choice('''Which bottle and what quantity do you choose?
 1) 3 400L tanks, fast speed
 2) 4 350L tanks, medium speed
 3) 5 300L tanks, slow speed
 ''', ['You chose 3 400L tanks. Derek will walk at a fast pace.', 'You chose 4 350L tanks, Derek will walk at a medium pace.', 'You chose 5 300L tanks, Derek will walk at a slow pace.'], ['1', '2', '3'])
                 add_oxygen()
 
-                if c3 == 0 and alive != False:
+                if dc3 == 0 and alive != False:
                     #bought 3 400L tanks, fast walking pace
                     friend_speed = 'fast'
-                elif c3 == 1 and alive != False:
+                elif dc3 == 1 and alive != False:
                     #bought 4 350L tanks, medium speed
                     friend_speed = 'medium'
-                elif c3 == 2 and alive != False:
+                elif dc3 == 2 and alive != False:
                     #bought 5 300L tanks, slow speed
                     friend_speed = 'slow'
-
-            elif c2 == 1 and alive != False:
+            elif dc2 == 1 and alive != False:
                 print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
                 print('Oh well, at least he has oxygen.')
 
@@ -1613,33 +1625,46 @@ Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen wi
         #william    
         elif c1 == 1 and alive != False:
             print('You chose William.')
-            friend == 'William'
+            friend = 'William'
+            friend_speed = 'fast'
             william_inv = ['Oxygen', 'Oxygen', 'Oxygen', 'Oxygen']
-            print('William was prepared, so he has brought oxygen to start camping.')
+            print('William was prepared, so he brought oxygen to start climbing.')
 
         #pat
         elif c1 == 2 and alive != False:
-            print('You chose Pat.')
-            friend == 'Pat'
-            pat_inv = []
-        
+            print("You were a bit shook from Pat's strength. Nevertheless, he is very enthusiastic to climb Mt. Everest with you.")
+            friend = 'Pat'
+            pat_inv = ['supposedly...steroids']
+            pc2 = choice("""You ask Pat about his strength, and he casually shrugs it off. He looks like a bodybuilder, but you remember he doens't have the time to go to the gym.
+You are intrigued as to why he is so muscly.
+Do you ask him about his strength?""", ['', ''], ['y', 'n'])
+            add_oxygen()
+            if pc2 == 0:
+                print('After pestering him, he finally admits that he does indeed take steroids. He then suddenly snaps out of nowhere, and threatens to end you if you do one thing wrong.')
+                ending('Steroids...', 2, 'Mountain')
+                return
+            elif pc2 == 1:
+                print('He initiates a conversation with you, and you respond.')
         #all friends are here
+        sleep(1)
         print(f'Your altitude is: {altitude}m.')
         print(f'')
         
+
 
 
     #start of mountain game, starts the threads
     cprint('Every two minutes, to simulate being at Mount Everest, you lose 2 oxygen. But each time you make a decision, you get 3 oxygen. Make your decisions quick!', 'red')
     thread1 = threading.Thread(target=subtract_oxygen)
     thread2 = threading.Thread(target=main_game)
-
+ 
     thread1.start()
     thread2.start()
 
     thread1.join()
     thread2.join()
 
+    print('Thanks for playing!')
 
 # OLIVER - UNDERWATER
 def story_underwater():

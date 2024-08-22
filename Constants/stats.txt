@@ -19,6 +19,6 @@ Endings: //6/amazon jungle/fail,8/amazon jungle/fail,7/amazon jungle/fail,14/ama
 Achievements: //First Command/special,Beginner Jungle/amazon jungle,Escape of the Jungle/amazon jungle,Godslayer/school,Ligma Master/school,Year 7/school,Saved/special
 Commands: //help,start,start,start,start,start,save
 User: /levi
-Endings: //
-Achievements: //First Command/special
-Commands: //start,help
+Endings: //Steroids.../Mountain/fail,2/Mountain/fail,2/Mountain/fail,2/Mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail
+Achievements: //First Command/special,Rock Climber/mountain,All Endings [Mountain]/mountain,Command User/special,Hiker/mountain
+Commands: //start,help,start,start,start,start,start,start,start,start,start,start,start,start
