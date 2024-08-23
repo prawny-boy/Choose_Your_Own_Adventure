@@ -1,6 +1,6 @@
 from termcolor import cprint, colored
 from sys import exit
-from updates import updates
+from Constants import updates
 from random import randint
 from time import sleep
 from achievements import achievements
