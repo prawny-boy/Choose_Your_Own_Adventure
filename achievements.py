@@ -34,6 +34,7 @@ time = {
     'Bad Choices': ["Get the ending: bad choices"],
     "Back to reality": ["Win Time Travel"],
     "Finding Gold": ["Find gold"],
+    "The Future is Bright": ["Save the future and win"],
     # Standard Achievements
     'Time Traveller': ['Play this story 1 time', 'time travel.play-1'],
     'Better Time Traveller': ['Play this story 10 times', 'time travel.play-10'],
