@@ -1,10 +1,11 @@
+import sys
+sys.dont_write_bytecode = True # makes sure _pycache_ is not created
 from termcolor import cprint, colored
 from sys import exit
 from random import randint
 from time import sleep
 from achievements import achievements
 from pygame import mixer
-import sys
 from keyboard import is_pressed
 import os
 
