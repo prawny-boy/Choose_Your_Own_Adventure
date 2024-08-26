@@ -11,26 +11,19 @@ from keyboard import is_pressed
 import threading
 import os
 
-# Initialisations
+# Inits
 mixer.init()
 
-def file_conversion(file) -> str:
-    system = 'windows' if "C:" in os.getcwd() else 'mac/linux'
-    if system == 'windows':
-        return os.getcwd() + file
-    file = file.replace('\\', '/')
-    return os.getcwd() + file
-#file names
-s = file_conversion('\\Constants\\stats.txt')
-e = file_conversion('\\Constants\\allendings.txt')
-ins = file_conversion('\\Constants\\inspirational.txt')
-#songs
-happy = file_conversion('\\Songs\\Happy.mp3')
-hope = file_conversion('\\Songs\\Hope.mp3')
-mystery = file_conversion('\\Songs\\mystery.mp3')
-wii_music = file_conversion('\\Songs\\Wii-Music.mp3')
+# Program Preset Functions
+def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    if 'C:' in os.getcwd():
+        return filepath
+    else:
+        return os.getcwd()+"/"+filepath.replace("\\", "/")
 
-# Program presets variables:
+# Program Preset Variables:
+s = convertfilename('Constants\\stats.txt')
+e = convertfilename('Constants\\allendings.txt')
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -55,8 +48,6 @@ userach = [] # user achievments
 usercommands = [] # user commands
 fails = 0
 wins = 0
-
-
 
 def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) -> None:
     start = 0
@@ -683,10 +674,10 @@ def checkcommand(command:str) -> None:
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
         
-        with open(ins, "r") as file:
+        with open(convertfilename("Constants\\inspirational.txt"), "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = [hope, happy, mystery]
+        songlist = [convertfilename("Songs\\Hope.mp3"), convertfilename("Songs\\Happy.mp3"), convertfilename("Songs\\Mystery.mp3")]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
             mixer.music.play()
@@ -1443,7 +1434,7 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load(wii_music)
+            mixer.music.load("Songs\\Wii-Music.mp3")
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
