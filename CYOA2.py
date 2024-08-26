@@ -721,12 +721,13 @@ def checkcommand(command:str) -> None:
         addachievement("Technician")
     elif command == 'credits':
         print("""
-███████╗ ██████╗
-██╔════╝██╔═══██╗
-███████╗██║   ██║     \033[1mSean & Oliver Corporation Inc\033[0m
-╚════██║██║   ██║
-███████║╚██████╔╝
-╚══════╝ ╚═════╝ 
+
+███████╗ ██████╗ ██╗     
+██╔════╝██╔═══██╗██║     
+███████╗██║   ██║██║            \033[1mSean & Oliver Corporation Inc\033[0m
+╚════██║██║   ██║██║     
+███████║╚██████╔╝███████╗
+╚══════╝ ╚═════╝ ╚══════╝
 
 ------------------------------------------------
 Version: 2.2 ("Updates" for latest changes)
