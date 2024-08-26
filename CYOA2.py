@@ -1,6 +1,6 @@
 from termcolor import cprint, colored
 from sys import exit
-from Constants import updates
+#from Constants import updates
 from random import randint
 from time import sleep
 from achievements import achievements
@@ -14,11 +14,7 @@ import os
 mixer.init()
 
 def file_conversion(file) -> str:
-    system = 'windows' if "C:" in os.getcwd() else 'mac/linux'
-    if system == 'windows':
-        return os.getcwd() + file
-    file = file.replace('\\', '/')
-    return os.getcwd() + file
+    return (os.getcwd()+file) if 'C:' in os.getcwd() else (os.getcwd()+(file.replace('\\', '/')))
 #file names
 s = file_conversion('\\Constants\\stats.txt')
 e = file_conversion('\\Constants\\allendings.txt')
@@ -694,7 +690,7 @@ def checkcommand(command:str) -> None:
         mixer.music.fadeout(1000)
     elif command == "quit":
         exit()
-    elif command == 'updates':
+    #elif command == 'updates':
         print(updates)
         addachievement("Technician")
     elif command == 'credits':
@@ -1558,11 +1554,17 @@ def story_mountain():
                 targetList.remove('Oxygen')
                 targetList.remove('Oxygen')
                 print()
+                LINE_UP = '\033[1A'
+                LINE_CLEAR = '\x1b[2K'
+                print(LINE_UP)
+                print(LINE_UP + LINE_CLEAR, end='')
                 cprint('Two oxygen were removed.', 'red')
+
             except ValueError:
                 ending('Suffocated from lack of oxygen...', 1, 'mountain')
                 alive = False
-                return
+                return 
+                
 
     def add_oxygen(targetList:list = current_inventory):
         for i in range(0, 3):
@@ -1614,10 +1616,13 @@ Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen wi
                 elif dc3 == 2 and alive != False:
                     #bought 5 300L tanks, slow speed
                     friend_speed = 'slow'
+                elif alive == False:
+                    return
             elif dc2 == 1 and alive != False:
                 print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
                 print('Oh well, at least he has oxygen.')
-
+            elif alive == False:
+                return
             print('After getting back to the base camp, you are ready to embark on your new journey.')
             sleep(1)
 
@@ -1645,7 +1650,13 @@ Do you ask him about his strength?""", ['', ''], ['y', 'n'])
                 return
             elif pc2 == 1:
                 print('He initiates a conversation with you, and you respond.')
+            elif alive == False:
+                return
+        elif alive == False:
+            return
         #all friends are here
+        if alive == False:
+            return
         sleep(1)
         print(f'Your altitude is: {altitude}m.')
         print(f'')
@@ -1679,7 +1690,7 @@ while True:
     while running_commands:
         print("")
         checkcommand(input("Enter a command ('Help' for options) > "))
-        if not user == "":
+        if user != "":
             update_stats(user)
             checkachievements()
             update_stats(user)
