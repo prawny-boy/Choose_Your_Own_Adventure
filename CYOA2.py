@@ -45,7 +45,7 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
-def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) -> None:
+def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=True) -> None:
     start = 0
     for char in str:
         cprint(char, end='', attrs=attr, color=c)
@@ -1416,7 +1416,7 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            m = randint(1,3)
+            m = randint(1,4)
             if m == 1:
                 mixer.music.load('Songs\\Wii-Shop.mp3')
             elif m == 2:
@@ -1479,7 +1479,53 @@ They tell you to get some sleep as you have been thoroughly exhausted by the day
 You try to yell for help, but your lips move soundlessly in the darkness. You hear the evil laughter of Ligma Lord as you feel a rush of wind awaken you 
 from your nightmare. Wingsley Kong is shaking you awake as he explains that the attack groups had decided to strike early morning and left you here 
 because they wanted you to rest. Hearing this news, you know that you must go help them because you have a feeling that they are going to mess up.  
-Wingsley Kong agrees and wakes up Duffy because he is the only other person left in this room, even Mr White has gone.  """)
+Wingsley Kong agrees and wakes up Duffy because he is the only other person left in this room, even Mr White has gone.  
+The three of you set off to Stokes, ready to save the school, and potentially the world. Wingsley Kong casts a cheering charm on you, 
+basically giving you coffee but more stimulating and without the caffeine crash. You jump over the wreckage that the attack group had 
+made going into the building. You see many Ligma Zombies lying on the sides of the building. Suddenly the roof caves in and you spot a 
+giant bubble creature emitting godly light. On the ground are your fellow students, fighting for their lives.  """)
+                    
+                    c = choice("""
+Option A: Run over to help them with your epic fighting powers
+Option B: Hold back because stealing people’s kills isn’t very Skibidi""", ["""You run in and use Counter-Ligma to destroy the other ligma zombies, with your classmates looking at you with shock. 
+You turn around and ask why they are so worried, and then they explain that they planted 8294232374 Kg of 
+TNT inside of Stokes that is going to detonate in 3 seconds. """, """You tell Wingsley Kong and Duffy to hold back, as Soul prepares the killing blow to the bubble creature, 
+Ligma Lord uses Blooket hacks to teleport into the battle, and unleash an all-powerful wave of pure Ligma, paralysing all the students. 
+He waves his hand, and all your classmates fall into a dark void where The Ligma Lord follows into. You and Wingsley sit there, 
+stunned at what has just happened. Without thinking, you jump into the void, ready to chase after the Ligma Lord, to save your friends. """], ['A', 'B'])
+                    
+                    if c == 0:
+                        ending('BOOM', 15, 'School')
+                    elif c == 1:
+                        print("""As you fall through the void, you land on some storm clouds which are slowly rising. 
+You see that your fellow students have been encased within black energy, slowly converting their will into Ligma. You spot Wingsley on a storm cloud about 50 metres away, 
+who has caught the attention of Ligma Lord, who is levitating (because he’s just that guy). Wingsley Kong fires up a Superman-Like Laser eye shot, which just bounces off Ligma Lord. 
+You yell at Wingsley to run, as you use Fourth Form: Lighting Fast Leap to get in front of Wingsley just as the Ligma Lord shoots out a ray of Pure Ligma. 
+You feel the burn slice through your veins, but you have done enough for Wingsley to be unharmed. You feel your head get dizzy, and then the lights go out, 
+as you are stirred by the call of Ligma. """)
+                        sleep(2)
+                        slowprint('Wingsley Kong POV', 0.1, ['bold'], 'red')
+                        sleep(1)
+                        print(f"""You are in shock. 
+
+Your friend {user.title()} has just sacrificed themselves for you. That wasn’t supposed to happen. {user.title()} was the best of the Counter-Ligma users, 
+the one prophesises to defeat the evil forces of Ligma. Instead now they are dead, body in smothering ashes on the black clouds. 
+You feel the blood pounding through your head as you turn to face Ligma Lord. Heat begins to start radiating from your body as 
+your tears only fuel the fire that is burning within you. Character development starts charging up around you as you unlock your true form: 
+Kingsley Wong.  
+
+Ligma Lord stares at you, then does his evil laugh thing. “Puny Mortal,” he says to you. “You really think that you can defeat me?”. 
+Without waiting for a response, he summons a giant dragon, made of the corpses of dead Ligma Zombies. 
+He hops onto its back, then points his scythe at you. 
+
+“Come at me, Wingsley Kong! I have plenty of time to entertain you!”  
+
+(Damn it, you know this isn’t the time but that was kind of fire ngl.) 
+
+The dragon strikes first, spewing deadly Ligma flames, which scream random Brainrot like “Skibidi level 10 gyatt, causing you to cringe intensely. 
+You block out any noise with your secret ability to fold up your ears naturally. You ram your fist into the dragon, dealing 50% of its health in one hit. 
+It roars in agony as it starts falling apart.  """)
+                                                
                 elif c == 1:
                     ending('Cheats were enabled', 14, 'School')
                 elif c == 2:
