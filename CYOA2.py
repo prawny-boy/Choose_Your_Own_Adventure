@@ -11,9 +11,16 @@ import os
 # Inits
 mixer.init()
 
-# Program preset variables:
-s = os.getcwd()+('\\Constants\\stats.txt' if "C:" in os.getcwd() else '/Constants/stats.txt')
-e = 'Constants\\allendings.txt'
+# Program Preset Functions
+def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    if 'C:' in os.getcwd():
+        return filepath
+    else:
+        return os.getcwd()+"/"+filepath.replace("\\", "/")
+
+# Program Preset Variables:
+s = convertfilename('Constants\\stats.txt')
+e = convertfilename('Constants\\allendings.txt')
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -673,13 +680,17 @@ def checkcommand(command:str) -> None:
     elif command == "achievements":
         listachievements()
     elif command == "switch":
-        print(f"You are signed in as {user}")
+        if user == "":
+            print("You are currently anonymous.")
+        else:
+            print(f"You are signed in as {user}")
         while True:
             confirm = input("Do you want to sign out? (y/n) ").upper()
             if confirm == "Y":
-                update_stats(user)
+                if user != "":
+                    update_stats(user)
                 user = ""
-                print("Signed out. Please Sign In.")
+                print("Signed out. Please sign in.")
                 running_commands = False
                 break
             elif confirm == "quit":
@@ -691,10 +702,10 @@ def checkcommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        with open("Constants\\inspirational.txt", "r") as file:
+        with open(convertfilename("Constants\\inspirational.txt"), "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = ["Songs\\Hope.mp3", "Songs\\Happy.mp3", "Songs\\Mystery.mp3"]
+        songlist = [convertfilename("Songs\\Hope.mp3"), convertfilename("Songs\\Happy.mp3"), convertfilename("Songs\\Mystery.mp3")]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
             mixer.music.play()
@@ -704,7 +715,7 @@ def checkcommand(command:str) -> None:
     elif command == "quit":
         exit()
     elif command == 'updates':
-        with open("Constants\\updates.txt", "r") as file:
+        with open(convertfilename("Constants\\updates.txt"), "r") as file:
             print(file.read())
         addachievement("Technician")
     elif command == 'credits':
@@ -733,7 +744,7 @@ Story Writers:
         addachievement("Supporter")
     elif command == "testers":
         cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
-        with open("Constants\\testers.txt", "r") as file:
+        with open(convertfilename("Constants\\testers.txt"), "r") as file:
             for line in file.readlines():
                 print(line.strip("\n"))
     elif command == "198234":
@@ -1461,9 +1472,7 @@ He laughs and you get swallowed in the waves of Ligma. """, """You rush towards 
 readying up your Ultimate move. The man is no other than the new maths teacher Mr Black. He has a deranged look on his face and his veins bulge. 
 He tells you that he is Mr White’s twin brother, and that he never got to be the favourite child. The Ligma Lord had promised him fame and glory 
 if he managed to defeat all the remaining students. Mr Black suddenly has a giant grin as he summons two fireballs in his palms, and you have a 
-sinking feeling that you might just be cooked""", """You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up and go straight 
-for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building into rubble, 
-as your limbs get pulled apart by the intense gravity. """, """You rush towards Duffy, but instantly get knocked back by the man. Realising you must stall for time, you turn towards him, 
+sinking feeling that you might just be cooked""", """""", """You rush towards Duffy, but instantly get knocked back by the man. Realising you must stall for time, you turn towards him, 
 readying up your Ultimate move. The man is no other than the new maths teacher Mr Black. He has a deranged look on his face and his veins bulge. 
 He tells you that he is Mr White’s twin brother, and that he never got to be the favourite child. The Ligma Lord had promised him fame and glory 
 if he managed to defeat all the remaining students. Mr Black suddenly has a giant grin as he summons two fireballs in his palms, and you have a 
@@ -1471,11 +1480,17 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load('Songs\\Wii-Music.mp3')
+            m = randint(1,3)
+            if m == 1:
+                mixer.music.load('Songs\\Wii-Shop.mp3')
+            elif m == 2:
+                mixer.music.load('Songs\\Wii-Music.mp3')
+            elif m == 3:
+                mixer.music.load('Songs\\Wii-Sports.mp3')
+            mixer.music.play()
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
-            sleep(3)
             ending('Bro needs to learn about plot development', 11, 'School')
         elif c == 3 or c == 1:
             slowprint("Hey, what's the formula for defeating old math teachers? ", 0.05, ['bold'])
