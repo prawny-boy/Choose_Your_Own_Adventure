@@ -1293,11 +1293,26 @@ def story_timetravel_6():
         ending("Lost in Code", 31, "time travel")
 
 def story_timetravel_6_1():
-    x = choice("Do you want to enter?", ["You enter the room, and start smelling the smell of rotten bodies. You faint.", "You decide to not get in the room, but suddenly, the door swings open and a zombie runs out and catches you... forever."])
-    if x == 0:
-        ending("You stink", 37, "time travel")
+    if "Bonker" in inventoryList:
+        x = choice("Do you want to enter?", ["You enter the room, and see a zombie coming straight for you, quickly pulling out your Bonker, you swing it and hope for the best.", "You leave the room as it is, but when you are about to go, there is a crash and a zombie runs out and catches you... forever."])
+        if x == 0:
+            if randint(0,10) == 5:
+                print("You swing your bonker, but suddenly it backfires onto you, causing you to bonk yourself. You pass out, and the zombies all fall onto you.")
+                addachievement("Bonked")
+                ending("Why did you bonk yourself, stupid?", 41, "time travel")
+            else:
+                print("You beat up the zombies in the room and find your box. Sitting next to it is a whole pile of gold. You pick them all up and enter the box.")
+                addachievement("Finding Gold")
+                addachievement("Bonker")
+                story_timetravel_5()
+        else:
+            ending("Caught by the Zombies", 36, "time travel")
     else:
-        ending("Caught by the Zombies", 36, "time travel")
+        x = choice("Do you want to enter?", ["You enter the room, and start smelling the smell of rotten bodies. You faint.", "You decide to not get in the room, but suddenly, the door swings open and a zombie runs out and catches you... forever."])
+        if x == 0:
+            ending("You stink", 37, "time travel")
+        else:
+            ending("Caught by the Zombies", 36, "time travel")
 
 # JADEN - SCHOOL
 def story_school(user:str):
