@@ -1,3 +1,5 @@
+import sys
+sys.dont_write_bytecode = True # makes sure _pycache_ is not created
 from termcolor import cprint, colored
 from sys import exit
 from Constants import updates
@@ -5,7 +7,6 @@ from random import randint
 from time import sleep
 from achievements import achievements
 from pygame import mixer
-import sys
 from keyboard import is_pressed
 import threading
 import os
@@ -35,7 +36,7 @@ stories = {
     "tomb": 15,
     "amazon jungle": 20,
     "space story": 12,
-    'time travel': 30,
+    'time travel': 45,
     'school': 20,
     'mountain': 2,
 } # name of story: amount of endings
@@ -699,12 +700,13 @@ def checkcommand(command:str) -> None:
         addachievement("Technician")
     elif command == 'credits':
         print("""
-███████╗ ██████╗
-██╔════╝██╔═══██╗
-███████╗██║   ██║     \033[1mSean & Oliver Corporation Inc\033[0m
-╚════██║██║   ██║
-███████║╚██████╔╝
-╚══════╝ ╚═════╝ 
+
+███████╗ ██████╗ ██╗     
+██╔════╝██╔═══██╗██║     
+███████╗██║   ██║██║            \033[1mSean & Oliver Corporation Inc\033[0m
+╚════██║██║   ██║██║     
+███████║╚██████╔╝███████╗
+╚══════╝ ╚═════╝ ╚══════╝
 
 ------------------------------------------------
 Version: 2.2 ("Updates" for latest changes)
@@ -1195,7 +1197,94 @@ def story_timetravel_5():
 
 def story_timetravel_6():
     # Future
-    pass
+    print("Once again, you are being travelled to a new time. Hoping to see your attic, you open the lid slowly and find yourself in an endless hallway.")
+    print("\nYou hurry down the corridor quickly, and you realise that futuristic code is engraved onto the walls. You keep walking, but find nothing. It is not until you stumble upon a trapdoor that gives you a break from the endless corridors.")
+    x = choice("Do you want to go into the trapdoor?", ["You enter into the trapdoor to see a massive dark room, and a gigantic square floating object above you. For a minute, you stare at the large object, and see electrical orbs pulsing in and out of the square. Looking out from below the enormous cube structure, you see a thick red wire running from the cube to what looks like a super-computer. Looking around you see other coloured wires going into the computer. There is a ladder next to you that seems to lead to the top of the cube.", "You decide to not go into the trapdoor, and continue down the passageway. After a few intersections where you have to turn, you realise that you are lost in the bright, code etched corridors forever."])
+    if x == 0:
+        x = choice("Do you want to climb the ladder?", ["You start the long climb up the ladder and after what seems like a very long time, you reach the top. On the top is a massive printed text that reads: 'AI Supercomputer 3045'. Wondering what that means, you look up at the small supercomputer above you and see that it is pulsing red. There is a thin rope ladder leading to the top.", "You decide not to climb up the ladder, and continue wondering underneath the computer-feeding cubes. After awhile, you come across a large air compressed door. There is 2 buttons that both seem to open the door, but only one can be correct. One is red, and the other is blue."])
+        if x == 0:
+            x = choice("Do you want to climb up it?", ["You climb up to the top, and see the computer screen. On its pixelated display there is the history of what happened. Reading it, you realise that the year is 5002, and pollution has caused the whole world to be unliveable, and humans have gone extinct, except one who's whereabouts are unknown. This computer is the last memory of all the technology that the humans made, and the last memory that might ever exist. The computer auto-scrolls with your eyes, and the last line reads: 'If you are reading this, find the Earth restore gem before it is too late.' A countdown is right below it, reading 2 hours left. Next to the countdown is a button that you press that says 'weapon:bonker'. A club like item drops from the screen of the computer and you catch it, pocketing it and looking around. Above you a arm comes down, and a map appears in front of you. Half of it is glitched, but you can make out the words earth restore gem.", "You decide not to go up to the computer, and suddenly, all the room lights up, and red alarms flash from everywhere. A ten second countdown flashes on the walls, and the structure collapses as a massive earthquake shakes violently. The air is toxic, and you can't breathe, so you don't last long."])
+            if x == 0:
+                inventory("Bonker")
+                x = choice("Do you want to go and find the Earth restore gem?", ["You climb back down as according to the map and see 2 passages. One on the left and one on the right. You don't know which way to go because the map was glitched.", "You decide to not help, but as you are leaving you glance at the countdown and see it rapidly decreasing. 1 hour, 30 mins, 1 min, 10 seconds... and everything explodes."])
+                if x == 0:
+                    x = choice("Which do you take?", ["You take the left path and walk down to see a door.", "You turn right and find an elevator that says 'Out of Order'."], ["left", "right"])
+                    if x == 0:
+                        story_timetravel_6_1()
+                    else:
+                        x = choice("Do you want to go down it?", ["You click the elevator button and the elevator opens, creaking ever so slighly. You step in and the doors close. Inside is a screen with the floor 10305 written on it. It starts to decrease quickly, and after a while you arrive at floor zero, stepping out, you find an old man staring at you in disbelief. 'Who are you?' the old man rasps at you angrily. He rushes at you, holding a taser.", "You decide to not enter, and turn back. Standing behind you is a huge robot, and without making a sound, it lasers you to death."])
+                        if x == 0:
+                            x = choice("Do you want to defend yourself?", ["You get the bonker from you bag and whack the old man. He falls dead. Suddenly, an alarm is raised, and before you can do anything, a razor comes and cuts you in half.", "The old man rushes towards you, and you close your eyes, but nothing happens. Surprised, you open your eyes and see the old man crying. What makes you even more suprised is when he gives you the Earth gem, telling you to go up and restore the Earth because he cannot, as he is too old. You take the elevator back up, and go back to the computer. Sitting next to the computer is your box. You put the gem into the computer and watch, expecting something to happen. Suddenly, your box flashes rainbow, and a bright light illuminates the whole chamber. You pass out, and when you wake up you are lying in your cellar, back home again, and beside you is a note from the old man saying: 'You saved us. You saved the future. Thank You.'"])
+                            if x == 0:
+                                ending("Karma Dicer", 44, "time travel")
+                            else:
+                                addachievement("The Future is Bright")
+                                ending("Saved the Future", 45, "time travel", "win")
+                        else:
+                            ending("A Huge Robot", 43, "time travel")
+                else:
+                    ending("Countdown to doom", 42, "time travel")
+            else:
+                ending("Toxic Fumes", 32, "time travel")
+        else:
+            x = choice("Which button do you pick?", ["You pick the red button, but red stands for danger, and a laser suddenly zaps you to death.", "You pick the blue button, and the door slides open. Behind it is another door."], ["red", "blue"])
+            if x == 0:
+                ending("Red for Danger", 33, "time travel")
+            else:
+                x = choice("Do you want to open the next door?", ["You open the door, and cold wind gushes in. You start feeling dizzy, and at your last moment, you look forwards to see a completely, different Earth, one that is unliveable and toxic.", "Instead of opening the door, you look at the walls and see wires running everywhere, and a sign saying: 'Danger. Outside is very toxic. Do not open door unless you have a suit.' Luckily you didn't go out! Now begs the question:"])
+                if x == 0:
+                    ending("Pollution", 34, "time travel")
+                else:
+                    x = choice("Do you want to find a suit?", ["You go back through the door and come across a sign saying: 'Suit Storage'. You follow the directions and finally come across rows of suits that probably haven't been used for centuries. There are 5 suits that look good out of the rest that all seem broken.", "You leave the airlock chamber and come across a sign on a door that says: 'Quarantine Room'."])
+                    if x == 0:
+                        x = choice("Will you select a suit?", ["You decide to select a suit so that you can explore the outside.", "You decide not to select suits as they look too risky to use."])
+                        if x == 0:
+                            x = choice("Which suit will you pick?", ["", "", "", "", "Putting the suit on, you follow the signs back to the airlock chamber and open both doors to step outside. After walking for awhile, you see a bunker."], ["1", "2", "3", "4", "5"])
+                            if x == 0 or x == 1:
+                                print("You put the suit on, but start to cough vigourously at the amount of dust in the suit. You choke on the dust particles and your coughs slowly die down to silence.")
+                                ending("Dust Allergy", 38, "time travel")
+                            elif x == 2 or x == 3:
+                                print("You get into the suit, and bugs suddenly start biting you and eating your flesh until you are all gone.")
+                                ending("Eaten By Bugs", 39, "time travel")
+                            else:
+                                x = choice("Do you want to go to the bunker or keep walking outside?", ["You enter the bunker through another double door airlock. Taking off your suit, you see your box again, sitting there in the middle. You hop in and close the lid for (hopefully) the last time.", "You keep walking, but suddenly, you suit malfunctions, and all the air you had is lost."], ["bunker", "walk"])
+                                if x == 0:
+                                    story_timetravel_5()
+                                else:
+                                    ending("I Can't Breathe", 40, "time travel")
+                        else:
+                            if "Cake" in inventoryList:
+                                print("You start feeling very hungry, so check your bag for food. Luckily you have cake in your bag, so you eat it up and feel better. As you keep walking, you come across a sign that says: 'Quarantine Room'.")
+                                story_timetravel_6_1()
+                            else:
+                                print("You start feeling very hungry, but you don't have any food. After walking awhile longer, you run out of energy, so you stop walking and sit down, waiting for your eternal rest.")
+                                ending("Eternally Hungry", 35, "time travel")
+                    else:
+                        story_timetravel_6_1()
+    else:
+        ending("Lost in Code", 31, "time travel")
+
+def story_timetravel_6_1():
+    if "Bonker" in inventoryList:
+        x = choice("Do you want to enter?", ["You enter the room, and see a zombie coming straight for you, quickly pulling out your Bonker, you swing it and hope for the best.", "You leave the room as it is, but when you are about to go, there is a crash and a zombie runs out and catches you... forever."])
+        if x == 0:
+            if randint(0,10) == 5:
+                print("You swing your bonker, but suddenly it backfires onto you, causing you to bonk yourself. You pass out, and the zombies all fall onto you.")
+                addachievement("Bonked")
+                ending("Why did you bonk yourself, stupid?", 41, "time travel")
+            else:
+                print("You beat up the zombies in the room and find your box. Sitting next to it is a whole pile of gold. You pick them all up and enter the box.")
+                addachievement("Finding Gold")
+                addachievement("Bonker")
+                story_timetravel_5()
+        else:
+            ending("Caught by the Zombies", 36, "time travel")
+    else:
+        x = choice("Do you want to enter?", ["You enter the room, and start smelling the smell of rotten bodies. You faint.", "You decide to not get in the room, but suddenly, the door swings open and a zombie runs out and catches you... forever."])
+        if x == 0:
+            ending("You stink", 37, "time travel")
+        else:
+            ending("Caught by the Zombies", 36, "time travel")
 
 # JADEN - SCHOOL
 def story_school(user:str):
