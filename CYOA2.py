@@ -68,13 +68,13 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
-def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=True) -> None:
+def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=True, key:str = 'shift') -> None:
     start = 0
     for char in str:
         cprint(char, end='', attrs=attr, color=c)
         sys.stdout.flush()
         sleep(speed)
-        if is_pressed("shift") and start > wait and skip:
+        if is_pressed(key) and start > wait and skip:
             cprint(str[start+1:], end="", color=c, attrs=attr)
             break
         start += 1
