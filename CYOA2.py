@@ -27,6 +27,30 @@ mystery = file_conversion('\\Songs\\mystery.mp3')
 wii_music = file_conversion('\\Songs\\Wii-Music.mp3')
 
 # Program presets variables:
+# Program Presets
+# Functions
+def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    if 'C:' in os.getcwd():
+        return filepath
+    else:
+        return os.getcwd()+"/"+filepath.replace("\\", "/")
+
+# Files
+s = convertfilename('Constants\\stats.txt')
+e = convertfilename('Constants\\allendings.txt')
+u = convertfilename('Constants\\updates.txt')
+t = convertfilename('Constants\\testers.txt')
+ins = convertfilename('Constants\\inspirational.txt')
+
+# Songs
+happy = convertfilename('Songs\\Happy.mp3')
+hope = convertfilename('Songs\\Hope.mp3')
+mystery = convertfilename('Songs\\Mystery.mp3')
+wii_music = convertfilename('Songs\\Wii-Music.mp3')
+wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
+wii_shop = convertfilename('Songs\\Wii-Sports.mp3')
+
+# Variables
 inventoryList = []
 stories = {
     "tomb": 15,
@@ -678,9 +702,11 @@ def checkcommand(command:str) -> None:
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
         
         with open(file_conversion("Constants\\inspirational.txt"), "r") as file:
+        with open(ins, "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
         songlist = [file_conversion("Songs\\Hope.mp3"), file_conversion("Songs\\Happy.mp3"), file_conversion("Songs\\Mystery.mp3")]
+        songlist = [hope, happy, mystery]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
             mixer.music.play()
@@ -691,6 +717,9 @@ def checkcommand(command:str) -> None:
         exit()
     #elif command == 'updates':
         print(updates)
+    elif command == 'updates':
+        with open(u, "r") as file:
+            print(file.read())
         addachievement("Technician")
     elif command == 'credits':
         print("""
@@ -720,6 +749,7 @@ Story Writers:
     elif command == "testers":
         cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
         with open("Constants\\testers.txt", "r") as file:
+        with open(t, "r") as file:
             for line in file.readlines():
                 print(line.strip("\n"))
     elif command == "198234":
@@ -1438,6 +1468,14 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
             mixer.music.load("Songs\\Wii-Music.mp3")
+            m = randint(1,3)
+            if m == 1:
+                mixer.music.load(wii_shop)
+            elif m == 2:
+                mixer.music.load(wii_music)
+            elif m == 3:
+                mixer.music.load(wii_sports)
+            mixer.music.play()
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
