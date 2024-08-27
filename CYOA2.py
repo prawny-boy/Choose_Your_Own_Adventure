@@ -677,10 +677,10 @@ def checkcommand(command:str) -> None:
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
         
-        with open(convertfilename("Constants\\inspirational.txt"), "r") as file:
+        with open(file_conversion("Constants\\inspirational.txt"), "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = [convertfilename("Songs\\Hope.mp3"), convertfilename("Songs\\Happy.mp3"), convertfilename("Songs\\Mystery.mp3")]
+        songlist = [file_conversion("Songs\\Hope.mp3"), file_conversion("Songs\\Happy.mp3"), file_conversion("Songs\\Mystery.mp3")]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
             mixer.music.play()
