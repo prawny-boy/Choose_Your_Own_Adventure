@@ -22,6 +22,7 @@ stories = {
     'time travel': 30,
     'school': 20,
     'mountain': 1,
+    'underwater': 1,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
@@ -600,7 +601,8 @@ def checkcommand(command:str) -> None:
   3. Time Travel
   4. School
   5. Tomb Story
-  6. Mountain""")
+  6. Mountain
+  7. Underwater""")
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -1305,7 +1307,7 @@ causing {name} to scream loudly. You pause, considering what to do.""", [f"You r
             elif c == 2:
                 inventory('Fire Extinguisher', 1, 'add')
                 print('''You Find Yourself on a Ghostly platform, on top of dark clouds, and directly in front of you is the Ligma Lord. 
-He reveals his face, turning out to be no other than Mr McMahon He laughs, saying that he always appears as the person who you fear the most. 
+He reveals his face, turning out to be no other than Mr McMahon. He laughs, saying that he always appears as the person who you fear the most. 
 He says that He is fear itself, and that fear will eventually conquer everything. His Voice darkens as he says that You have found his one weakness, 
 and he has decided that you will be the first victim of the war.
 
@@ -1672,7 +1674,9 @@ Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybu
 
 # OLIVER - UNDERWATER
 def story_underwater():
-    pass
+    inventory('Oxygen', 5, 'add', False)
+    print("You are an expert diver. You are known around the world as the world's best diver, and you are about to go on your greatest adventure yet.")
+    c = choice("""You are on your way to """)
 
 # GAME LOOP
 while True:
