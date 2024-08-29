@@ -1657,12 +1657,17 @@ try to revive {user.title()} with this ancient relic he found, called Ninja. You
 running towards {user.title()}. You think, “Wow, this Ethan Wedge kid is not as bad as I thought”. 
 Then he proceeds to get one-shot by Ligma Lord’s scythe, blood dripping off the blade. Cursing, 
 you wisely use the time to hold out the Ninja and heal {user.title()}."""], ['A', 'B'])
-                        if c == 0:
-                            story_school_3()
-                        elif c == 1:
-                            slowprint(f'POV: {user.title()}', 0.05, ['bold'], 'blue', 1, True, 'space')
-                            sleep(2)
-                            print("""You awake to find yourself in a train station. No one else is around you, apart from an old homeless man. 
+                        story_school_3()                                                
+                elif c == 1:
+                    ending('Cheats were enabled', 14, 'School')
+                elif c == 2:
+                    ending('The calculator was in radians...', 13, 'School')
+                
+                
+def story_school_3():
+    slowprint(f'POV: {user.title()}', 0.05, ['bold'], 'blue', 1, True, 'space')
+    sleep(2)
+    print("""You awake to find yourself in a train station. No one else is around you, apart from an old homeless man. 
 You slowly walk up to him, and ask “Hey, why is there no one around?”.  
 
 He laughs, then turns around, revealing that he is no other than Mr White. He explains that this is all in your head, as you have been killed in battle. 
@@ -1682,27 +1687,18 @@ and the girl whose name you can’t remember. Ligma Lord does his annoying laugh
 He rematerializes oh a faraway cloud and orders the zombies to fight. The platform suddenly lifts, and slowly 
 starts hovering upwards, towards the black hole. Ligma Lord tells you that your time is limited, but you might 
 as well fight for good entertainment. """)
-                            c = choice("""
+    c = choice("""
 Option A: Take them on individually 
 Option B: Run and Gun, Spray and Play. Take them all on. 
 Option C: Dodge their attacks, try to disarm them somehow. """, ["""You try to lure PixilPrawn Zombie towards you, but he instantly uses Music Extension to knock you off your feet. 
 Life is Valorant Zombie uses hacks to teleport behind and drop you. The girl Zombie uses 2024 Women’s Rights and 
 punches you in the face, hard. """, """""", """"""], ['A', 'B', 'C']) #unfinished - oliver
-                            if c == 0:
-                                ending('Backstabbed', 15, 'School')
-                            elif c == 1:
-                                pass
-                            elif c == 2:
-                                pass
-                                                
-                elif c == 1:
-                    ending('Cheats were enabled', 14, 'School')
-                elif c == 2:
-                    ending('The calculator was in radians...', 13, 'School')
-                
-                
-def story_school_3():
-    pass
+    if c == 0:
+        ending('Backstabbed', 15, 'School')
+    elif c == 1:
+        pass
+    elif c == 2:
+        pass
 # ETHAN - TUTANKHAMUN'S TOMB
 def story_tomb():
     print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun's tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
