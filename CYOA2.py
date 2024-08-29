@@ -17,10 +17,12 @@ mixer.init()
 def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
     if 'C:' in os.getcwd():
         return filepath
+    elif 'D:' in os.getcwd():
+        return os.getcwd()+"/"+filepath.replace("\\", "/")
     else:
         return os.getcwd()+"/"+filepath.replace("\\", "/")
 
-# Files
+# Constants
 s = convertfilename('Constants\\stats.txt')
 e = convertfilename('Constants\\allendings.txt')
 u = convertfilename('Constants\\updates.txt')
@@ -56,7 +58,7 @@ commandlist = ["help", "start", "stats", "save", "achievements", "credits", "upd
 collections = {
     "sean": ["amazon jungle", "tomb", "time travel"],
     "oliver": ['school', "space story"],
-    "levi": ['mountain'],
+    "levi": ['mountain', 'underwater'],
     "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
 }
 
