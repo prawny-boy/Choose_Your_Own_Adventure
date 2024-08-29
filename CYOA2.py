@@ -70,7 +70,7 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
-def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=True, key:str = 'shift') -> None:
+def slowprint(str:str, speed:float=0.05, attr:list=[], c='white', wait=3, skip=True, key:str = 'shift') -> None:
     start = 0
     for char in str:
         cprint(char, end='', attrs=attr, color=c)
@@ -619,14 +619,14 @@ def checkcommand(command:str) -> None:
   Quit - quits the story when in the story, if out of story quits program
   Credits - shows the credits & project info""")
     elif command == "start":
-        print("""STORIES:
-  1. Amazon Jungle
-  2. Space Story
-  3. Time Travel
-  4. School
-  5. Tomb Story
-  6. Mountain
-  7. Underwater""")
+        print("""STORIES:""")
+        print(colored('1. Amazon Jungle', 'green'))
+        print(colored('2. Space Story', 'blue'))
+        print(colored('3. Time Travel', 'red'))
+        print(colored('4. School', 'yellow'))
+        print(colored('5. Tomb Story', 'magenta'))
+        print(colored('6. Mountain', 'light_grey'))
+        print(colored('7. Underwater', 'cyan'))
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -637,23 +637,27 @@ def checkcommand(command:str) -> None:
                 print("That is invalid, enter a story name or the corresponding number to a story.\n")
         inventoryList = []
         if story == "amazon jungle" or story == '1':
-            cprint("\nAMAZON JUNGLE", "green", attrs=["bold"])
+            slowprint("\nAMAZON JUNGLE", 0.05, ["bold"],'green')
             story_amazon_adventure()
         elif story == "space story" or story == '2':
-            cprint("\nSPACE STORY", "blue", attrs=["bold"])
+            slowprint("\nSPACE STORY",0.05,["bold"],'blue')
             story_space()
         elif story == "time travel" or story == "3":
-            cprint("\nTIME TRAVEL", "red", attrs=["bold"])
+            slowprint("\nTIME TRAVEL", 0.05,["bold"], 'red')
             story_timetravel()
         elif story == "school" or story == "4":
-            cprint("\nSCHOOL - Made By Jayden Li", "yellow", attrs=["bold"])
+            slowprint("\nSCHOOL - Made By Jayden Li",0.05,["bold"], 'yellow')
             story_school(user)
         elif story == "tomb story" or story == "5":
-            cprint(get_color_escape(255, 128, 0) + '\nTutankhamun\'s Tomb - Made By Ethan Wei' + Reset, attrs=["bold"])
+            slowprint("\nTutankhamun's Tomb - Made By Ethan Wei", 0.05,["bold"],'magenta')
             story_tomb()
         elif story == "mountain" or story == "6":
-            cprint("\nMOUNT EVEREST", "light_grey", attrs=["bold"])
+            slowprint("\nMOUNT EVEREST", 0.05, ["bold"], 'light_grey')
             story_mountain()
+        elif story == 'underwater' or story == '7':
+            slowprint('\nUNDERWATER', 0.05, ['bold'], 'cyan')
+            story_underwater()
+            
     elif command in ["save", "reset", "delete", "stats"]:
         if not user == "":
             if command == "save":
@@ -1840,10 +1844,27 @@ Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybu
 
 # OLIVER - UNDERWATER
 def story_underwater():
-    inventory('Oxygen', 5, 'add', False)
     print("You are an expert diver. You are known around the world as the world's best diver, and you are about to go on your greatest adventure yet.")
-    c = choice("""You are on your way to """)
+    c = choice("""You are on your way to a new adventure. Where will you go?""", ['', '', ''], ['Great Barrier Reef', 'Great Blue Hole', 'Underwater Waterfall', 'No'])
+    if c == 0:
+        story_underwater_class.great_barrier_reef()
+    elif c == 1:
+        story_underwater_class.great_blue_hole()
+    elif c == 2:
+        story_underwater_class.underwater_waterfall()
+    elif c == 3:
+        ending('Bored', 1, 'Underwater', 'win')
 
+class story_underwater_class:
+    def great_barrier_reef():
+        print('gbr')
+    
+    def great_blue_hole():
+        print('gbh')
+    
+    def underwater_waterfall():
+        print('uu')
+        
 # GAME LOOP
 while True:
     user = user_system()
