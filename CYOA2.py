@@ -1627,12 +1627,82 @@ He hops onto its back, then points his scythe at you.
 The dragon strikes first, spewing deadly Ligma flames, which scream random Brainrot like “Skibidi level 10 gyatt, causing you to cringe intensely. 
 You block out any noise with your secret ability to fold up your ears naturally. You ram your fist into the dragon, dealing 50% of its health in one hit. 
 It roars in agony as it starts falling apart.  """)
+                        c = choice('''
+Option A: Run in and deal another 1/2 of its health. 
+Option B: Run up the dragon and punch Ligma Lord in the face ''', [f"""You concentrate all your power into your fist and drive it into the dragon. You watch as the dragon crumbles even more, 
+now significantly smaller. You unleash a barrage of punches, as the Ligma Lord pulls out his scythe, readying the blade. 
+You jump back just in time as a flash of shadows consume the air, leaving a dark residue. Ligma Lord stands up, 
+and suddenly his eyes turn red. Pulling his scythe back as if it weighed a ton, he lets go of the handle, 
+sending waves of Ligma pulsing through the air. You try to dodge them, but your shoelace gets held by a Ligma Zombie, 
+causing both of you to go flying into the air. You turn back, ready to punch the Zombie, only to realise that it isn’t a zombie, 
+but that Ethan Wedge kid from your volleyball team. He starts to tear up as he starts explaining that he pretended to be 
+a Ligma Zombie as he was immune to Ligma, and that he was waiting for the perfect chance to attack. He was going to 
+yap on for 213910 years, but the Ligma Lord is extremely displeased, and starts making it rain meteors. 
+Ethan Wedge’s speech makes you have less rage, and you feel hopeless as they come closer. Luckily, Ethan Wedge comes in 
+clutch as he screams at them, causing the rocks to implode in midair. Ethan turns and tells you to go and try to revive {user.title()} 
+with this ancient relic he found, called Ninja. You take the relic and start running towards {user.title()}. You think, 
+“Wow, this Ethan Wedge kid is not as bad as I thought”. Then he proceeds to get one-shot by Ligma Lord’s scythe, 
+blood dripping off the blade. Cursing, you wisely use the time to hold out the Ninja and heal {user.title()}. """, f"""You suddenly dash up the dragon, and drop Ligma Lord, off the dragon. You both fall, onto the storm clouds. 
+There is a brief pause, as the Ligma Lord sits there, stunned. Then he kicks you in the gut, sending you flying backwards. 
+You turn to see his eyes brimming with red light and think “Oh crap”. Pulling his scythe back as if it weighed a ton, 
+he lets go of the handle, sending waves of Ligma pulsing through the air. You try to dodge them, but your shoelace 
+gets held by a Ligma Zombie, causing both of you to go flying into the air. You turn back, ready to punch the Zombie, 
+only to realise that it isn’t a zombie, but that Ethan Wedge kid from your volleyball team. 
+He starts to tear up as he starts explaining that he pretended to be a Ligma Zombie as he was immune to Ligma, 
+and that he was waiting for the perfect chance to attack. He was going to yap on for 213910 years, 
+but the Ligma Lord is extremely displeased, and starts making it rain meteors. Ethan Wedge’s speech makes 
+you have 90% less rage, and you feel hopeless as they come closer. Luckily, Ethan Wedge comes in clutch 
+as he screams at them, causing the rocks to implode in midair. Ethan turns and tells you to go and 
+try to revive {user.title()} with this ancient relic he found, called Ninja. You take the relic and start 
+running towards {user.title()}. You think, “Wow, this Ethan Wedge kid is not as bad as I thought”. 
+Then he proceeds to get one-shot by Ligma Lord’s scythe, blood dripping off the blade. Cursing, 
+you wisely use the time to hold out the Ninja and heal {user.title()}."""], ['A', 'B'])
+                        if c == 0:
+                            story_school_3()
+                        elif c == 1:
+                            slowprint(f'POV: {user.title()}', 0.05, ['bold'], 'blue', 1, True, 'space')
+                            sleep(2)
+                            print("""You awake to find yourself in a train station. No one else is around you, apart from an old homeless man. 
+You slowly walk up to him, and ask “Hey, why is there no one around?”.  
+
+He laughs, then turns around, revealing that he is no other than Mr White. He explains that this is all in your head, as you have been killed in battle. 
+You can’t remember what has happened, but you assume it’s something bad.  
+
+He looks you in the eyes, and with great sorrow he tells you that some battles cannot be won, and that there will always be sacrifices. 
+You immediately spam the skip button because you don’t want to hear an old man yap for 2183818989 years. 
+
+He tells you to hold on, and as your vision fades, you hear the whistle of a train in the distance.  
+
+You wake up to find Wingsley Kong standing over you, holding a figure of that old streamer Ninja or something. 
+Wingsley Immediately starts sobbing and hugging you, which is a bit weird, but then you remember that you just died. 
+You look behind you to see the Ligma Lord summoning some Ligma Zombies, except they look to be fully equipped with items, 
+armour and have a good personal hygiene. You pat Wingsley on the shoulder and tell him to retreat for the time being. 
+You turn to face the five Zombies, who you realise take the form of Life is Valorant, Soul, PixilPrawn, Ethan Wedge 
+and the girl whose name you can’t remember. Ligma Lord does his annoying laugh thing and vanishes into thin air. 
+He rematerializes oh a faraway cloud and orders the zombies to fight. The platform suddenly lifts, and slowly 
+starts hovering upwards, towards the black hole. Ligma Lord tells you that your time is limited, but you might 
+as well fight for good entertainment. """)
+                            c = choice("""
+Option A: Take them on individually 
+Option B: Run and Gun, Spray and Play. Take them all on. 
+Option C: Dodge their attacks, try to disarm them somehow. """, ["""You try to lure PixilPrawn Zombie towards you, but he instantly uses Music Extension to knock you off your feet. 
+Life is Valorant Zombie uses hacks to teleport behind and drop you. The girl Zombie uses 2024 Women’s Rights and 
+punches you in the face, hard. """, """""", """"""], ['A', 'B', 'C']) #unfinished - oliver
+                            if c == 0:
+                                ending('Backstabbed', 15, 'School')
+                            elif c == 1:
+                                pass
+                            elif c == 2:
+                                pass
                                                 
                 elif c == 1:
                     ending('Cheats were enabled', 14, 'School')
                 elif c == 2:
                     ending('The calculator was in radians...', 13, 'School')
                 
+                
+def story_school_3():
+    pass
 # ETHAN - TUTANKHAMUN'S TOMB
 def story_tomb():
     print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun's tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
