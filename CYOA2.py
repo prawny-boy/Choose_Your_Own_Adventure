@@ -647,7 +647,7 @@ def checkcommand(command:str) -> None:
             story_timetravel()
         elif story == "school" or story == "4":
             slowprint("\nSCHOOL - Made By Jayden Li",0.05,["bold"], 'yellow')
-            story_school(user)
+            story_school()
         elif story == "tomb story" or story == "5":
             slowprint("\nTutankhamun's Tomb - Made By Ethan Wei", 0.05,["bold"],'magenta')
             story_tomb()
@@ -1368,7 +1368,7 @@ def story_timetravel_6_1():
             ending("Caught by the Zombies", 36, "time travel")
 
 # JADEN - SCHOOL
-def story_school(user:str):
+def story_school():
     global name, o
     if user.lower() == 'pancake' or user.lower() == 'ethan':
         name = 'Ethan Wei'
@@ -1428,17 +1428,17 @@ Because he was yapping for six billion years, that gave you the chance to reach 
                     slowprint('FAIL', 0.05, ['bold'], 'red')
                     ending('Mr White gave me a B for Maths...', 6, 'School')
                 elif c == 2:
-                    print('Ligma Lord: Well Done...')
+                    slowprint('Ligma Lord: Well Done...')
                     sleep(1)
-                    print('Ligma Lord: I have lost my power to fight... For you have conquered fear itself...')
+                    slowprint('Ligma Lord: I have lost my power to fight... For you have conquered fear itself...')
                     sleep(1)
-                    print('Ligma Lord: You are the one worthy of being a hero... Not just for students, but for the world...')
+                    slowprint('Ligma Lord: You are the one worthy of being a hero... Not just for students, but for the world...')
                     sleep(1)
-                    print('Ligma Lord: Take that portal over there, it will send you back to Perth Modern...')
+                    slowprint('Ligma Lord: Take that portal over there, it will send you back to Perth Modern...')
                     sleep(1)
-                    print('Ligma Lord: I apologise for the Ligma, when you get back everything will be restored, except the ones who have died, not even I can deal with Death...')
+                    slowprint('Ligma Lord: I apologise for the Ligma, when you get back everything will be restored, except the ones who have died, not even I can deal with Death...')
                     sleep(1)
-                    print("Ligma Lord: I'm sorry...")
+                    slowprint("Ligma Lord: I'm sorry...")
                     sleep(1)
                     print('''As the Ligma Lord vanishes, you pick up your school bag, and bow your head in silence, 
 then take a deep breath, and slowly walk towards the brightening portal. 
@@ -1856,14 +1856,15 @@ def story_underwater():
         ending('Bored', 1, 'Underwater', 'win')
 
 class story_underwater_class:
-    def great_barrier_reef():
-        print('gbr')
+    def great_barrier_reef():#                                                                                                                                                \/ Terminal stops there
+        print("""You decide to go to the great barrier reef, and you have the option to bring one of you friends. There's Eric, who is very enthusiastic and has tons of money
+to buy the latest gear. Then there's Owen""")
     
     def great_blue_hole():
         print('gbh')
     
     def underwater_waterfall():
-        print('uu')
+        print('uw')
         
 # GAME LOOP
 while True:
