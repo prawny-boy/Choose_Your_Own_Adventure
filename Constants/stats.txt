@@ -26,3 +26,7 @@ User: /aviv
 Endings: //2/space story/fail
 Achievements: //First Command/special,Beginner space/space story,Newbie/all stories
 Commands: //help,start
+User: /natemills
+Endings: //3/School/fail,2/School/fail,11/School/fail,11/School/fail
+Achievements: //First Command/special,Year 7/school,Newbie/all stories,LIGMA BALLS/school,With Great Power Comes Great Responsibility - Confucius (I think)/school
+Commands: //help,start,start,start,start

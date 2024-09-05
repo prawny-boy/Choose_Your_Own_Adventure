@@ -35,7 +35,7 @@ hope = convertfilename('Songs\\Hope.mp3')
 mystery = convertfilename('Songs\\Mystery.mp3')
 wii_music = convertfilename('Songs\\Wii-Music.mp3')
 wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
-wii_shop = convertfilename('Songs\\Wii-Sports.mp3')
+wii_shop = convertfilename('Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
@@ -57,8 +57,8 @@ Reset = '\033[0m'
 commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "inspiration"] # if add command also add in this unless it is an admin command, or quit, delete or reset
 collections = {
     "sean": ["amazon jungle", "tomb", "time travel"],
-    "oliver": ['school', "space story"],
-    "levi": ['mountain', 'underwater'],
+    "oliver": ['school', "space story", 'underwater'],
+    "levi": ['mountain',],
     "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
 }
 
@@ -1857,15 +1857,39 @@ def story_underwater():
 
 class story_underwater_class:
     def great_barrier_reef():#                                                                                                                                                \/ Terminal stops there
-        print("""You decide to go to the great barrier reef, and you have the option to bring one of you friends. There's Eric, who is very enthusiastic and has tons of money
-to buy the latest gear. Then there's Owen""")
+        print("""You decide to go to the Great Barrier Reef, and you have the option to bring one of you friends. There's Eric, who is very enthusiastic and has tons of money
+to buy the latest gear. Then there's Owen, who has tons of experience, and is confident. Finally, there is Nate, who is a chill dude who loves the Wii Theme. He has been
+diving before, and is pretty loaded too.""")
+        c = choice('Who will you take? ', ['You choose Eric, who hands you $100 for choosing him.', 'You choose Owen, who immediately starts kitting you out with some gear.', "You pick Nate, who doesn't notice you until you tap him on the shoulder, because he was listening to the Wii Theme."], ['Eric', 'Owen', 'Nate'])
     
+        if c == 0:
+            pass
+        elif c == 1:
+            pass
+        elif c == 2:
+            pass
     def great_blue_hole():
         print('gbh')
     
     def underwater_waterfall():
         print('uw')
+ 
+ 
+def story_afterlife():
+    print("""You are a frail old man, in his 80s, named P. Diddy. This morning, you went to the doctor, and he told you that you have 3 days to live. 
+Unfortunately, you have done some bad deeds in your lifetime (including diddling some kids), and you think you might get sent to hell. 
+Since you grew up in Perth, and are not very fond of the heat, you decide to do some good deeds to make up for your diddling. You step out of your 
+house and see some young kids operating a lemonade stand outside your house, WITHOUT A PERMIT.""")
+    c = choice("""What will you do? """, [], [''])
+
+       
+class story_afterlife_class:
+    def heaven():
+        slowprint('You ended up in: HEAVEN', 0.05, ['bold'], 'yellow')
         
+    def hell():
+        slowprint('You ended up in: HELL', 0.05, ['bold'], 'red')
+
 # GAME LOOP
 while True:
     user = user_system()
