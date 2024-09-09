@@ -1631,7 +1631,7 @@ He hops onto its back, then points his scythe at you.
 The dragon strikes first, spewing deadly Ligma flames, which scream random Brainrot like “Skibidi level 10 gyatt, causing you to cringe intensely. 
 You block out any noise with your secret ability to fold up your ears naturally. You ram your fist into the dragon, dealing 50% of its health in one hit. 
 It roars in agony as it starts falling apart.  """)
-                        c = choice('''
+                        c = choice(f'''
 Option A: Run in and deal another 1/2 of its health. 
 Option B: Run up the dragon and punch Ligma Lord in the face ''', [f"""You concentrate all your power into your fist and drive it into the dragon. You watch as the dragon crumbles even more, 
 now significantly smaller. You unleash a barrage of punches, as the Ligma Lord pulls out his scythe, readying the blade. 
@@ -1639,26 +1639,26 @@ You jump back just in time as a flash of shadows consume the air, leaving a dark
 and suddenly his eyes turn red. Pulling his scythe back as if it weighed a ton, he lets go of the handle, 
 sending waves of Ligma pulsing through the air. You try to dodge them, but your shoelace gets held by a Ligma Zombie, 
 causing both of you to go flying into the air. You turn back, ready to punch the Zombie, only to realise that it isn’t a zombie, 
-but that Ethan Wedge kid from your volleyball team. He starts to tear up as he starts explaining that he pretended to be 
+but that {name} kid from your volleyball team. He starts to tear up as he starts explaining that he pretended to be 
 a Ligma Zombie as he was immune to Ligma, and that he was waiting for the perfect chance to attack. He was going to 
 yap on for 213910 years, but the Ligma Lord is extremely displeased, and starts making it rain meteors. 
-Ethan Wedge’s speech makes you have less rage, and you feel hopeless as they come closer. Luckily, Ethan Wedge comes in 
+{name}’s speech makes you have less rage, and you feel hopeless as they come closer. Luckily, {name} comes in 
 clutch as he screams at them, causing the rocks to implode in midair. Ethan turns and tells you to go and try to revive {user.title()} 
 with this ancient relic he found, called Ninja. You take the relic and start running towards {user.title()}. You think, 
-“Wow, this Ethan Wedge kid is not as bad as I thought”. Then he proceeds to get one-shot by Ligma Lord’s scythe, 
+“Wow, this {name} kid is not as bad as I thought”. Then he proceeds to get one-shot by Ligma Lord’s scythe, 
 blood dripping off the blade. Cursing, you wisely use the time to hold out the Ninja and heal {user.title()}. """, f"""You suddenly dash up the dragon, and drop Ligma Lord, off the dragon. You both fall, onto the storm clouds. 
 There is a brief pause, as the Ligma Lord sits there, stunned. Then he kicks you in the gut, sending you flying backwards. 
 You turn to see his eyes brimming with red light and think “Oh crap”. Pulling his scythe back as if it weighed a ton, 
 he lets go of the handle, sending waves of Ligma pulsing through the air. You try to dodge them, but your shoelace 
 gets held by a Ligma Zombie, causing both of you to go flying into the air. You turn back, ready to punch the Zombie, 
-only to realise that it isn’t a zombie, but that Ethan Wedge kid from your volleyball team. 
+only to realise that it isn’t a zombie, but that {name} kid from your volleyball team. 
 He starts to tear up as he starts explaining that he pretended to be a Ligma Zombie as he was immune to Ligma, 
 and that he was waiting for the perfect chance to attack. He was going to yap on for 213910 years, 
-but the Ligma Lord is extremely displeased, and starts making it rain meteors. Ethan Wedge’s speech makes 
-you have 90% less rage, and you feel hopeless as they come closer. Luckily, Ethan Wedge comes in clutch 
+but the Ligma Lord is extremely displeased, and starts making it rain meteors. {name}’s speech makes 
+you have 90% less rage, and you feel hopeless as they come closer. Luckily, {name} comes in clutch 
 as he screams at them, causing the rocks to implode in midair. Ethan turns and tells you to go and 
 try to revive {user.title()} with this ancient relic he found, called Ninja. You take the relic and start 
-running towards {user.title()}. You think, “Wow, this Ethan Wedge kid is not as bad as I thought”. 
+running towards {user.title()}. You think, “Wow, this {name} kid is not as bad as I thought”. 
 Then he proceeds to get one-shot by Ligma Lord’s scythe, blood dripping off the blade. Cursing, 
 you wisely use the time to hold out the Ninja and heal {user.title()}."""], ['A', 'B'])
                         story_school_3()                                                
@@ -1686,7 +1686,7 @@ You wake up to find Wingsley Kong standing over you, holding a figure of that ol
 Wingsley Immediately starts sobbing and hugging you, which is a bit weird, but then you remember that you just died. 
 You look behind you to see the Ligma Lord summoning some Ligma Zombies, except they look to be fully equipped with items, 
 armour and have a good personal hygiene. You pat Wingsley on the shoulder and tell him to retreat for the time being. 
-You turn to face the five Zombies, who you realise take the form of Life is Valorant, Soul, PixilPrawn, Ethan Wedge 
+You turn to face the five Zombies, who you realise take the form of Life is Valorant, Soul, PixilPrawn, {name} 
 and the girl whose name you can’t remember. Ligma Lord does his annoying laugh thing and vanishes into thin air. 
 He rematerializes oh a faraway cloud and orders the zombies to fight. The platform suddenly lifts, and slowly 
 starts hovering upwards, towards the black hole. Ligma Lord tells you that your time is limited, but you might 
@@ -1698,11 +1698,53 @@ Option C: Dodge their attacks, try to disarm them somehow. """, ["""You try to l
 Life is Valorant Zombie uses hacks to teleport behind and drop you. The girl Zombie uses 2024 Women’s Rights and 
 punches you in the face, hard. """, """""", """"""], ['A', 'B', 'C']) #unfinished - oliver
     if c == 0:
-        ending('Backstabbed', 15, 'School')
+        ending('Backstabbed, but not really.', 15, 'School')
     elif c == 1:
-        pass
+        print(f"""You summon some fireballs using special bracelets that Mr Black dropped and send them flying towards the group. They form a pyramid and deflect it using the power of friendship, 
+apart from {name}, who acts as a spear that Soul yeets towards you, nearly blowing your head off. {name} starts punching you hard and shakes salt into your eyes, 
+blinding you. You use your ultimate Screen Tilt Jutsu to throw {name} backwards, and back kick him into the group. As they begin to regroup, 
+you realise you have no choice but to choose a new strategy. You watch as suddenly a supply drop lands next to you. You peer into the crate to see several items and a note 
+from your friend Jack Bye that wishes you a Happy Birthday. You realise it’s your birthday, and you are turning 14, and for all your journey you have been fighting with 
+the unlucky powers of being 13.  With this newfound confidence, you turn to face your Ligma-ed friends. """)
+        c = choice("""What will you take?
+Option A: Zesty Lemon Juice with extra Zest. Optimal Zesty-ness, Optimal Zest-Filled Days. 
+Option B: $100 Amazon Gift card.  
+Option C: Screw the items, use your ultimate birthday luck. 
+""")
+        if c == 0:
+            print("""You chug down the Zesty Juice, and feel your insides burn with zest. You use your lightning-fast reflexes to 
+deflect the fireballs they have sent at you and receive the volleyball that Soul spikes at you perfectly. 
+In an instant, you have defeated your friends, and they are lying unconscious on the floor. 
+As you turn to face the Ligma Lord, you suddenly lose all your power, and you’re on the floor, 
+with a great need for the toilet. The Ligma Lord snaps his fingers, and you see the lights dim, 
+and then your vision wobbles out. """)
+            ending('You’re not the Zest Lord, Jack is the Zest Lord.', 16, 'School')
+        elif c == 1:
+            print(f"""You quickly scroll online and purchase an AK-47 along with some instant noodles and that cool 
+vegetable slicer you saw on YouTube. As you are guaranteed same day delivery, you realise that 
+you might be slightly screwed as the Ligma Lord orders from Temu and gets same hour delivery 
+on his Machine Gun. You try to do the matrix thing but end up falling over, shot. 
+
+BUT THE STORY DOESN’T END HERE!!! 
+
+The Amazon Delivery Guy makes his way through the Multiverse, and delivers your parcel, 
+and then sees the Temu man, and proceeds to ONE TAP KO him. He begins to start going home, 
+but then the Ligma Lord challenges him. He opens the door to a new realm, the Stigma Realm, 
+and out spews out despicable minions. The Amazon delivery Guy punches, and the whole 
+FREAKING portal gets DESTROYED. Ligma Lord tries to run away but then the Amazon Guy 
+takes one step, and full on MELTS him. He dusts his hands and asks if you’re ok. 
+He tells you he left the back door portal open that leads back to school and says goodbye. 
+As you watch him hop on his scooter, and disappear back to Earth, you wonder if you just 
+saw the Legendary Memer One Punch Man. As you go back to retrieve Wingsley, the Ligma 
+students are slowly reverting to human form, healed by the vanquishing of Ligma Lord. 
+You watch as the realm slowly brightens and take a slow breath out. Tired, you haul {name} 
+over your back and slowly trudge back to school, awaiting the 3 hours of sleep that 
+you will get tonight.""")
+            
+        elif c == 2:
+            pass
     elif c == 2:
-        pass
+        print('died')
 # ETHAN - TUTANKHAMUN'S TOMB
 def story_tomb():
     print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun's tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
