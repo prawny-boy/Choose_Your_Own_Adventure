@@ -1922,15 +1922,49 @@ def story_afterlife():
 Unfortunately, you have done some bad deeds in your lifetime (including diddling some kids), and you think you might get sent to hell. 
 Since you grew up in Perth, and are not very fond of the heat, you decide to do some good deeds to make up for your diddling. You step out of your 
 house and see some young kids operating a lemonade stand outside your house, WITHOUT A PERMIT.""")
-    c = choice("""What will you do? """, [], [''])
+    c = choice("""What will you do? 
+Option 1: Go full Karen mode, grab a high-power pressure washer and wash them away
+Option 2: Buy a cup of lemonade and carry on your way 😊
+Option 3: The kids look young and fresh, so you diddle them""", [], ['Option 1', 'Option 2', 'Option 3'])
+    if c == 0:
+        print("""You open your garage door and get your trusty STIHL RE 110 PLUS High Pressure Washer. 
+After filling it with water, you turn it to full power and get ready to blast the kids. 
+One of them is EXTREMELY short and has a name tag “Goon Kai”. The other is a brown kid, 
+of average height, holding a tennis racquet with the name tag “Keefen”. You aim your 
+pressure washer at their lemonade pitcher and let loose. The pitcher instantly 
+shatters and shards of glass are sent flying. Goon Kai, naturally in a low position, 
+doesn’t get hit, but Keefen’s shocked face gets absolutely obliterated. “Sucks to suck”, 
+you say to yourself, but Goon Kai has already run to tell Mummy. Within minutes the 
+police have found you. You are taken to police custody. """)
+        c = choice("""Option 1: Just let me die already
+Option 2: Play the Mario Theme and start jumping around your cell. (Yahoo!)""")
+        if c == 0:
+            print('You die later that day in your sleep.')
+            story_afterlife_class.hell('Because you bullied some little children.')
+            ending('Boring', 1, 'Afterlife')
+        elif c == 1:
+            #play music: mario theme
+            print("""You start jumping around your jail cell screaming “Yahoo!”. The guard comes and 
+tells you to stop, so you keep jumping. When he enters the cell and tazes you, 
+you have a heart attack and die. Unlucky chap. """)
+            story_afterlife_class.hell('Because you bullied some little children.')
+            addachievement("Itsa mea Mario!")
+            ending('Yahoo!', 2, 'Afterlife')  
+    elif c == 1:
+        pass
+    elif c == 2:
+        pass
+    
 
        
 class story_afterlife_class:
-    def heaven():
-        slowprint('You ended up in: HEAVEN', 0.05, ['bold'], 'yellow')
+    def heaven(txt):
+        slowprint(f'''You ended up in: HEAVEN
+{txt}''', 0.05, ['bold'], 'yellow')
         
-    def hell():
-        slowprint('You ended up in: HELL', 0.05, ['bold'], 'red')
+    def hell(txt):
+        slowprint(f'''You ended up in: HELL
+{txt}''', 0.05, ['bold'], 'red')
 
 # GAME LOOP
 while True:
