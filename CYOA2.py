@@ -46,7 +46,7 @@ stories = {
     'time travel': 45,
     'school': 20,
     'mountain': 1,
-    'underwater': 1,
+    # 'underwater': 1,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
@@ -57,8 +57,8 @@ Reset = '\033[0m'
 commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "inspiration"] # if add command also add in this unless it is an admin command, or quit, delete or reset
 collections = {
     "sean": ["amazon jungle", "tomb", "time travel"],
-    "oliver": ['school', "space story", 'underwater'],
-    "levi": ['mountain',],
+    "oliver": ['school', "space story"],
+    "levi": ['mountain'],
     "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
 }
 
@@ -626,7 +626,7 @@ def checkcommand(command:str) -> None:
         print(colored('4. School', 'yellow'))
         print(colored('5. Tomb Story', 'magenta'))
         print(colored('6. Mountain', 'light_grey'))
-        print(colored('7. Underwater', 'cyan'))
+        # print(colored('7. Underwater', 'cyan'))
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -654,9 +654,9 @@ def checkcommand(command:str) -> None:
         elif story == "mountain" or story == "6":
             slowprint("\nMOUNT EVEREST", 0.05, ["bold"], 'light_grey')
             story_mountain()
-        elif story == 'underwater' or story == '7':
-            slowprint('\nUNDERWATER', 0.05, ['bold'], 'cyan')
-            story_underwater()
+        # elif story == 'underwater' or story == '7':
+        #     slowprint('\nUNDERWATER', 0.05, ['bold'], 'cyan')
+        #     story_underwater()
             
     elif command in ["save", "reset", "delete", "stats"]:
         if not user == "":

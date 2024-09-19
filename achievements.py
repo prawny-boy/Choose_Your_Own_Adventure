@@ -29,8 +29,8 @@ space = {
 # Time Travel
 time = {
     "Lumberjacked": ["Get your head chopped off by an axe."],
-    'Bonker': ["Use The Bonker"], # not added
-    'Bonked': ["Get Bonked by the Bonker"], # not added
+    'Bonker': ["Use The Bonker"],
+    'Bonked': ["Get Bonked by the Bonker"],
     'Bad Choices': ["Get the ending: bad choices"],
     "Back to reality": ["Win Time Travel"],
     "Finding Gold": ["Find gold"],
