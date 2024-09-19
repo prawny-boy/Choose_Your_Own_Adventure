@@ -1740,11 +1740,45 @@ students are slowly reverting to human form, healed by the vanquishing of Ligma 
 You watch as the realm slowly brightens and take a slow breath out. Tired, you haul {name} 
 over your back and slowly trudge back to school, awaiting the 3 hours of sleep that 
 you will get tonight.""")
+            addachievement('Just because you are the Main Character doesn’t mean you’re the hero. One Punch Man will always be your hero.')
             
         elif c == 2:
-            pass
-    elif c == 2:
-        print('died')
+            print(f"""Because you are 14, you instinctively perform some weird hand moves that trigger your 
+Domain Expansion: Brainrot Banishment (slowed down to perfection). Instantly everyone close to you 
+is cured of Ligma, and the Ligma Lord begins to scream. He tries to teleport out, but you start 
+advancing with lighting fast bolts of Parabolas. As you prepare to deliver the final blow with 
+your 360 no-scope, he explodes, cancelling your Domain Expansion. He reappears a couple metres away, 
+but his skin is now pure black, with rune tattoos running down his back. His eyes are red, and his 
+scythe is brimming with cursed energy. You unlock your full potential by eating three Feastables that 
+makes you have plus 1 million aura. You perform some weird hand moves again and this time a bag filled 
+with your favourite weapons appears in front of you. The Ligma Lord slowly swings his scythe left and 
+right, then lunges towards you, blade coming down. You pull out your smart rider and use it to perfectly 
+parry the Ligma Lord, sparks flying from the contact. The Ligma Lord tries to get a sneak attack with 
+his blue flame orbs, but you use Avast VPN, so the blue flame orbs go spiralling away. With a mighty 
+shout, he pushes his blade, and jumps backwards, ready to finish you off with a long-range nuke of 
+black energy. Calmly, you reach into your bag and pull out your final choice of weaponry. 
+The Ligma Lord, with blood trickling down his face, does his stupid laugh again. 
+
+“It’s over, {user}. I have the high ground advantage, and I always will.”""")
+            sleep(3)
+            print("""As he launches the magic, the students around you cry in warning, but your 14-year-old senses kick in, 
+and you spin around, and PULL OUT THE UNO REVERSE CARD!!!!! 
+
+The bolt of magic travels another few metres, before catapulting back towards the Ligma Lord. 
+A massive explosion of dust, magic, and second-hand Ligma sprays across the battlefield. 
+The Ligma Lord, finally defeated by the powers of true memes, his lifeless eyes already 
+losing their fiery glow. Your friends cheer, because after all the fighting, they can 
+finally go back to school and cook up some cookies in food tech.  
+
+Suddenly, the floating island starts shuddering, and the ground starts crumbling. 
+A portal opens to your left, and the cured Ligma students start running into it, 
+transported back into the restored Perth Modern High School. As Wingsley Kong yells 
+for you to hurry up, you look over the edge of the platform, watching as the body 
+of Ligma Lord is still falling, his lips curled into a smirk. You have a feeling 
+this isn’t the last time you are going to see him. You flip him off one last time, 
+then jump off the last bit of floating rock and enter the portal, 
+awaiting your first day of school. """)
+            ending('The Master of Death - Extended Remix', 16, 'School', 'win', True, 'Master of Fear')
 # ETHAN - TUTANKHAMUN'S TOMB
 def story_tomb():
     print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun's tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
