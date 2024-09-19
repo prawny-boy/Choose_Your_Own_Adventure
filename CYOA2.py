@@ -1919,86 +1919,85 @@ Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybu
         pass
 
 # OLIVER - UNDERWATER
-def story_underwater():
-    print("You are an expert diver. You are known around the world as the world's best diver, and you are about to go on your greatest adventure yet.")
-    c = choice("""You are on your way to a new adventure. Where will you go?""", ['', '', ''], ['Great Barrier Reef', 'Great Blue Hole', 'Underwater Waterfall', 'No'])
-    if c == 0:
-        story_underwater_class.great_barrier_reef()
-    elif c == 1:
-        story_underwater_class.great_blue_hole()
-    elif c == 2:
-        story_underwater_class.underwater_waterfall()
-    elif c == 3:
-        ending('Bored', 1, 'Underwater', 'win')
+# def story_underwater():
+#     print("You are an expert diver. You are known around the world as the world's best diver, and you are about to go on your greatest adventure yet.")
+#     c = choice("""You are on your way to a new adventure. Where will you go?""", ['', '', ''], ['Great Barrier Reef', 'Great Blue Hole', 'Underwater Waterfall', 'No'])
+#     if c == 0:
+#         story_underwater_class.great_barrier_reef()
+#     elif c == 1:
+#         story_underwater_class.great_blue_hole()
+#     elif c == 2:
+#         story_underwater_class.underwater_waterfall()
+#     elif c == 3:
+#         ending('Bored', 1, 'Underwater', 'win')
 
-class story_underwater_class:
-    def great_barrier_reef():#                                                                                                                                                \/ Terminal stops there
-        print("""You decide to go to the Great Barrier Reef, and you have the option to bring one of you friends. There's Eric, who is very enthusiastic and has tons of money
-to buy the latest gear. Then there's Owen, who has tons of experience, and is confident. Finally, there is Nate, who is a chill dude who loves the Wii Theme. He has been
-diving before, and is pretty loaded too.""")
-        c = choice('Who will you take? ', ['You choose Eric, who hands you $100 for choosing him.', 'You choose Owen, who immediately starts kitting you out with some gear.', "You pick Nate, who doesn't notice you until you tap him on the shoulder, because he was listening to the Wii Theme."], ['Eric', 'Owen', 'Nate'])
+# class story_underwater_class:
+#     def great_barrier_reef():#                                                                                                                                                \/ Terminal stops there
+#         print("""You decide to go to the Great Barrier Reef, and you have the option to bring one of you friends. There's Eric, who is very enthusiastic and has tons of money
+# to buy the latest gear. Then there's Owen, who has tons of experience, and is confident. Finally, there is Nate, who is a chill dude who loves the Wii Theme. He has been
+# diving before, and is pretty loaded too.""")
+#         c = choice('Who will you take? ', ['You choose Eric, who hands you $100 for choosing him.', 'You choose Owen, who immediately starts kitting you out with some gear.', "You pick Nate, who doesn't notice you until you tap him on the shoulder, because he was listening to the Wii Theme."], ['Eric', 'Owen', 'Nate'])
     
-        if c == 0:
-            pass
-        elif c == 1:
-            pass
-        elif c == 2:
-            pass
-    def great_blue_hole():
-        print('gbh')
+#         if c == 0:
+#             pass
+#         elif c == 1:
+#             pass
+#         elif c == 2:
+#             pass
+#     def great_blue_hole():
+#         print('gbh')
     
-    def underwater_waterfall():
-        print('uw')
+#     def underwater_waterfall():
+#         print('uw')
  
  
-def story_afterlife():
-    print("""You are a frail old man, in his 80s, named P. Diddy. This morning, you went to the doctor, and he told you that you have 3 days to live. 
-Unfortunately, you have done some bad deeds in your lifetime (including diddling some kids), and you think you might get sent to hell. 
-Since you grew up in Perth, and are not very fond of the heat, you decide to do some good deeds to make up for your diddling. You step out of your 
-house and see some young kids operating a lemonade stand outside your house, WITHOUT A PERMIT.""")
-    c = choice("""What will you do? 
-Option 1: Go full Karen mode, grab a high-power pressure washer and wash them away
-Option 2: Buy a cup of lemonade and carry on your way 😊
-Option 3: The kids look young and fresh, so you diddle them""", [], ['Option 1', 'Option 2', 'Option 3'])
-    if c == 0:
-        print("""You open your garage door and get your trusty STIHL RE 110 PLUS High Pressure Washer. 
-After filling it with water, you turn it to full power and get ready to blast the kids. 
-One of them is EXTREMELY short and has a name tag “Goon Kai”. The other is a brown kid, 
-of average height, holding a tennis racquet with the name tag “Keefen”. You aim your 
-pressure washer at their lemonade pitcher and let loose. The pitcher instantly 
-shatters and shards of glass are sent flying. Goon Kai, naturally in a low position, 
-doesn’t get hit, but Keefen’s shocked face gets absolutely obliterated. “Sucks to suck”, 
-you say to yourself, but Goon Kai has already run to tell Mummy. Within minutes the 
-police have found you. You are taken to police custody. """)
-        c = choice("""Option 1: Just let me die already
-Option 2: Play the Mario Theme and start jumping around your cell. (Yahoo!)""")
-        if c == 0:
-            print('You die later that day in your sleep.')
-            story_afterlife_class.hell('Because you bullied some little children.')
-            ending('Boring', 1, 'Afterlife')
-        elif c == 1:
-            #play music: mario theme
-            print("""You start jumping around your jail cell screaming “Yahoo!”. The guard comes and 
-tells you to stop, so you keep jumping. When he enters the cell and tazes you, 
-you have a heart attack and die. Unlucky chap. """)
-            story_afterlife_class.hell('Because you bullied some little children.')
-            addachievement("Itsa mea Mario!")
-            ending('Yahoo!', 2, 'Afterlife')  
-    elif c == 1:
-        pass
-    elif c == 2:
-        pass
+# def story_afterlife():
+#     print("""You are a frail old man, in his 80s, named P. Diddy. This morning, you went to the doctor, and he told you that you have 3 days to live. 
+# Unfortunately, you have done some bad deeds in your lifetime (including diddling some kids), and you think you might get sent to hell. 
+# Since you grew up in Perth, and are not very fond of the heat, you decide to do some good deeds to make up for your diddling. You step out of your 
+# house and see some young kids operating a lemonade stand outside your house, WITHOUT A PERMIT.""")
+#     c = choice("""What will you do? 
+# Option 1: Go full Karen mode, grab a high-power pressure washer and wash them away
+# Option 2: Buy a cup of lemonade and carry on your way 😊
+# Option 3: The kids look young and fresh, so you diddle them""", [], ['Option 1', 'Option 2', 'Option 3'])
+#     if c == 0:
+#         print("""You open your garage door and get your trusty STIHL RE 110 PLUS High Pressure Washer. 
+# After filling it with water, you turn it to full power and get ready to blast the kids. 
+# One of them is EXTREMELY short and has a name tag “Goon Kai”. The other is a brown kid, 
+# of average height, holding a tennis racquet with the name tag “Keefen”. You aim your 
+# pressure washer at their lemonade pitcher and let loose. The pitcher instantly 
+# shatters and shards of glass are sent flying. Goon Kai, naturally in a low position, 
+# doesn’t get hit, but Keefen’s shocked face gets absolutely obliterated. “Sucks to suck”, 
+# you say to yourself, but Goon Kai has already run to tell Mummy. Within minutes the 
+# police have found you. You are taken to police custody. """)
+#         c = choice("""Option 1: Just let me die already
+# Option 2: Play the Mario Theme and start jumping around your cell. (Yahoo!)""")
+#         if c == 0:
+#             print('You die later that day in your sleep.')
+#             story_afterlife_class.hell('Because you bullied some little children.')
+#             ending('Boring', 1, 'Afterlife')
+#         elif c == 1:
+#             #play music: mario theme
+#             print("""You start jumping around your jail cell screaming “Yahoo!”. The guard comes and 
+# tells you to stop, so you keep jumping. When he enters the cell and tazes you, 
+# you have a heart attack and die. Unlucky chap. """)
+#             story_afterlife_class.hell('Because you bullied some little children.')
+#             addachievement("Itsa mea Mario!")
+#             ending('Yahoo!', 2, 'Afterlife')  
+#     elif c == 1:
+#         pass
+#     elif c == 2:
+#         pass
     
-
        
-class story_afterlife_class:
-    def heaven(txt):
-        slowprint(f'''You ended up in: HEAVEN
-{txt}''', 0.05, ['bold'], 'yellow')
+# class story_afterlife_class:
+#     def heaven(txt):
+#         slowprint(f'''You ended up in: HEAVEN
+# {txt}''', 0.05, ['bold'], 'yellow')
         
-    def hell(txt):
-        slowprint(f'''You ended up in: HELL
-{txt}''', 0.05, ['bold'], 'red')
+#     def hell(txt):
+#         slowprint(f'''You ended up in: HELL
+# {txt}''', 0.05, ['bold'], 'red')
 
 # GAME LOOP
 while True:
