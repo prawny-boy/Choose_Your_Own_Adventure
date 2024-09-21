@@ -59,7 +59,7 @@ stories = {
     "space story": 12,
     'time travel': 45,
     'school': 20,
-    'mountain': 5,
+    'mountain': 12,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
@@ -429,7 +429,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:bool = False) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = (False | int)) -> int:
     cprint('-----------------------------', attrs=['bold'])
     choice = ''
     numoptions = []
@@ -1804,11 +1804,82 @@ What do you eat?
         elif d1 == -1:
             end()
             return
-        
-        
+    elif friend == 'William':
+        print('William, the most experienced mountain-climber you know, isn\'t scared as much as you are, about the increasingly countless amount of dead bodies on the snowy surface.')
+        w1 = choice(f'You see a body on the floor, but supposedly alive. Having seeing this, do you go and help the maybe dead climber? ', ['Out of compassion, you go to check on the climber.', 'You shrug it off, likely knowing that they are dead.'], mountain=time)
+        dead = randint(1, 2)
+        if w1 == 0:
+            print('William leaves you behind, as he has experience and has encountered this before, once looking at a dead climber.')
+            print('You give the climber some of your own oxygen, in the hopes that he will awaken...')
+            sleep(2)
+            if dead == 1:
+                print('Unfortunately, the climber is dead, and you waste your remaining oxygen.')
+                ending('Too compassionate...', 6, story='Mountain')
+                end()
+            else:
+                print('The climber revives, and you quickly help him get up. Rushingly, you carry him all the way down to the bottom of the mountain.')
+                ending('Saved him...', 7, story='Mountain', type='win')
+                end()
+        elif w1 == 1:
+            if dead == 1:
+                print('The climber was left to die, as he was actually alive. William leaves you, as you silently weep and faint.')
+                ending('Did he really die?', 8, story='Mountain')
+                end()
+            else:
+                print('The climber was dead, and William told you so.')
+                print('Anyway, you continue to climb, William warns you to not waste anymore time, as he is experienced and knows when to look out for others (he doesn\'t, as he has no compassion).')
+        elif w1 == -1:
+            end()
+            return
+    print('Hiking up, you need a moment to catch your breath. Suddenly, you hear a sharp, piercing sound. A nearby climber.')
+    print('Looking around in shock, you realise that you have found the Abominable Snowman.')
+    a2 = choice(f'The sheer size of The Snowman scares you and {friend}. Do you stay still, fight, or run away?', outcomes=['Staying still, nothing happens...yet.', 'Where\'s Pat?', ''], options=['Stay still', 'Fight', 'Run away'], mountain=time)
+    if a2 == 0:
+        print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
+        sleep(1)
+        print(f'The ground finally gives way, as you, {friend} and the Snowman falls to death.')
+        ending("Well, now ✨He✨ is dead.", 9, story='Mountain')
+        end()
+        return
+    elif a2 == 1 and friend == 'Pat':
+        scared = randint(1, 2)
+        if scared == 1:
+            print('You call Pat, and find that he is no where to be seen, hiding away somewhere. Although he works out, he is a bit scared by the Abominable One.')
+            ending('Where did he go?', 10, story='Mountain')
+            end()
+            return
+        elif scared == 2:
+            print('Pat punches him, and the Snowman turns around. Pat finds that the gear he is in is quite restrictive, and so the offense is not so powerful, although he works out.')
+            print('His impulse kicks in, taking you down with him as he knows that he was going to die anyway.')
+            ending('Wrong partner...', 5, story='Mountain')
+            end()
+            return
+    elif a2 == 1 and friend != 'Pat':
+        print(f'You deduce that you have the best fighting skills, and punch the beast. The suit is very restrictive, and so the Snowman shrugs it off as he flings you and {friend} off the face of the earth.')
+        ending('Scary!!', 11, story='Mountain')
+        end()
+        return
+    elif a2 == 2:
+        print("You realise you have to run away, but have to find which way to go. Up or down the mountain? ")
+        a3 = choice('Do you go up or down?', outcomes=['', ''], options=['Up', 'Down'], mountain=time)
+        if a3 == 0:
+            print('You choose to go up. Good decision!')
+            print('You remember from physics class that it takes less work to go up for a body of less mass than a larger mass, so you outrun the Snowman and can continue your hike.')
+        elif a3 == 1:
+            print('Going down, the Snowman catches up to you because of his large inertia.')
+            ending("Now you're dinner.", 12, story='Mountain')
+            end()
+            return
+        elif a3 == -1:
+            end()
+            return
+    elif a2 == -1:
+        end()
+        return
+
     
     print('You win! Thanks for playing!')
-    ending('Reached the summit!', 4, story='mountain', type='win')
+    ending('Reached the summit! Now how do I get down...', 4, story='mountain', type='win')
 
 # OLIVER - UNDERWATER
 def story_underwater():
