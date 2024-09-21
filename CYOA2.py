@@ -8,8 +8,9 @@ from time import sleep
 from achievements import achievements
 from pygame import mixer
 from keyboard import is_pressed
-import threading
+from inputimeout import inputimeout
 import os
+
 
 # Inits
 mixer.init()
@@ -58,7 +59,7 @@ stories = {
     "space story": 12,
     'time travel': 45,
     'school': 20,
-    'mountain': 2,
+    'mountain': 5,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
@@ -428,7 +429,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:bool = False) -> int:
     cprint('-----------------------------', attrs=['bold'])
     choice = ''
     numoptions = []
@@ -443,8 +444,16 @@ def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
     for a in range(0,len(options)):
         options[a] = str(options[a]).lower()
     print('Options: ' + option)
+
     while True:
-        choice = str(input('Choice: ').lower()) 
+        if mountain != False:
+            try:
+                choice = str(inputimeout('Choice: ', mountain).lower())
+            except:
+                ending('Suffocated from lack of oxygen...', 1, 'mountain')
+                return -1
+        elif mountain == False:
+            choice = str(input('Choice: ').lower())
         if choice == "quit":
             exit()
         elif choice in options:
@@ -700,8 +709,6 @@ def checkcommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        
-        with open(file_conversion("Constants\\inspirational.txt"), "r") as file:
         with open(ins, "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
@@ -748,7 +755,6 @@ Story Writers:
         addachievement("Supporter")
     elif command == "testers":
         cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
-        with open("Constants\\testers.txt", "r") as file:
         with open(t, "r") as file:
             for line in file.readlines():
                 print(line.strip("\n"))
@@ -1467,7 +1473,7 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load("Songs\\Wii-Music.mp3")
+            mixer.music.load(file_conversion("Songs\\Wii-Music.mp3"))
             m = randint(1,3)
             if m == 1:
                 mixer.music.load(wii_shop)
@@ -1663,144 +1669,146 @@ def story_tomb_passageway():
                 else:
                     ending("Should've Studied Harder", 13, "tomb")
 
-global alive
-alive = True
 # LEVI - MOUNTAIN
 def story_mountain():
-    current_inventory = []
-    inventory_lock = threading.Lock()
-    def subtract_oxygen(targetList: list = current_inventory):
-        global alive
-        while True:
-            if not alive:
+    def end():
+        print(f'Thanks for playing!')
+
+    cprint('Every choice you have to make, you only have 7 seconds to answer, to simulate being at Mount Everest. However, if you can make better decisions, you may have longer. Make your decisions quick!', 'blue')
+    print()
+    friend = ''
+    altitude = 5364
+    time = 7
+
+    print('You are an intermediate mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest, starting from the South Base Camp.') 
+    inventory('Climbing gloves', 2)
+    c1 = choice("""Who will you go with?
+Derek: Your best friend since 5th grade. You know him best, but it is his first time.
+William: A professional climber that has been climbing since 1994. He is experienced and has all the gear.
+Pat: Your loyal uber delivery man. A chill guy who is built like a bodybuilder on steroids. He's done some rock climbing, but that's it.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'], mountain = time)
+
+    #Derek
+    if c1 == 0:
+        print('You chose Derek.')
+        friend = 'Derek'
+        print("You check what Derek has, and not to your surprise, he only has mountain apparel. You tell him he needs bottled oxygen, and he quickly finds a market just below where you are talking to buy some oxygen.")
+
+        dc2 = choice('''You have some spare time. What do you do?
+1. Go with Derek to buy oxygen.
+2. Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen with him.', 'Derek goes off by himself to buy some oxygen.'], ['Go', 'Phone'], mountain = time)
+
+        if dc2 == 0:
+            print("On the way to the market, Derek keeps talking about his family and children. You on the other hand, have been annoyed, that you don't have a family, but feel better because you're more experienced in most things.")
+            print('You arrive to the market, and there are multiple bottles for sale.')
+            dc3 = choice('''Which bottle and what quantity do you choose?
+1. 3 400L tanks, fast speed
+2. 4 350L tanks, medium speed
+3. 5 300L tanks, slow speed
+''', ['You chose 3 400L tanks. Derek will walk at a fast pace. Therefore, you will have 10 seconds to make choices.', 'You chose 4 350L tanks, Derek will walk at a medium pace. Therefore, you will have 7 seconds to make choices.', 'You chose 5 300L tanks, Derek will walk at a slow pace. Therefore, you will have 4 seconds to make choices.'], ['1', '2', '3'], mountain = time)
+
+            if dc3 == 0:
+                #bought 3 400L tanks, fast walking pace
+                time = 10
+            elif dc3 == 1:
+                #bought 4 350L tanks, medium speed
+                time = 7
+            elif dc3 == 2:
+                #bought 5 300L tanks, slow speed
+                time = 4
+            elif dc3 == -1:
+                end()
                 return
-            sleep(10)
-            try:
-                targetList.remove('Oxygen')
-                targetList.remove('Oxygen')
-                print()
-                LINE_UP = '\033[1A'
-                LINE_CLEAR = '\x1b[2K'
-                print(LINE_UP)
-                print(LINE_UP + LINE_CLEAR, end='')
-                cprint('Two oxygen were removed.', 'red')
-
-            except ValueError:
-                ending('Suffocated from lack of oxygen...', 1, 'mountain')
-                alive = False
-                return 
-                
-
-    def add_oxygen(targetList:list = current_inventory):
-        for i in range(0, 3):
-            targetList.append('Oxygen')
-        cprint('Three oxygen gained.', 'green')
-        
-    def main_game():
-        friend = ''
-        altitude = 5364
-        friend_speed = 'none'
-
-        print('You are an intermediate mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest.')
-        inventory('Climbing gloves', 2)
-        add_oxygen()
-        c1 = choice("""Who will you go with?
-    Derek: Your best friend since 5th grade. You know him best, but it is his first time.
-    William: A professional climber that has been climbing since 1994. He is experienced and has all the gear.
-    Pat: Your loyal uber delivery man. A chill guy who is built like a bodybuilder on steroids. He's done some rock climbing, but that's it.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'])
-        add_oxygen()
-
-        #Derek
-        if c1 == 0 and alive != False:
-            print('You chose Derek.')
-            friend = 'Derek'
-            derek_inv = []
-            print("You check what Derek has, and not to your surprise, he only has mountain apparel. You tell him he needs bottled oxygen, and he quickly finds a market just below where you are talking to buy some oxygen.")
-
-            dc2 = choice('''You have some spare time. What do you do?
-Go with Derek to buy oxygen.
-Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen with him.', 'Derek goes off by himself to buy some oxygen.'], ['Go', 'Phone'])
-            add_oxygen()
-
-            if dc2 == 0 and alive != False:
-                print("On the way to the market, Derek keeps talking about his family and children. You on the other hand, have been annoyed, that you don't have a family, but feel better because you're more experienced in most things.")
-                print('You arrive to the market, and there are multiple bottles for sale.')
-                dc3 = choice('''Which bottle and what quantity do you choose?
-1) 3 400L tanks, fast speed
-2) 4 350L tanks, medium speed
-3) 5 300L tanks, slow speed
-''', ['You chose 3 400L tanks. Derek will walk at a fast pace.', 'You chose 4 350L tanks, Derek will walk at a medium pace.', 'You chose 5 300L tanks, Derek will walk at a slow pace.'], ['1', '2', '3'])
-                add_oxygen()
-
-                if dc3 == 0 and alive != False:
-                    #bought 3 400L tanks, fast walking pace
-                    friend_speed = 'fast'
-                elif dc3 == 1 and alive != False:
-                    #bought 4 350L tanks, medium speed
-                    friend_speed = 'medium'
-                elif dc3 == 2 and alive != False:
-                    #bought 5 300L tanks, slow speed
-                    friend_speed = 'slow'
-                elif alive == False:
-                    return
-            elif dc2 == 1 and alive != False:
-                print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
-                print('Oh well, at least he has oxygen.')
-            elif alive == False:
-                return
-            print('After getting back to the base camp, you are ready to embark on your new journey.')
-            sleep(1)
-
-
-        #william    
-        elif c1 == 1 and alive != False:
-            print('You chose William.')
-            friend = 'William'
-            friend_speed = 'fast'
-            william_inv = ['Oxygen', 'Oxygen', 'Oxygen', 'Oxygen']
-            print('William was prepared, so he brought oxygen to start climbing.')
-
-        #pat
-        elif c1 == 2 and alive != False:
-            print("You were a bit shook from Pat's strength. Nevertheless, he is very enthusiastic to climb Mt. Everest with you.")
-            friend = 'Pat'
-            pat_inv = ['supposedly...steroids']
-            pc2 = choice("""You ask Pat about his strength, and he casually shrugs it off. He looks like a bodybuilder, but you remember he doens't have the time to go to the gym.
-You are intrigued as to why he is so muscly.
-Do you ask him about his strength?""", ['', ''], ['y', 'n'])
-            add_oxygen()
-            if pc2 == 0:
-                print('After pestering him, he finally admits that he does indeed take steroids. He then suddenly snaps out of nowhere, and threatens to end you if you do one thing wrong.')
-                ending('Steroids...', 2, 'Mountain')
-                return
-            elif pc2 == 1:
-                print('He initiates a conversation with you, and you respond.')
-            elif alive == False:
-                return
-        elif alive == False:
+        elif dc2 == 1:
+            print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
+            print('Oh well, at least he has oxygen.')
+        elif dc2 == -1:
+            end()
             return
-        #all friends are here
-        if alive == False:
-            return
+        print('After getting back to the base camp, you are ready to embark on your new journey.')
         sleep(1)
-        print(f'Your altitude is: {altitude}m.')
-        print(f'')
+
+
+
+    #william    
+    elif c1 == 1:
+        print('You chose William.')
+        friend = 'William'
+        print('William was prepared, so he brought oxygen to start climbing.')
+
+    #pat
+    elif c1 == 2:
+        print("You were a bit shook from Pat's strength. Nevertheless, he is very enthusiastic to climb Mt. Everest with you.")
+        friend = 'Pat'
+        pat_inv = ['supposedly...steroids']
+        pc2 = choice("""You ask Pat about his strength, and he casually shrugs it off. He looks like a bodybuilder, but you remember he doens't have the time to go to the gym.
+You are intrigued as to why he is so muscly.
+Do you ask him about his strength?""", ['', ''], ['y', 'n'], mountain = time)
         
-
-
-
-    #start of mountain game, starts the threads
-    cprint('Every two minutes, to simulate being at Mount Everest, you lose 2 oxygen. But each time you make a decision, you get 3 oxygen. Make your decisions quick!', 'red')
-    thread1 = threading.Thread(target=subtract_oxygen)
-    thread2 = threading.Thread(target=main_game)
- 
-    thread1.start()
-    thread2.start()
-
-    thread1.join()
-    thread2.join()
-
-    print('Thanks for playing!')
+        if pc2 == 0:
+            print('After pestering him, he finally admits that he does indeed take steroids. He then suddenly snaps out of nowhere, and threatens to end you if you do one thing wrong.')
+            ending('Steroids...', 2, 'Mountain')
+            return
+        elif pc2 == 1:
+            print('He initiates a conversation with you, and you respond.')
+        elif pc2 == -1:
+            end()
+            return
+    elif c1 == -1:
+        end()
+        return
+    #all friends are here
+    sleep(1)
+    print(f'Your altitude is: {altitude}m.')
+    sleep(0.5)
+    print(f'As you start climbing on your way to Mount Everest, you encounter the Everest Camp 2 at an altitude of 6400m.')
+    altitude = 6400
+    a1 = choice(f'You realize that you\'re not hungry, but that {friend} is. At Everest Camp 2, there are some food options, but you yourself are not hungry. Do you eat or continue journeying?', outcomes=['', ''], options=['Eat', 'Journey'], mountain=time)
+    if a1 == 0:
+        print('You stop by, and now you have to decide what to eat.')
+        ae1 = choice("""
+What do you eat?
+1. Instant noodles
+2. Chicken and rice
+3. A small snack (candy bar).""", outcomes=['', '', ''], options=['1', '2', '3'], mountain=time)
+        if ae1 == 0:
+            print('You both eat instant noodles, and are left satisfied.')
+        elif ae1 == 1:
+            print('You both eat chicken and rice, but leave quite full.')
+        elif ae1 == 2:
+            print('You both eat a small candy bar, increasing the amount of sugar in your blood. You stumble around, as your body dies because of the lack of nutrients in your blood.')
+            ending('Sugar......yummy', 3, 'Mountain')
+            return
+        elif ae1 == -1:
+            end()
+            return
+    elif a1 == 1:
+        print(f"Both of you continue to hike up the mountain, but {friend} is feeling a bit sick. You walk at a slower pace to match {friend}'s pace.")
+        time -= 1
+        dead = 'almost'
+    elif a1 == -1:
+        end()
+        return
+    print('You depart Everest Camp 2, and continue hiking.')
+    print('As you climb up, the air pressure starts to lower.')
+    if friend == 'Derek':
+        d1 = choice("""Derek starts feeling faint, occasionally losing consciousness. Do you turn back?""", outcomes=['', ''], mountain=time)
+        if d1 == 0:
+            print('You turn back, as Derek cannot handle the pressure and altitude of the mountain\'s top. ')
+            ending('Wrong partner...', 5, story='Mountain')
+            end()
+            return
+        elif d1 == 1:
+            print('You convince Derek to power on, taking more time to slowly walk through the mountain. You now only have 2 seconds to make your decisions.')
+            sleep(1)
+            time = 2
+        elif d1 == -1:
+            end()
+            return
+        
+        
+    
+    print('You win! Thanks for playing!')
+    ending('Reached the summit!', 4, story='mountain', type='win')
 
 # OLIVER - UNDERWATER
 def story_underwater():

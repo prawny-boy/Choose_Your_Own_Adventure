@@ -1,10 +1,18 @@
-#choice = input('Chiner')
-#print("\033[A"+(" "*(len(choice)+9))+"\033[A")
-#print('hi')
-import time
-CURSOR_UP = "\033[1A"
-hi = "\033[1A"
-CLEAR = "\x1b[2K" + CURSOR_UP
-print(CURSOR_UP)
-print(CURSOR_UP + CLEAR, end="hi")   # clears ONE line
-print("pineapple")
+from inputimeout import inputimeout
+import sys
+while True:
+    e=''
+    print('a')
+    print('a')
+    try:
+        e = inputimeout('Chiner', 5)
+    except:
+        
+        print()
+        LINE_UP = '\033[1A'
+        LINE_CLEAR = '\x1b[2K'
+        print(LINE_UP, end='')
+        sys.stdout.flush()
+        print('You died')
+    if e == '':
+        break
