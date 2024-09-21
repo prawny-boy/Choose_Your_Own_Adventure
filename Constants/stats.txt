@@ -18,6 +18,10 @@ User: /harry c
 Endings: //6/amazon jungle/fail,8/amazon jungle/fail,7/amazon jungle/fail,14/amazon jungle/win,7/School/win
 Achievements: //First Command/special,Beginner Jungle/amazon jungle,Escape of the Jungle/amazon jungle,Godslayer/school,Ligma Master/school,Year 7/school,Saved/special
 Commands: //help,start,start,start,start,start,save
+User: /levi
+Endings: //Steroids.../Mountain/fail,2/Mountain/fail,2/Mountain/fail,2/Mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,1/mountain/fail,3/time travel/fail,3/Mountain/fail,3/Mountain/fail,4/mountain/win
+Achievements: //First Command/special,Rock Climber/mountain,All Endings [Mountain]/mountain,Command User/special,Hiker/mountain,Inspired/special,Time Traveller/time travel
+Commands: //start,help,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,start,inspiration,inspiration,start,start,start,start,start,start,start,start,start,start
 User: /skibidileven
 Endings: //
 Achievements: //First Command/special,Saved/special
@@ -34,3 +38,4 @@ User: /marcel
 Endings: //
 Achievements: //First Command/special
 Commands: //help
+
