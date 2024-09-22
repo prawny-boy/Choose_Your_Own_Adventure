@@ -1,7 +1,3 @@
-
-#LEVI DO WORK YOU BUM
-
-#we not using this i thought
 import base64
 
 def b64_encode(s:str) -> str:
