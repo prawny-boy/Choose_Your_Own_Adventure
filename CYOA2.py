@@ -9,49 +9,29 @@ from achievements import achievements
 from pygame import mixer
 from keyboard import is_pressed
 from inputimeout import inputimeout
-import os
+from os import getcwd
 
 
-# Inits
+# Initialisations
 mixer.init()
 
-def file_conversion(file) -> str:
-    return (os.getcwd()+file) if 'C:' in os.getcwd() else (os.getcwd()+(file.replace('\\', '/')))
-#file names
-s = file_conversion('\\Constants\\stats.txt')
-e = file_conversion('\\Constants\\allendings.txt')
-ins = file_conversion('\\Constants\\inspirational.txt')
-#songs
-happy = file_conversion('\\Songs\\Happy.mp3')
-hope = file_conversion('\\Songs\\Hope.mp3')
-mystery = file_conversion('\\Songs\\mystery.mp3')
-wii_music = file_conversion('\\Songs\\Wii-Music.mp3')
-
-# Program presets variables:
-# Program Presets
-# Functions
-def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
-    if 'C:' in os.getcwd():
-        return filepath
-    elif 'D:' in os.getcwd():
-        return os.getcwd()+"/"+filepath.replace("\\", "/")
-    else:
-        return os.getcwd()+"/"+filepath.replace("\\", "/")
+def convertfilename(file) -> str:
+    return (getcwd()+file) if 'C:' in getcwd() else (getcwd()+(file.replace('\\', '/')))
 
 # Constants
-s = convertfilename('Constants\\stats.txt')
-e = convertfilename('Constants\\allendings.txt')
-u = convertfilename('Constants\\updates.txt')
-t = convertfilename('Constants\\testers.txt')
-ins = convertfilename('Constants\\inspirational.txt')
+s = convertfilename('\\Constants\\stats.txt')
+e = convertfilename('\\Constants\\allendings.txt')
+u = convertfilename('\\Constants\\updates.txt')
+t = convertfilename('\\Constants\\testers.txt')
+ins = convertfilename('\\Constants\\inspirational.txt')
 
 # Songs
-happy = convertfilename('Songs\\Happy.mp3')
-hope = convertfilename('Songs\\Hope.mp3')
-mystery = convertfilename('Songs\\Mystery.mp3')
-wii_music = convertfilename('Songs\\Wii-Music.mp3')
-wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
-wii_shop = convertfilename('Songs\\Wii-Shop.mp3')
+happy = convertfilename('\\Songs\\Happy.mp3')
+hope = convertfilename('\\Songs\\Hope.mp3')
+mystery = convertfilename('\\Songs\\Mystery.mp3')
+wii_music = convertfilename('\\Songs\\Wii-Music.mp3')
+wii_sports = convertfilename('\\Songs\\Wii-Sports.mp3')
+wii_shop = convertfilename('\\Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
@@ -432,7 +412,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = (False | int)) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = False) -> int:
     cprint('-----------------------------', attrs=['bold'])
     choice = ''
     numoptions = []
@@ -720,7 +700,7 @@ def checkcommand(command:str) -> None:
         with open(ins, "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = [file_conversion("Songs\\Hope.mp3"), file_conversion("Songs\\Happy.mp3"), file_conversion("Songs\\Mystery.mp3")]
+        songlist = [convertfilename("\\Songs\\Hope.mp3"), convertfilename("\\Songs\\Happy.mp3"), convertfilename("\\Songs\\Mystery.mp3")]
         songlist = [hope, happy, mystery]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
@@ -1481,7 +1461,7 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load(file_conversion("Songs\\Wii-Music.mp3"))
+            mixer.music.load(convertfilename("\\Songs\\Wii-Music.mp3"))
             m = randint(1,3)
             if m == 1:
                 mixer.music.load(wii_shop)
@@ -1881,7 +1861,7 @@ def story_mountain():
     c1 = choice("""Who will you go with?
 Derek: Your best friend since 5th grade. You know him best, but it is his first time.
 William: A professional climber that has been climbing since 1994. He is experienced and has all the gear.
-Pat: Your loyal uber delivery man. A chill guy who is built like a bodybuilder on steroids. He's done some rock climbing, but that's it.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'], mountain = time)
+Pat: Your loyal uber delivery man. A not-so-chill-but-chill guy who is built like a bodybuilder on steroids. He's done some rock climbing, but that's it.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'], mountain = time)
 
     #Derek
     if c1 == 0:
