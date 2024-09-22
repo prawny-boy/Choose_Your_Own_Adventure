@@ -61,10 +61,8 @@ stories = {
     "space story": 12,
     'time travel': 45,
     'school': 20,
-    'mountain': 5,
-    'mountain': 1,
-    # 'underwater': 1,
     'mountain': 12,
+    # 'underwater': 1,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
