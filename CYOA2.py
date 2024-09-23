@@ -2075,7 +2075,7 @@ What do you eat?
         print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
         sleep(1)
         print(f'The ground finally gives way, as you, {friend} and the Snowman falls to death.')
-        ending("Well, now ✨He✨ is dead.", 9, story='Mountain')
+        ending("Well, now he is dead.", 9, story='Mountain')
         end()
         return
     elif a2 == 1 and friend == 'Pat':
