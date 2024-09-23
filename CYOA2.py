@@ -2,7 +2,6 @@ import sys
 sys.dont_write_bytecode = True # makes sure _pycache_ is not created
 from termcolor import cprint, colored
 from sys import exit
-#from Constants import updates
 from random import randint
 from time import sleep
 from achievements import achievements
@@ -15,23 +14,30 @@ from os import getcwd
 # Initialisations
 mixer.init()
 
-def convertfilename(file) -> str:
-    return (getcwd()+file) if 'C:' in getcwd() else (getcwd()+(file.replace('\\', '/')))
+# Program Presets
+# Functions
+def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    if 'C:' in getcwd():
+        return filepath
+    elif 'D:' in getcwd():
+        return getcwd()+"/"+filepath.replace("\\", "/")
+    else:
+        return getcwd()+"/"+filepath.replace("\\", "/")
 
 # Constants
-s = convertfilename('\\Constants\\stats.txt')
-e = convertfilename('\\Constants\\allendings.txt')
-u = convertfilename('\\Constants\\updates.txt')
-t = convertfilename('\\Constants\\testers.txt')
-ins = convertfilename('\\Constants\\inspirational.txt')
+s = convertfilename('Constants\\stats.txt')
+e = convertfilename('Constants\\allendings.txt')
+u = convertfilename('Constants\\updates.txt')
+t = convertfilename('Constants\\testers.txt')
+ins = convertfilename('Constants\\inspirational.txt')
 
 # Songs
-happy = convertfilename('\\Songs\\Happy.mp3')
-hope = convertfilename('\\Songs\\Hope.mp3')
-mystery = convertfilename('\\Songs\\Mystery.mp3')
-wii_music = convertfilename('\\Songs\\Wii-Music.mp3')
-wii_sports = convertfilename('\\Songs\\Wii-Sports.mp3')
-wii_shop = convertfilename('\\Songs\\Wii-Shop.mp3')
+happy = convertfilename('Songs\\Happy.mp3')
+hope = convertfilename('Songs\\Hope.mp3')
+mystery = convertfilename('Songs\\Mystery.mp3')
+wii_music = convertfilename('Songs\\Wii-Music.mp3')
+wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
+wii_shop = convertfilename('Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
@@ -51,6 +57,12 @@ initialstats = ['Endings: //', 'Achievements: //', 'Commands: //'] # preset of s
 play = False
 Reset = '\033[0m'
 commandlist = ["help", "start", "stats", "save", "achievements", "credits", "updates", "inspiration"] # if add command also add in this unless it is an admin command, or quit, delete or reset
+collections = {
+    "sean": ["amazon jungle", "tomb", "time travel"],
+    "oliver": ['school', "space story"],
+    "levi": ['mountain'],
+    "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
+}
 
 # Stat Variables
 user = ""
@@ -215,6 +227,14 @@ def checkachievements() -> None:
                                 alldone = False
                                 break
                         if alldone:
+                            done = True
+                elif atype == "stories":
+                    if key == "totalplays":
+                        playcount = countendings(None, key)
+                        if playcount >= amount:
+                            done = True
+                    else:
+                        if countendings(key, "collection") == 1:
                             done = True
                 else:
                     print("Error. Type not valid:", atype)
@@ -427,16 +447,8 @@ def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(boo
     for a in range(0,len(options)):
         options[a] = str(options[a]).lower()
     print('Options: ' + option)
-
     while True:
-        if mountain != False:
-            try:
-                choice = str(inputimeout('Choice: ', mountain).lower())
-            except:
-                ending('Suffocated from lack of oxygen...', 1, 'mountain')
-                return -1
-        elif mountain == False:
-            choice = str(input('Choice: ').lower())
+        choice = str(input('Choice: ').lower()) 
         if choice == "quit":
             exit()
         elif choice in options:
@@ -543,7 +555,7 @@ def getendingname(ending_num:int, story:str) -> str:
     return "Error, story invalid."
 
 def countendings(story:str, mode:str, endinglist:list = None) -> int:
-    # 4 modes, plays, all endings, fails and wins
+    # 6 modes, plays, all endings, fails, wins, totalplays, collection
     count = 0
     if mode == "play":
         for ending in endings:
@@ -571,6 +583,20 @@ def countendings(story:str, mode:str, endinglist:list = None) -> int:
             print("Error. Needs endinglist input.")
         except IndexError:
             pass
+    elif mode == "totalplays":
+        for ending in endings:
+            if ending != "":
+                count += 1
+    elif mode == "collection":
+        rmlist = collections[story]
+        for ending in endings:
+            try:
+                if str(ending).split("/")[1].lower() in rmlist:
+                    rmlist.remove(str(ending).split("/")[1].lower())
+            except IndexError:
+                continue
+        if len(rmlist) == 0:
+            count += 1
     else:
         print("Error. Mode not valid:", mode)
     return count
@@ -679,13 +705,17 @@ def checkcommand(command:str) -> None:
     elif command == "achievements":
         listachievements()
     elif command == "switch":
-        print(f"You are signed in as {user}")
+        if user == "":
+            print("You are currently anonymous.")
+        else:
+            print(f"You are signed in as {user}")
         while True:
             confirm = input("Do you want to sign out? (y/n) ").upper()
             if confirm == "Y":
-                update_stats(user)
+                if user != "":
+                    update_stats(user)
                 user = ""
-                print("Signed out. Please Sign In.")
+                print("Signed out. Please sign in.")
                 running_commands = False
                 break
             elif confirm == "quit":
@@ -700,7 +730,6 @@ def checkcommand(command:str) -> None:
         with open(ins, "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
-        songlist = [convertfilename("\\Songs\\Hope.mp3"), convertfilename("\\Songs\\Happy.mp3"), convertfilename("\\Songs\\Mystery.mp3")]
         songlist = [hope, happy, mystery]
         for i in range(len(paralist)):
             mixer.music.load(songlist[i])
@@ -710,8 +739,6 @@ def checkcommand(command:str) -> None:
         mixer.music.fadeout(1000)
     elif command == "quit":
         exit()
-    #elif command == 'updates':
-        print(updates)
     elif command == 'updates':
         with open(u, "r") as file:
             print(file.read())
@@ -876,10 +903,7 @@ They roar to life, throwing you back and bringing you back to earth.
             
     slowprint('THE END', 0.05, ["bold"])
 
-# SEAN - AMAZON ADVRENTURE
-foundpilot = False
-end = False
-
+# SEAN - AMAZON ADVENTURE
 def story_amazon_adventure_pilot():
     x = choice("Do you want to go find a village, continue searching in the plane, or stay and build a shelter next to the plane crash?", ["You and John both leave the crashed plane and after hours of searching you find a village. As you approach the alarm sounds, and you are both captured by the native tribe. You are going to be hanged in 2 hours, unless you have something to give.", "'Do you know about anything else in the plane?' You ask John. 'Yes there is a wrench and a instruction manual in the glove box' John replies, taking the things out. He gives them to you. These could be helpful for fixing the plane...", "You stay at the plane crash site, making a shelter for you and John for the next month. After you run out of food, you face the option of adventuring into the dangerous forest for food, or staying at the shelter to starve."], ['village', 'search', 'stay'])
     if x == 0:
@@ -945,7 +969,7 @@ def story_amazon_adventure_fix():
                 x = choice("Would you go and face the monster or stay and starve?", ["You go out to face the monster. You would die anyway, so beter die gloriously. Before you can even glimpse the monster, you are devoured. I don't think that was so glorious...", ""], ['face', 'stay'])
                 if x == 0:
                     ending("Not A Glorious Death", 10, "amazon jungle")
-                elif randint(0,1) == 0:
+                elif randint(1, 2) == 1:
                     print("You decide against fighting the monster, which stays there for a very long time, leading you into a slow and painful death. Starvation.")
                     ending("Starvation", 9, "amazon jungle")
                 else:
@@ -964,7 +988,9 @@ making it run away, pulling the book away from John's hands and stealing it. At 
             addachievement("Escape of the Jungle")
     
 def story_amazon_adventure():
-    global foundpilot
+    global foundpilot, end
+    foundpilot = False
+    end = False
     print("""\nYou are a passenger heading to Africa on a plane. You remember that you went bankrupt after losing while gambling. 
 Your life is falling around you, so you decide to move to Africa to start a new life. While you are thinking about the latest happenings,
 the plane suddenly dips and crashes into the trees. You go unconcious. 
@@ -1114,7 +1140,7 @@ def story_timetravel_2():
                 print("The farmers rush towards you with their tools pointed, and you don't stand a chance against them.")
                 ending("Poked by Garden Tools", 11, "time travel")
         else:
-            x = choice("Do you want to run to the farm house?", ["You take the risk, running silently to the farmhouse. Creeping past the door, you see a bag of gold sitting on the table! You grab it, but a few coins clatter onto the floor. A farmer comes and chases you out of the house.", "Not taking the risk, you stay in our hiding place for quite some time. Pleasantly, you box appears next to you. You hop in, closing the lid behind you as you get ready for the ride."])
+            x = choice("Do you want to run to the farm house?", ["You take the risk, running silently to the farmhouse. Creeping past the door, you see a bag of gold sitting on the table! You grab it, but a few coins clatter onto the floor. A farmer comes and chases you out of the house.", "Not taking the risk, you stay in our hiding place for quite some time. Pleasantly, your box appears next to you. You hop in, closing the lid behind you as you get ready for the ride."])
             if x == 0:
                 if "Power" in inventoryList:
                     print("\nYou have your power, so you outrun the farmer quickly, getting away with the gold. You see your box in the distance, so you sprint to it, getting in and closing the lid. Your power slips away, but you gained an extra bag of gold!")
@@ -1122,11 +1148,11 @@ def story_timetravel_2():
                     inventory("Gold", 1)
                     story_timetravel_3()
                 elif "Berry" in inventoryList:
-                    print("\nYou start running, but you can outrun the farmer. As an last effort, you eat the berry and feel some kind of power emerging inside of you. But it is too late, and the farmer catches up to you and knocks you to the ground.")
+                    print("\nYou start running, but you can't outrun the farmer. As an last effort, you eat the berry and feel some kind of power emerging inside of you. But it is too late, and the farmer catches up to you and knocks you to the ground.")
                     inventory("Berry", 1, "lose")
                     ending("Don't Steal Next Time", 12, "time travel")
                 else:
-                    print("\nYou start running, but you can outrun the farmer.")
+                    print("\nYou start running, but you can't outrun the farmer.")
                     ending("Slowpoke", 13, "time travel")
             else:
                 story_timetravel_3()
@@ -1135,7 +1161,7 @@ def story_timetravel_2():
         if x == 0:
             ending("Stuck with the Farmers", 14, "time travel")
         else:
-            ending("You hid, but your still stuck with the farmers...", 14, "time travel", alt=True, altname="Stuck with the Farmers")
+            ending("You hid, but you're still stuck with the farmers...", 14, "time travel", alt=True, altname="Stuck with the Farmers")
 
 def story_timetravel_3():
     print("You whirl around in the box, as it shakes and moves violently. Peeking out of the box, you see time passing before you eyes, the asteriod crashing into the earth, and the dinosaurs running away.")
@@ -1205,7 +1231,46 @@ def story_timetravel_3():
 def story_timetravel_4():
     # WW2
     print("You are bumped and kicked around in the box as you travel to your next time. As you arrive, you hop out, hoping to see the present, but, sadly, you see a large open field. Looking around, you see nothing.")
-    x = choice("Do you want to explore?", ["", ""]) # finish
+    x = choice("Do you want to explore?", ["You start to look around and see a storm of troops coming towards you. They are holding up guns, so you duck and quickly get out of their way. On the other side is another group of soldiers. Lucky you didn't get caught in the crossfire! You hear gunshots as you leave the area, and come across a deserted city.", "You stay at your time machine, which after abit just dissapears. Suddenly, you hear gunshots, but it is too late, and you are caught in the crossfire."])
+    if x == 0:
+        x = choice("Do you want to enter?", ["You enter the abandoned city, and see destruction and collapsed buildings all around you. It looks like some kind of war was here. Out of all the buildings, there are three that still seem intact. One that looks like a great hall, another that looks like a bomb shelter, and one that is a temporary camp.", "You decide to keep walking, and soon find yourself in a massive desert."])
+        if x == 0:
+            x = choice("Which do you want to enter?", ["You enter the hall, and find it deserted. Suddenly, you hear a whistling sound and a large kaboom outside the hall. Before you can wonder what happened, you are incinerated in a blink of an eye.", "You open the heavy metal door to the bomb shelter and enter. Inside are a group of people, huddling, looking scared. They tell you that a bomb is coming, and that you are in WW2. Luckily you are in a bomb shelter, so you are not affected by the large explosion. Suddendly, your box appears in front of you.", "You enter the tent flap of the camp, and a soldier grabs you and holds a gun to your throat."], ["hall", "bomb shelter", "camp"])
+            if x == 0:
+                ending("Incinerated", 24, "time travel")
+            elif x == 1:
+                x = choice("Do you want to go into your box?", ["You enter your box and close the lid, saying bye to the other people in the shelter.", "You decide you won't go in, and after awhile the box dissapears. Suddenly, the door swings open and a gun is pointed straight at your forehead. Pew Pew."])
+                if x == 0:
+                    story_timetravel_6()
+                elif x == 1:
+                    ending("'Pew Pew' - That guy who plays too much Valorant", 25, "time travel")
+            else:
+                if "Gold" in inventoryList:
+                    print("Thinking fast, you pull out your gold that you found earlier. The soldier decides to spare your life in return for the gold, and you hurridly leave the camp and the destructed city. You keep walking and find yourself in a desert. Starting to feel thirsty, you rummage around your bag to find water. Nothing.")
+                    ending("Dehydration", 26, "time travel")
+                else:
+                    print("The soldier shoots his gun once, which is enough to make you go bye bye.")
+                    ending("Sayonara", 27, "time travel")
+        else:
+            if "Cake" in inventoryList:
+                print("You are extremely hungry, so look in your bag to find the cake that you stole earlier. Eating it happily, you continue until you see a small military camp.")
+                inventory("Cake", 1, "lose")
+                x = choice("Do you want to enter?", ["You enter the camp and find no-one inside. Taking a jug of water, you leave. Walking for a few days, you drink you your water, but also find a developed city that looks untouched by war.", "You continue, ignoring the camp. After an hour of hiking, the wind starts to pick up, and you realise you are caught in a sandstorm. You try to escape, but you trip and fall, sand covering your body like a blanket."])
+                if x == 0:
+                    inventory("Water", 1)
+                    x = choice("Do you want to enter the city?", ["You arrive at the city, and see a sign saying 'Hiroshima'. Oops.", "I don't know why you don't want to enter a city when you have run out of water, but sure? You died of thirst."])
+                    if x == 0:
+                        ending("Bombed", 30, "time travel")
+                    else:
+                        ending("Bad Choices", 29, "time travel")
+                        addachievement("Bad Choices")
+                else:
+                    ending("Buried Forever", 28, "time travel")
+            else:
+                print("You are extremely hungry, but there is no food at all. You then proceed to starve to death.")
+                ending("Stranded in the Desert", 23, "time travel")
+    else:
+        ending("Caught in the crossfire", 22, "time travel")
 
 def story_timetravel_5():
     # Present
@@ -1451,9 +1516,7 @@ He laughs and you get swallowed in the waves of Ligma. """, """You rush towards 
 readying up your Ultimate move. The man is no other than the new maths teacher Mr Black. He has a deranged look on his face and his veins bulge. 
 He tells you that he is Mr White’s twin brother, and that he never got to be the favourite child. The Ligma Lord had promised him fame and glory 
 if he managed to defeat all the remaining students. Mr Black suddenly has a giant grin as he summons two fireballs in his palms, and you have a 
-sinking feeling that you might just be cooked""", """You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up and go straight 
-for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building into rubble, 
-as your limbs get pulled apart by the intense gravity. """, """You rush towards Duffy, but instantly get knocked back by the man. Realising you must stall for time, you turn towards him, 
+sinking feeling that you might just be cooked""", """""", """You rush towards Duffy, but instantly get knocked back by the man. Realising you must stall for time, you turn towards him, 
 readying up your Ultimate move. The man is no other than the new maths teacher Mr Black. He has a deranged look on his face and his veins bulge. 
 He tells you that he is Mr White’s twin brother, and that he never got to be the favourite child. The Ligma Lord had promised him fame and glory 
 if he managed to defeat all the remaining students. Mr Black suddenly has a giant grin as he summons two fireballs in his palms, and you have a 
@@ -1461,7 +1524,6 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            mixer.music.load(convertfilename("\\Songs\\Wii-Music.mp3"))
             m = randint(1,3)
             if m == 1:
                 mixer.music.load(wii_shop)
@@ -1473,7 +1535,6 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
-            sleep(3)
             ending('Bro needs to learn about plot development', 11, 'School')
         elif c == 3 or c == 1:
             slowprint("Hey, what's the formula for defeating old math teachers? ", 0.05, ['bold'])
@@ -1518,7 +1579,7 @@ they got led to the grand line, but they found the way back after finding the On
 classroom because plot twist, the One Piece was a cure to Karen. """)
                     addachievement('Luffy, that’s not the real One Piece… that’s Wingsley’s pocket money.')
                     
-                    print("""You get back to the classroom, where the students are happy to see you alive. The smart girl in your year (that you can't remember the name of) 
+                    print("""You get back to the classroom, where the students are happy to see you alive. The smart girl in your year (that you can’t remember the name of) 
 goes and injects the cure, which makes Mr White awake from his coma. He instantly starts calculating, and then spits out some prophetic lines 
 about how the students need to work together to conquer the remaining buildings to defeat the evil forces of ligma, then proceeds to pass out. 
 The students hold a brief meeting and decide that they should plan an assault on the remaining buildings that Ligma Lord has control over.
@@ -2147,7 +2208,7 @@ while True:
     while running_commands:
         print("")
         checkcommand(input("Enter a command ('Help' for options) > "))
-        if user != "":
+        if not user == "":
             update_stats(user)
             checkachievements()
             update_stats(user)
