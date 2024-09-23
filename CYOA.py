@@ -7,20 +7,24 @@ from time import sleep
 from achievements import achievements
 from pygame import mixer
 from keyboard import is_pressed
-import os
+from inputimeout import inputimeout
+from os import getcwd
 
-# Inits
+
+# Initialisations
 mixer.init()
 
 # Program Presets
 # Functions
 def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
-    if 'C:' in os.getcwd():
+    if 'C:' in getcwd():
         return filepath
+    elif 'D:' in getcwd():
+        return getcwd()+"/"+filepath.replace("\\", "/")
     else:
-        return os.getcwd()+"/"+filepath.replace("\\", "/")
+        return getcwd()+"/"+filepath.replace("\\", "/")
 
-# Files
+# Constants
 s = convertfilename('Constants\\stats.txt')
 e = convertfilename('Constants\\allendings.txt')
 u = convertfilename('Constants\\updates.txt')
@@ -33,7 +37,7 @@ hope = convertfilename('Songs\\Hope.mp3')
 mystery = convertfilename('Songs\\Mystery.mp3')
 wii_music = convertfilename('Songs\\Wii-Music.mp3')
 wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
-wii_shop = convertfilename('Songs\\Wii-Sports.mp3')
+wii_shop = convertfilename('Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
@@ -43,7 +47,8 @@ stories = {
     "space story": 12,
     'time travel': 45,
     'school': 20,
-    'mountain': 1,
+    'mountain': 12,
+    # 'underwater': 1,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
 for i in range(len(stories.keys())): storyList.append(str(i+1))
@@ -67,13 +72,13 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
-def slowprint(str:str, speed:float, attr:list, c='white', wait=3, skip=False) -> None:
+def slowprint(str:str, speed:float=0.05, attr:list=[], c='white', wait=3, skip=True, key:str = 'shift') -> None:
     start = 0
     for char in str:
         cprint(char, end='', attrs=attr, color=c)
         sys.stdout.flush()
         sleep(speed)
-        if is_pressed("shift") and start > wait and skip:
+        if is_pressed(key) and start > wait and skip:
             cprint(str[start+1:], end="", color=c, attrs=attr)
             break
         start += 1
@@ -158,7 +163,7 @@ def resetendingfile() -> None:
         resetlines += str(story) + ":" + (stories[story]-1) * "|" + "\n"
     with open(e, "w") as file:
         file.writelines(resetlines)
-
+resetendingfile()
 def deleteuser(user:str) -> None:
     # here we edit the stats file and reset everything
     with open(s, 'r') as file:
@@ -427,7 +432,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = False) -> int:
     cprint('-----------------------------', attrs=['bold'])
     choice = ''
     numoptions = []
@@ -616,13 +621,14 @@ def checkcommand(command:str) -> None:
   Quit - quits the story when in the story, if out of story quits program
   Credits - shows the credits & project info""")
     elif command == "start":
-        print("""STORIES:
-  1. Amazon Jungle
-  2. Space Story
-  3. Time Travel
-  4. Ligma School
-  5. Tomb Story
-  6. Mountain""")
+        print("""STORIES:""")
+        print(colored('1. Amazon Jungle', 'green'))
+        print(colored('2. Space Story', 'blue'))
+        print(colored('3. Time Travel', 'red'))
+        print(colored('4. School', 'yellow'))
+        print(colored('5. Tomb Story', 'magenta'))
+        print(colored('6. Mountain', 'light_grey'))
+        # print(colored('7. Underwater', 'cyan'))
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -633,23 +639,27 @@ def checkcommand(command:str) -> None:
                 print("That is invalid, enter a story name or the corresponding number to a story.\n")
         inventoryList = []
         if story == "amazon jungle" or story == '1':
-            cprint("\nAMAZON JUNGLE", "green", attrs=["bold"])
+            slowprint("\nAMAZON JUNGLE", 0.05, ["bold"],'green')
             story_amazon_adventure()
         elif story == "space story" or story == '2':
-            cprint("\nSPACE STORY", "blue", attrs=["bold"])
+            slowprint("\nSPACE STORY",0.05,["bold"],'blue')
             story_space()
         elif story == "time travel" or story == "3":
-            cprint("\nTIME TRAVEL", "red", attrs=["bold"])
+            slowprint("\nTIME TRAVEL", 0.05,["bold"], 'red')
             story_timetravel()
         elif story == "school" or story == "4":
-            cprint("\nSCHOOL - Made By Jayden Li", "yellow", attrs=["bold"])
-            story_school(user)
+            slowprint("\nSCHOOL - Made By Jayden Li",0.05,["bold"], 'yellow')
+            story_school()
         elif story == "tomb story" or story == "5":
-            cprint(get_color_escape(255, 128, 0) + '\nTutankhamun\'s Tomb - Made By Ethan Wei' + Reset, attrs=["bold"])
+            slowprint("\nTutankhamun's Tomb - Made By Ethan Wei", 0.05,["bold"],'magenta')
             story_tomb()
         elif story == "mountain" or story == "6":
-            cprint("\nMOUNT EVEREST", "light_grey", attrs=["bold"])
+            slowprint("\nMOUNT EVEREST", 0.05, ["bold"], 'light_grey')
             story_mountain()
+        # elif story == 'underwater' or story == '7':
+        #     slowprint('\nUNDERWATER', 0.05, ['bold'], 'cyan')
+        #     story_underwater()
+            
     elif command in ["save", "reset", "delete", "stats"]:
         if not user == "":
             if command == "save":
@@ -1360,7 +1370,7 @@ def story_timetravel_6_1():
             ending("Caught by the Zombies", 36, "time travel")
 
 # JADEN - SCHOOL
-def story_school(user:str):
+def story_school():
     global name, o
     if user.lower() == 'pancake' or user.lower() == 'ethan':
         name = 'Ethan Wei'
@@ -1403,7 +1413,7 @@ causing {name} to scream loudly. You pause, considering what to do.""", [f"You r
             elif c == 2:
                 inventory('Fire Extinguisher', 1, 'add')
                 print('''You Find Yourself on a Ghostly platform, on top of dark clouds, and directly in front of you is the Ligma Lord. 
-He reveals his face, turning out to be no other than Mr McMahon He laughs, saying that he always appears as the person who you fear the most. 
+He reveals his face, turning out to be no other than Mr McMahon. He laughs, saying that he always appears as the person who you fear the most. 
 He says that He is fear itself, and that fear will eventually conquer everything. His Voice darkens as he says that You have found his one weakness, 
 and he has decided that you will be the first victim of the war.
 
@@ -1420,17 +1430,17 @@ Because he was yapping for six billion years, that gave you the chance to reach 
                     slowprint('FAIL', 0.05, ['bold'], 'red')
                     ending('Mr White gave me a B for Maths...', 6, 'School')
                 elif c == 2:
-                    print('Ligma Lord: Well Done...')
+                    slowprint('Ligma Lord: Well Done...')
                     sleep(1)
-                    print('Ligma Lord: I have lost my power to fight... For you have conquered fear itself...')
+                    slowprint('Ligma Lord: I have lost my power to fight... For you have conquered fear itself...')
                     sleep(1)
-                    print('Ligma Lord: You are the one worthy of being a hero... Not just for students, but for the world...')
+                    slowprint('Ligma Lord: You are the one worthy of being a hero... Not just for students, but for the world...')
                     sleep(1)
-                    print('Ligma Lord: Take that portal over there, it will send you back to Perth Modern...')
+                    slowprint('Ligma Lord: Take that portal over there, it will send you back to Perth Modern...')
                     sleep(1)
-                    print('Ligma Lord: I apologise for the Ligma, when you get back everything will be restored, except the ones who have died, not even I can deal with Death...')
+                    slowprint('Ligma Lord: I apologise for the Ligma, when you get back everything will be restored, except the ones who have died, not even I can deal with Death...')
                     sleep(1)
-                    print("Ligma Lord: I'm sorry...")
+                    slowprint("Ligma Lord: I'm sorry...")
                     sleep(1)
                     print('''As the Ligma Lord vanishes, you pick up your school bag, and bow your head in silence, 
 then take a deep breath, and slowly walk towards the brightening portal. 
@@ -1577,12 +1587,200 @@ They tell you to get some sleep as you have been thoroughly exhausted by the day
 You try to yell for help, but your lips move soundlessly in the darkness. You hear the evil laughter of Ligma Lord as you feel a rush of wind awaken you 
 from your nightmare. Wingsley Kong is shaking you awake as he explains that the attack groups had decided to strike early morning and left you here 
 because they wanted you to rest. Hearing this news, you know that you must go help them because you have a feeling that they are going to mess up.  
-Wingsley Kong agrees and wakes up Duffy because he is the only other person left in this room, even Mr White has gone.  """)
+Wingsley Kong agrees and wakes up Duffy because he is the only other person left in this room, even Mr White has gone.  
+The three of you set off to Stokes, ready to save the school, and potentially the world. Wingsley Kong casts a cheering charm on you, 
+basically giving you coffee but more stimulating and without the caffeine crash. You jump over the wreckage that the attack group had 
+made going into the building. You see many Ligma Zombies lying on the sides of the building. Suddenly the roof caves in and you spot a 
+giant bubble creature emitting godly light. On the ground are your fellow students, fighting for their lives.  """)
+                    
+                    c = choice("""
+Option A: Run over to help them with your epic fighting powers
+Option B: Hold back because stealing people’s kills isn’t very Skibidi""", ["""You run in and use Counter-Ligma to destroy the other ligma zombies, with your classmates looking at you with shock. 
+You turn around and ask why they are so worried, and then they explain that they planted 8294232374 Kg of 
+TNT inside of Stokes that is going to detonate in 3 seconds. """, """You tell Wingsley Kong and Duffy to hold back, as Soul prepares the killing blow to the bubble creature, 
+Ligma Lord uses Blooket hacks to teleport into the battle, and unleash an all-powerful wave of pure Ligma, paralysing all the students. 
+He waves his hand, and all your classmates fall into a dark void where The Ligma Lord follows into. You and Wingsley sit there, 
+stunned at what has just happened. Without thinking, you jump into the void, ready to chase after the Ligma Lord, to save your friends. """], ['A', 'B'])
+                    
+                    if c == 0:
+                        ending('BOOM', 15, 'School')
+                    elif c == 1:
+                        print("""As you fall through the void, you land on some storm clouds which are slowly rising. 
+You see that your fellow students have been encased within black energy, slowly converting their will into Ligma. You spot Wingsley on a storm cloud about 50 metres away, 
+who has caught the attention of Ligma Lord, who is levitating (because he’s just that guy). Wingsley Kong fires up a Superman-Like Laser eye shot, which just bounces off Ligma Lord. 
+You yell at Wingsley to run, as you use Fourth Form: Lighting Fast Leap to get in front of Wingsley just as the Ligma Lord shoots out a ray of Pure Ligma. 
+You feel the burn slice through your veins, but you have done enough for Wingsley to be unharmed. You feel your head get dizzy, and then the lights go out, 
+as you are stirred by the call of Ligma. """)
+                        sleep(2)
+                        slowprint('Wingsley Kong POV', 0.1, ['bold'], 'red')
+                        sleep(1)
+                        print(f"""You are in shock. 
+
+Your friend {user.title()} has just sacrificed themselves for you. That wasn’t supposed to happen. {user.title()} was the best of the Counter-Ligma users, 
+the one prophesises to defeat the evil forces of Ligma. Instead now they are dead, body in smothering ashes on the black clouds. 
+You feel the blood pounding through your head as you turn to face Ligma Lord. Heat begins to start radiating from your body as 
+your tears only fuel the fire that is burning within you. Character development starts charging up around you as you unlock your true form: 
+Kingsley Wong.  
+
+Ligma Lord stares at you, then does his evil laugh thing. “Puny Mortal,” he says to you. “You really think that you can defeat me?”. 
+Without waiting for a response, he summons a giant dragon, made of the corpses of dead Ligma Zombies. 
+He hops onto its back, then points his scythe at you. 
+
+“Come at me, Wingsley Kong! I have plenty of time to entertain you!”  
+
+(Damn it, you know this isn’t the time but that was kind of fire ngl.) 
+
+The dragon strikes first, spewing deadly Ligma flames, which scream random Brainrot like “Skibidi level 10 gyatt, causing you to cringe intensely. 
+You block out any noise with your secret ability to fold up your ears naturally. You ram your fist into the dragon, dealing 50% of its health in one hit. 
+It roars in agony as it starts falling apart.  """)
+                        c = choice(f'''
+Option A: Run in and deal another 1/2 of its health. 
+Option B: Run up the dragon and punch Ligma Lord in the face ''', [f"""You concentrate all your power into your fist and drive it into the dragon. You watch as the dragon crumbles even more, 
+now significantly smaller. You unleash a barrage of punches, as the Ligma Lord pulls out his scythe, readying the blade. 
+You jump back just in time as a flash of shadows consume the air, leaving a dark residue. Ligma Lord stands up, 
+and suddenly his eyes turn red. Pulling his scythe back as if it weighed a ton, he lets go of the handle, 
+sending waves of Ligma pulsing through the air. You try to dodge them, but your shoelace gets held by a Ligma Zombie, 
+causing both of you to go flying into the air. You turn back, ready to punch the Zombie, only to realise that it isn’t a zombie, 
+but that {name} kid from your volleyball team. He starts to tear up as he starts explaining that he pretended to be 
+a Ligma Zombie as he was immune to Ligma, and that he was waiting for the perfect chance to attack. He was going to 
+yap on for 213910 years, but the Ligma Lord is extremely displeased, and starts making it rain meteors. 
+{name}’s speech makes you have less rage, and you feel hopeless as they come closer. Luckily, {name} comes in 
+clutch as he screams at them, causing the rocks to implode in midair. Ethan turns and tells you to go and try to revive {user.title()} 
+with this ancient relic he found, called Ninja. You take the relic and start running towards {user.title()}. You think, 
+“Wow, this {name} kid is not as bad as I thought”. Then he proceeds to get one-shot by Ligma Lord’s scythe, 
+blood dripping off the blade. Cursing, you wisely use the time to hold out the Ninja and heal {user.title()}. """, f"""You suddenly dash up the dragon, and drop Ligma Lord, off the dragon. You both fall, onto the storm clouds. 
+There is a brief pause, as the Ligma Lord sits there, stunned. Then he kicks you in the gut, sending you flying backwards. 
+You turn to see his eyes brimming with red light and think “Oh crap”. Pulling his scythe back as if it weighed a ton, 
+he lets go of the handle, sending waves of Ligma pulsing through the air. You try to dodge them, but your shoelace 
+gets held by a Ligma Zombie, causing both of you to go flying into the air. You turn back, ready to punch the Zombie, 
+only to realise that it isn’t a zombie, but that {name} kid from your volleyball team. 
+He starts to tear up as he starts explaining that he pretended to be a Ligma Zombie as he was immune to Ligma, 
+and that he was waiting for the perfect chance to attack. He was going to yap on for 213910 years, 
+but the Ligma Lord is extremely displeased, and starts making it rain meteors. {name}’s speech makes 
+you have 90% less rage, and you feel hopeless as they come closer. Luckily, {name} comes in clutch 
+as he screams at them, causing the rocks to implode in midair. Ethan turns and tells you to go and 
+try to revive {user.title()} with this ancient relic he found, called Ninja. You take the relic and start 
+running towards {user.title()}. You think, “Wow, this {name} kid is not as bad as I thought”. 
+Then he proceeds to get one-shot by Ligma Lord’s scythe, blood dripping off the blade. Cursing, 
+you wisely use the time to hold out the Ninja and heal {user.title()}."""], ['A', 'B'])
+                        story_school_3()                                                
                 elif c == 1:
                     ending('Cheats were enabled', 14, 'School')
                 elif c == 2:
                     ending('The calculator was in radians...', 13, 'School')
                 
+                
+def story_school_3():
+    slowprint(f'POV: {user.title()}', 0.05, ['bold'], 'blue', 1, True, 'space')
+    sleep(2)
+    print("""You awake to find yourself in a train station. No one else is around you, apart from an old homeless man. 
+You slowly walk up to him, and ask “Hey, why is there no one around?”.  
+
+He laughs, then turns around, revealing that he is no other than Mr White. He explains that this is all in your head, as you have been killed in battle. 
+You can’t remember what has happened, but you assume it’s something bad.  
+
+He looks you in the eyes, and with great sorrow he tells you that some battles cannot be won, and that there will always be sacrifices. 
+You immediately spam the skip button because you don’t want to hear an old man yap for 2183818989 years. 
+
+He tells you to hold on, and as your vision fades, you hear the whistle of a train in the distance.  
+
+You wake up to find Wingsley Kong standing over you, holding a figure of that old streamer Ninja or something. 
+Wingsley Immediately starts sobbing and hugging you, which is a bit weird, but then you remember that you just died. 
+You look behind you to see the Ligma Lord summoning some Ligma Zombies, except they look to be fully equipped with items, 
+armour and have a good personal hygiene. You pat Wingsley on the shoulder and tell him to retreat for the time being. 
+You turn to face the five Zombies, who you realise take the form of Life is Valorant, Soul, PixilPrawn, {name} 
+and the girl whose name you can’t remember. Ligma Lord does his annoying laugh thing and vanishes into thin air. 
+He rematerializes oh a faraway cloud and orders the zombies to fight. The platform suddenly lifts, and slowly 
+starts hovering upwards, towards the black hole. Ligma Lord tells you that your time is limited, but you might 
+as well fight for good entertainment. """)
+    c = choice("""
+Option A: Take them on individually 
+Option B: Run and Gun, Spray and Play. Take them all on. 
+Option C: Dodge their attacks, try to disarm them somehow. """, ["""You try to lure PixilPrawn Zombie towards you, but he instantly uses Music Extension to knock you off your feet. 
+Life is Valorant Zombie uses hacks to teleport behind and drop you. The girl Zombie uses 2024 Women’s Rights and 
+punches you in the face, hard. """, """""", """"""], ['A', 'B', 'C']) #unfinished - oliver
+    if c == 0:
+        ending('Backstabbed, but not really.', 15, 'School')
+    elif c == 1:
+        print(f"""You summon some fireballs using special bracelets that Mr Black dropped and send them flying towards the group. They form a pyramid and deflect it using the power of friendship, 
+apart from {name}, who acts as a spear that Soul yeets towards you, nearly blowing your head off. {name} starts punching you hard and shakes salt into your eyes, 
+blinding you. You use your ultimate Screen Tilt Jutsu to throw {name} backwards, and back kick him into the group. As they begin to regroup, 
+you realise you have no choice but to choose a new strategy. You watch as suddenly a supply drop lands next to you. You peer into the crate to see several items and a note 
+from your friend Jack Bye that wishes you a Happy Birthday. You realise it’s your birthday, and you are turning 14, and for all your journey you have been fighting with 
+the unlucky powers of being 13.  With this newfound confidence, you turn to face your Ligma-ed friends. """)
+        c = choice("""What will you take?
+Option A: Zesty Lemon Juice with extra Zest. Optimal Zesty-ness, Optimal Zest-Filled Days. 
+Option B: $100 Amazon Gift card.  
+Option C: Screw the items, use your ultimate birthday luck. 
+""")
+        if c == 0:
+            print("""You chug down the Zesty Juice, and feel your insides burn with zest. You use your lightning-fast reflexes to 
+deflect the fireballs they have sent at you and receive the volleyball that Soul spikes at you perfectly. 
+In an instant, you have defeated your friends, and they are lying unconscious on the floor. 
+As you turn to face the Ligma Lord, you suddenly lose all your power, and you’re on the floor, 
+with a great need for the toilet. The Ligma Lord snaps his fingers, and you see the lights dim, 
+and then your vision wobbles out. """)
+            ending('You’re not the Zest Lord, Jack is the Zest Lord.', 16, 'School')
+        elif c == 1:
+            print(f"""You quickly scroll online and purchase an AK-47 along with some instant noodles and that cool 
+vegetable slicer you saw on YouTube. As you are guaranteed same day delivery, you realise that 
+you might be slightly screwed as the Ligma Lord orders from Temu and gets same hour delivery 
+on his Machine Gun. You try to do the matrix thing but end up falling over, shot. 
+
+BUT THE STORY DOESN’T END HERE!!! 
+
+The Amazon Delivery Guy makes his way through the Multiverse, and delivers your parcel, 
+and then sees the Temu man, and proceeds to ONE TAP KO him. He begins to start going home, 
+but then the Ligma Lord challenges him. He opens the door to a new realm, the Stigma Realm, 
+and out spews out despicable minions. The Amazon delivery Guy punches, and the whole 
+FREAKING portal gets DESTROYED. Ligma Lord tries to run away but then the Amazon Guy 
+takes one step, and full on MELTS him. He dusts his hands and asks if you’re ok. 
+He tells you he left the back door portal open that leads back to school and says goodbye. 
+As you watch him hop on his scooter, and disappear back to Earth, you wonder if you just 
+saw the Legendary Memer One Punch Man. As you go back to retrieve Wingsley, the Ligma 
+students are slowly reverting to human form, healed by the vanquishing of Ligma Lord. 
+You watch as the realm slowly brightens and take a slow breath out. Tired, you haul {name} 
+over your back and slowly trudge back to school, awaiting the 3 hours of sleep that 
+you will get tonight.""")
+            addachievement('Just because you are the Main Character doesn’t mean you’re the hero. One Punch Man will always be your hero.')
+            
+        elif c == 2:
+            print(f"""Because you are 14, you instinctively perform some weird hand moves that trigger your 
+Domain Expansion: Brainrot Banishment (slowed down to perfection). Instantly everyone close to you 
+is cured of Ligma, and the Ligma Lord begins to scream. He tries to teleport out, but you start 
+advancing with lighting fast bolts of Parabolas. As you prepare to deliver the final blow with 
+your 360 no-scope, he explodes, cancelling your Domain Expansion. He reappears a couple metres away, 
+but his skin is now pure black, with rune tattoos running down his back. His eyes are red, and his 
+scythe is brimming with cursed energy. You unlock your full potential by eating three Feastables that 
+makes you have plus 1 million aura. You perform some weird hand moves again and this time a bag filled 
+with your favourite weapons appears in front of you. The Ligma Lord slowly swings his scythe left and 
+right, then lunges towards you, blade coming down. You pull out your smart rider and use it to perfectly 
+parry the Ligma Lord, sparks flying from the contact. The Ligma Lord tries to get a sneak attack with 
+his blue flame orbs, but you use Avast VPN, so the blue flame orbs go spiralling away. With a mighty 
+shout, he pushes his blade, and jumps backwards, ready to finish you off with a long-range nuke of 
+black energy. Calmly, you reach into your bag and pull out your final choice of weaponry. 
+The Ligma Lord, with blood trickling down his face, does his stupid laugh again. 
+
+“It’s over, {user}. I have the high ground advantage, and I always will.”""")
+            sleep(3)
+            print("""As he launches the magic, the students around you cry in warning, but your 14-year-old senses kick in, 
+and you spin around, and PULL OUT THE UNO REVERSE CARD!!!!! 
+
+The bolt of magic travels another few metres, before catapulting back towards the Ligma Lord. 
+A massive explosion of dust, magic, and second-hand Ligma sprays across the battlefield. 
+The Ligma Lord, finally defeated by the powers of true memes, his lifeless eyes already 
+losing their fiery glow. Your friends cheer, because after all the fighting, they can 
+finally go back to school and cook up some cookies in food tech.  
+
+Suddenly, the floating island starts shuddering, and the ground starts crumbling. 
+A portal opens to your left, and the cured Ligma students start running into it, 
+transported back into the restored Perth Modern High School. As Wingsley Kong yells 
+for you to hurry up, you look over the edge of the platform, watching as the body 
+of Ligma Lord is still falling, his lips curled into a smirk. You have a feeling 
+this isn’t the last time you are going to see him. You flip him off one last time, 
+then jump off the last bit of floating rock and enter the portal, 
+awaiting your first day of school. """)
+            ending('The Master of Death - Extended Remix', 16, 'School', 'win', True, 'Master of Fear')
 # ETHAN - TUTANKHAMUN'S TOMB
 def story_tomb():
     print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun's tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
@@ -1710,21 +1908,296 @@ def story_tomb_passageway():
 
 # LEVI - MOUNTAIN
 def story_mountain():
-    print('You are an experienced mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest.')
-    c = choice("""Who will you go with? 
+    def end():
+        print(f'Thanks for playing!')
+
+    cprint('Every choice you have to make, you only have 7 seconds to answer, to simulate being at Mount Everest. However, if you can make better decisions, you may have longer. Make your decisions quick!', 'blue')
+    print()
+    friend = ''
+    altitude = 5364
+    time = 7
+
+    print('You are an intermediate mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest, starting from the South Base Camp.') 
+    inventory('Climbing gloves', 2)
+    c1 = choice("""Who will you go with?
 Derek: Your best friend since 5th grade. You know him best, but it is his first time.
-William: A professional climber that has been climbing since 1994. He is experienced and has all the gear. 
-Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybuilder on steroids.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'])
-    if c == 0:
-        pass
-    elif c == 1:
-        pass
-    elif c == 2:
-        pass
+William: A professional climber that has been climbing since 1994. He is experienced and has all the gear.
+Pat: Your loyal uber delivery man. A not-so-chill-but-chill guy who is built like a bodybuilder on steroids. He's done some rock climbing, but that's it.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'], mountain = time)
+
+    #Derek
+    if c1 == 0:
+        print('You chose Derek.')
+        friend = 'Derek'
+        print("You check what Derek has, and not to your surprise, he only has mountain apparel. You tell him he needs bottled oxygen, and he quickly finds a market just below where you are talking to buy some oxygen.")
+
+        dc2 = choice('''You have some spare time. What do you do?
+1. Go with Derek to buy oxygen.
+2. Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen with him.', 'Derek goes off by himself to buy some oxygen.'], ['Go', 'Phone'], mountain = time)
+
+        if dc2 == 0:
+            print("On the way to the market, Derek keeps talking about his family and children. You on the other hand, have been annoyed, that you don't have a family, but feel better because you're more experienced in most things.")
+            print('You arrive to the market, and there are multiple bottles for sale.')
+            dc3 = choice('''Which bottle and what quantity do you choose?
+1. 3 400L tanks, fast speed
+2. 4 350L tanks, medium speed
+3. 5 300L tanks, slow speed
+''', ['You chose 3 400L tanks. Derek will walk at a fast pace. Therefore, you will have 10 seconds to make choices.', 'You chose 4 350L tanks, Derek will walk at a medium pace. Therefore, you will have 7 seconds to make choices.', 'You chose 5 300L tanks, Derek will walk at a slow pace. Therefore, you will have 4 seconds to make choices.'], ['1', '2', '3'], mountain = time)
+
+            if dc3 == 0:
+                #bought 3 400L tanks, fast walking pace
+                time = 10
+            elif dc3 == 1:
+                #bought 4 350L tanks, medium speed
+                time = 7
+            elif dc3 == 2:
+                #bought 5 300L tanks, slow speed
+                time = 4
+            elif dc3 == -1:
+                end()
+                return
+        elif dc2 == 1:
+            print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
+            print('Oh well, at least he has oxygen.')
+        elif dc2 == -1:
+            end()
+            return
+        print('After getting back to the base camp, you are ready to embark on your new journey.')
+        sleep(1)
+
+
+
+    #william    
+    elif c1 == 1:
+        print('You chose William.')
+        friend = 'William'
+        print('William was prepared, so he brought oxygen to start climbing.')
+
+    #pat
+    elif c1 == 2:
+        print("You were a bit shook from Pat's strength. Nevertheless, he is very enthusiastic to climb Mt. Everest with you.")
+        friend = 'Pat'
+        pat_inv = ['supposedly...steroids']
+        pc2 = choice("""You ask Pat about his strength, and he casually shrugs it off. He looks like a bodybuilder, but you remember he doens't have the time to go to the gym.
+You are intrigued as to why he is so muscly.
+Do you ask him about his strength?""", ['', ''], ['y', 'n'], mountain = time)
+        
+        if pc2 == 0:
+            print('After pestering him, he finally admits that he does indeed take steroids. He then suddenly snaps out of nowhere, and threatens to end you if you do one thing wrong.')
+            ending('Steroids...', 2, 'Mountain')
+            return
+        elif pc2 == 1:
+            print('He initiates a conversation with you, and you respond.')
+        elif pc2 == -1:
+            end()
+            return
+    elif c1 == -1:
+        end()
+        return
+    #all friends are here
+    sleep(1)
+    print(f'Your altitude is: {altitude}m.')
+    sleep(0.5)
+    print(f'As you start climbing on your way to Mount Everest, you encounter the Everest Camp 2 at an altitude of 6400m.')
+    altitude = 6400
+    a1 = choice(f'You realize that you\'re not hungry, but that {friend} is. At Everest Camp 2, there are some food options, but you yourself are not hungry. Do you eat or continue journeying?', outcomes=['', ''], options=['Eat', 'Journey'], mountain=time)
+    if a1 == 0:
+        print('You stop by, and now you have to decide what to eat.')
+        ae1 = choice("""
+What do you eat?
+1. Instant noodles
+2. Chicken and rice
+3. A small snack (candy bar).""", outcomes=['', '', ''], options=['1', '2', '3'], mountain=time)
+        if ae1 == 0:
+            print('You both eat instant noodles, and are left satisfied.')
+        elif ae1 == 1:
+            print('You both eat chicken and rice, but leave quite full.')
+        elif ae1 == 2:
+            print('You both eat a small candy bar, increasing the amount of sugar in your blood. You stumble around, as your body dies because of the lack of nutrients in your blood.')
+            ending('Sugar......yummy', 3, 'Mountain')
+            return
+        elif ae1 == -1:
+            end()
+            return
+    elif a1 == 1:
+        print(f"Both of you continue to hike up the mountain, but {friend} is feeling a bit sick. You walk at a slower pace to match {friend}'s pace.")
+        time -= 1
+        dead = 'almost'
+    elif a1 == -1:
+        end()
+        return
+    print('You depart Everest Camp 2, and continue hiking.')
+    print('As you climb up, the air pressure starts to lower.')
+    if friend == 'Derek':
+        d1 = choice("""Derek starts feeling faint, occasionally losing consciousness. Do you turn back?""", outcomes=['', ''], mountain=time)
+        if d1 == 0:
+            print('You turn back, as Derek cannot handle the pressure and altitude of the mountain\'s top. ')
+            ending('Wrong partner...', 5, story='Mountain')
+            end()
+            return
+        elif d1 == 1:
+            print('You convince Derek to power on, taking more time to slowly walk through the mountain. You now only have 2 seconds to make your decisions.')
+            sleep(1)
+            time = 2
+        elif d1 == -1:
+            end()
+            return
+    elif friend == 'William':
+        print('William, the most experienced mountain-climber you know, isn\'t scared as much as you are, about the increasingly countless amount of dead bodies on the snowy surface.')
+        w1 = choice(f'You see a body on the floor, but supposedly alive. Having seeing this, do you go and help the maybe dead climber? ', ['Out of compassion, you go to check on the climber.', 'You shrug it off, likely knowing that they are dead.'], mountain=time)
+        dead = randint(1, 2)
+        if w1 == 0:
+            print('William leaves you behind, as he has experience and has encountered this before, once looking at a dead climber.')
+            print('You give the climber some of your own oxygen, in the hopes that he will awaken...')
+            sleep(2)
+            if dead == 1:
+                print('Unfortunately, the climber is dead, and you waste your remaining oxygen.')
+                ending('Too compassionate...', 6, story='Mountain')
+                end()
+            else:
+                print('The climber revives, and you quickly help him get up. Rushingly, you carry him all the way down to the bottom of the mountain.')
+                ending('Saved him...', 7, story='Mountain', type='win')
+                end()
+        elif w1 == 1:
+            if dead == 1:
+                print('The climber was left to die, as he was actually alive. William leaves you, as you silently weep and faint.')
+                ending('Did he really die?', 8, story='Mountain')
+                end()
+            else:
+                print('The climber was dead, and William told you so.')
+                print('Anyway, you continue to climb, William warns you to not waste anymore time, as he is experienced and knows when to look out for others (he doesn\'t, as he has no compassion).')
+        elif w1 == -1:
+            end()
+            return
+    print('Hiking up, you need a moment to catch your breath. Suddenly, you hear a sharp, piercing sound. A nearby climber.')
+    print('Looking around in shock, you realise that you have found the Abominable Snowman.')
+    a2 = choice(f'The sheer size of The Snowman scares you and {friend}. Do you stay still, fight, or run away?', outcomes=['Staying still, nothing happens...yet.', 'Where\'s Pat?', ''], options=['Stay still', 'Fight', 'Run away'], mountain=time)
+    if a2 == 0:
+        print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
+        sleep(1)
+        print(f'The ground finally gives way, as you, {friend} and the Snowman falls to death.')
+        ending("Well, now ✨He✨ is dead.", 9, story='Mountain')
+        end()
+        return
+    elif a2 == 1 and friend == 'Pat':
+        scared = randint(1, 2)
+        if scared == 1:
+            print('You call Pat, and find that he is no where to be seen, hiding away somewhere. Although he works out, he is a bit scared by the Abominable One.')
+            ending('Where did he go?', 10, story='Mountain')
+            end()
+            return
+        elif scared == 2:
+            print('Pat punches him, and the Snowman turns around. Pat finds that the gear he is in is quite restrictive, and so the offense is not so powerful, although he works out.')
+            print('His impulse kicks in, taking you down with him as he knows that he was going to die anyway.')
+            ending('Wrong partner...', 5, story='Mountain')
+            end()
+            return
+    elif a2 == 1 and friend != 'Pat':
+        print(f'You deduce that you have the best fighting skills, and punch the beast. The suit is very restrictive, and so the Snowman shrugs it off as he flings you and {friend} off the face of the earth.')
+        ending('Scary!!', 11, story='Mountain')
+        end()
+        return
+    elif a2 == 2:
+        print("You realise you have to run away, but have to find which way to go. Up or down the mountain? ")
+        a3 = choice('Do you go up or down?', outcomes=['', ''], options=['Up', 'Down'], mountain=time)
+        if a3 == 0:
+            print('You choose to go up. Good decision!')
+            print('You remember from physics class that it takes less work to go up for a body of less mass than a larger mass, so you outrun the Snowman and can continue your hike.')
+        elif a3 == 1:
+            print('Going down, the Snowman catches up to you because of his large inertia.')
+            ending("Now you're dinner.", 12, story='Mountain')
+            end()
+            return
+        elif a3 == -1:
+            end()
+            return
+    elif a2 == -1:
+        end()
+        return
+
+    
+    print('You win! Thanks for playing!')
+    ending('Reached the summit! Now how do I get down...', 4, story='mountain', type='win')
 
 # OLIVER - UNDERWATER
-def story_underwater():
-    pass
+# def story_underwater():
+#     print("You are an expert diver. You are known around the world as the world's best diver, and you are about to go on your greatest adventure yet.")
+#     c = choice("""You are on your way to a new adventure. Where will you go?""", ['', '', ''], ['Great Barrier Reef', 'Great Blue Hole', 'Underwater Waterfall', 'No'])
+#     if c == 0:
+#         story_underwater_class.great_barrier_reef()
+#     elif c == 1:
+#         story_underwater_class.great_blue_hole()
+#     elif c == 2:
+#         story_underwater_class.underwater_waterfall()
+#     elif c == 3:
+#         ending('Bored', 1, 'Underwater', 'win')
+
+# class story_underwater_class:
+#     def great_barrier_reef():#                                                                                                                                                \/ Terminal stops there
+#         print("""You decide to go to the Great Barrier Reef, and you have the option to bring one of you friends. There's Eric, who is very enthusiastic and has tons of money
+# to buy the latest gear. Then there's Owen, who has tons of experience, and is confident. Finally, there is Nate, who is a chill dude who loves the Wii Theme. He has been
+# diving before, and is pretty loaded too.""")
+#         c = choice('Who will you take? ', ['You choose Eric, who hands you $100 for choosing him.', 'You choose Owen, who immediately starts kitting you out with some gear.', "You pick Nate, who doesn't notice you until you tap him on the shoulder, because he was listening to the Wii Theme."], ['Eric', 'Owen', 'Nate'])
+    
+#         if c == 0:
+#             pass
+#         elif c == 1:
+#             pass
+#         elif c == 2:
+#             pass
+#     def great_blue_hole():
+#         print('gbh')
+    
+#     def underwater_waterfall():
+#         print('uw')
+ 
+ 
+# def story_afterlife():
+#     print("""You are a frail old man, in his 80s, named P. Diddy. This morning, you went to the doctor, and he told you that you have 3 days to live. 
+# Unfortunately, you have done some bad deeds in your lifetime (including diddling some kids), and you think you might get sent to hell. 
+# Since you grew up in Perth, and are not very fond of the heat, you decide to do some good deeds to make up for your diddling. You step out of your 
+# house and see some young kids operating a lemonade stand outside your house, WITHOUT A PERMIT.""")
+#     c = choice("""What will you do? 
+# Option 1: Go full Karen mode, grab a high-power pressure washer and wash them away
+# Option 2: Buy a cup of lemonade and carry on your way 😊
+# Option 3: The kids look young and fresh, so you diddle them""", [], ['Option 1', 'Option 2', 'Option 3'])
+#     if c == 0:
+#         print("""You open your garage door and get your trusty STIHL RE 110 PLUS High Pressure Washer. 
+# After filling it with water, you turn it to full power and get ready to blast the kids. 
+# One of them is EXTREMELY short and has a name tag “Goon Kai”. The other is a brown kid, 
+# of average height, holding a tennis racquet with the name tag “Keefen”. You aim your 
+# pressure washer at their lemonade pitcher and let loose. The pitcher instantly 
+# shatters and shards of glass are sent flying. Goon Kai, naturally in a low position, 
+# doesn’t get hit, but Keefen’s shocked face gets absolutely obliterated. “Sucks to suck”, 
+# you say to yourself, but Goon Kai has already run to tell Mummy. Within minutes the 
+# police have found you. You are taken to police custody. """)
+#         c = choice("""Option 1: Just let me die already
+# Option 2: Play the Mario Theme and start jumping around your cell. (Yahoo!)""")
+#         if c == 0:
+#             print('You die later that day in your sleep.')
+#             story_afterlife_class.hell('Because you bullied some little children.')
+#             ending('Boring', 1, 'Afterlife')
+#         elif c == 1:
+#             #play music: mario theme
+#             print("""You start jumping around your jail cell screaming “Yahoo!”. The guard comes and 
+# tells you to stop, so you keep jumping. When he enters the cell and tazes you, 
+# you have a heart attack and die. Unlucky chap. """)
+#             story_afterlife_class.hell('Because you bullied some little children.')
+#             addachievement("Itsa mea Mario!")
+#             ending('Yahoo!', 2, 'Afterlife')  
+#     elif c == 1:
+#         pass
+#     elif c == 2:
+#         pass
+    
+       
+# class story_afterlife_class:
+#     def heaven(txt):
+#         slowprint(f'''You ended up in: HEAVEN
+# {txt}''', 0.05, ['bold'], 'yellow')
+        
+#     def hell(txt):
+#         slowprint(f'''You ended up in: HELL
+# {txt}''', 0.05, ['bold'], 'red')
 
 # GAME LOOP
 while True:
