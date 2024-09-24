@@ -163,7 +163,7 @@ def resetendingfile() -> None:
         resetlines += str(story) + ":" + (stories[story]-1) * "|" + "\n"
     with open(e, "w") as file:
         file.writelines(resetlines)
-resetendingfile()
+
 def deleteuser(user:str) -> None:
     # here we edit the stats file and reset everything
     with open(s, 'r') as file:
