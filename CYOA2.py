@@ -648,7 +648,7 @@ def checkcommand(command:str) -> None:
             slowprint("\nTIME TRAVEL", 0.05,["bold"], 'red')
             story_timetravel()
         elif story == "school" or story == "4":
-            slowprint("\nSCHOOL - Made By Jayden Li",0.05,["bold"], 'yellow')
+            slowprint("\nLIGMA SCHOOL - Made By Jaden Li",0.05,["bold"], 'yellow')
             story_school()
         elif story == "tomb story" or story == "5":
             slowprint("\nTutankhamun's Tomb - Made By Ethan Wei", 0.05,["bold"],'magenta')
@@ -748,14 +748,14 @@ def checkcommand(command:str) -> None:
 
 ███████╗ ██████╗ ██╗     
 ██╔════╝██╔═══██╗██║     
-███████╗██║   ██║██║            \033[1mSean & Oliver Corporation Inc\033[0m
+███████╗██║   ██║██║            \033[1mSean Oliver & Levi Corporation Inc\033[0m
 ╚════██║██║   ██║██║     
 ███████║╚██████╔╝███████╗
 ╚══════╝ ╚═════╝ ╚══════╝
 
 ------------------------------------------------
-Version: 2.2 ("Updates" for latest changes)
-Coded in VS Code, by Oliver Liu and Sean Chan
+Version: 2.4 Beta ("Updates" for latest changes)
+Coded in VS Code, by Oliver Liu, Levi Laij and Sean Chan
 Logo: Aaron Zhang
 Testers: Use 'testers' command
 Story Writers: 
@@ -765,7 +765,6 @@ Story Writers:
     School - Jaden Li, imported by Oliver Liu
     Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
     Mountain - Levi Laij
-    Underwater - Oliver Liu
 ------------------------------------------------""")
         addachievement("Supporter")
     elif command == "testers":
