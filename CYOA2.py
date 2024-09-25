@@ -2069,6 +2069,7 @@ What do you eat?
             return
     print('Hiking up, you need a moment to catch your breath. Suddenly, you hear a sharp, piercing sound. A nearby climber.')
     print('Looking around in shock, you realise that you have found the Abominable Snowman.')
+    addachievement("Yeti Man")
     a2 = choice(f'The sheer size of The Snowman scares you and {friend}. Do you stay still, fight, or run away?', outcomes=['Staying still, nothing happens...yet.', 'Where\'s Pat?', ''], options=['Stay still', 'Fight', 'Run away'], mountain=time)
     if a2 == 0:
         print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
