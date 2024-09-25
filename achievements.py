@@ -69,7 +69,7 @@ tomb = {
 }
 
 mountain = {
-    'Yeti Man': ['Find the Abominable Snowman'], # not added
+    'Yeti Man': ['Find the Abominable Snowman'],
     # Standard Achievements
     'Rock Climber': ['Play this story 1 time', 'mountain.play-1'],
     'Hiker': ['Play this story 10 times', 'mountain.play-10'],
