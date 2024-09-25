@@ -2,7 +2,8 @@ This is a python game, developed by Oliver Liu, Sean Chan and Levi Laij.
 Run CYOA.py to play it.
 
 WARNING: 
-This program does not support people using the D: drive.
+WARNING: 
+This program does not support users using the D: drive.
 
 NOTICE:
 This program is still in Beta. 
