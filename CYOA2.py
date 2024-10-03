@@ -16,28 +16,28 @@ mixer.init()
 
 # Program Presets
 # Functions
-def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
     if 'C:' in getcwd():
-        return filepath
+        return filepath # example return: Constants\\stats.txt
     elif 'D:' in getcwd():
-        return getcwd()+"/"+filepath.replace("\\", "/")
+        return "Choose_Your_Own_Adventure/"+filepath.replace("\\", "/") # example return: Choose_Your_Own_Adventure/Constants/stats.txt
     else:
-        return getcwd()+"/"+filepath.replace("\\", "/")
+        return getcwd()+"/"+filepath.replace("\\", "/") # example return: d:/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
 
-# Constants
-s = convertfilename('Constants\\stats.txt')
-e = convertfilename('Constants\\allendings.txt')
-u = convertfilename('Constants\\updates.txt')
-t = convertfilename('Constants\\testers.txt')
-ins = convertfilename('Constants\\inspirational.txt')
+# Files
+s = ConvertFileName('Constants\\stats.txt')
+e = ConvertFileName('Constants\\allendings.txt')
+u = ConvertFileName('Constants\\updates.txt')
+t = ConvertFileName('Constants\\testers.txt')
+ins = ConvertFileName('Constants\\inspirational.txt')
 
 # Songs
-happy = convertfilename('Songs\\Happy.mp3')
-hope = convertfilename('Songs\\Hope.mp3')
-mystery = convertfilename('Songs\\Mystery.mp3')
-wii_music = convertfilename('Songs\\Wii-Music.mp3')
-wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
-wii_shop = convertfilename('Songs\\Wii-Shop.mp3')
+happy = ConvertFileName('Songs\\Happy.mp3')
+hope = ConvertFileName('Songs\\Hope.mp3')
+mystery = ConvertFileName('Songs\\Mystery.mp3')
+wii_music = ConvertFileName('Songs\\Wii-Music.mp3')
+wii_sports = ConvertFileName('Songs\\Wii-Sports.mp3')
+wii_shop = ConvertFileName('Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
