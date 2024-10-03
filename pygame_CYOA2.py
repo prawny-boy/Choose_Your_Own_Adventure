@@ -6,31 +6,31 @@ pygame.init()
 
 # Screen dimensions
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Time Travel Adventure")
+pygame.display.set_caption("CYOA Pygame")
 
 # Screen colour
 screen.fill((0, 0, 0))
 
 # Colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
-CAMBRIDGE_BLUE = (131, 182, 146)
-MELON = (249, 173, 160)
-BRIGHT_PINK_CRAYOLA = (249, 98, 125)
-BLUSH = (198, 91, 124)
-VIOLET_JTC = (91, 55, 88)
+white = (255, 255, 255)
+black = (0, 0, 0)
+blue = (0, 0, 255)
+cambridge_blue = (131, 182, 146)
+melon = (249, 173, 160)
+bright_pink_crayola = (249, 98, 125)
+blush = (198, 91, 124)
+violet_jtc = (91, 55, 88)
 
 # Fonts
-fontBasic = pygame.font.Font(None, 32)
-fontPoppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
-fontPoppinsBold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
+font_basic = pygame.font.Font(None, 32)
+font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
+font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
 # POPPINS FONT CREDITS
 # Poppins
 # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
 
 # Helper function to display text on the screen
-def draw_text(text, x, y, color=BLACK, font=fontPoppins):
+def draw_text(text, x, y, color=black, font=font_poppins):
     """
     Draw text on the screen.
 
@@ -53,11 +53,11 @@ def draw_text(text, x, y, color=BLACK, font=fontPoppins):
     try:
         text_surface = pygame.font.Font.render(font, text, True, color)
     except:
-        text_surface = fontPoppins.render(text, True, color)
+        text_surface = font_poppins.render(text, True, color)
     screen.blit(text_surface, (x, y))
 
 # Helper function to create buttons for choices
-def create_button(text, x, y, w, h, text_color=BLACK, text_font=fontPoppins, button_color=MELON, hover_color=BRIGHT_PINK_CRAYOLA):
+def create_button(text, x, y, w, h, text_color=black, text_font=font_poppins, button_color=melon, hover_color=bright_pink_crayola):
     """
     Create buttons for choices.
 
@@ -101,10 +101,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
     
-    clicked = create_button("BUTTON text", 60, 60, 240, 60, button_color=MELON, hover_color=BRIGHT_PINK_CRAYOLA)
+    clicked = create_button("button text", 60, 60, 240, 60, button_color=melon, hover_color=bright_pink_crayola)
 
     if clicked:
-        print("BUTTON CLICKED")
+        print("button clicked")
         break
 
     pygame.display.update()
