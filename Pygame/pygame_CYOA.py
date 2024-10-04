@@ -1,3 +1,11 @@
+# COMMANDS TO RUN
+# pip install pygame
+
+# NOTICES
+# This code is written by Aaron, please do not redistribute, claim, sell, or otherwise distribute this code. 
+# Do not modify it without permission.
+# Please read the pygame_readme.md file for more information
+
 import pygame
 import sys
 
@@ -59,6 +67,8 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
         The y-coordinate of the text.
     colour : tuple, optional
         The colour of the text. Default is black.
+    font : font, optional
+        The font of the text. Default is Poppins.
 
     Returns
     -------
@@ -73,7 +83,47 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
     screen.blit(text_surface, text_rect)
 
 # Helper function to create buttons for choices
-def create_button(x, y, w, h, heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, body_text="Body text", body_text_offset=30, body_text_colour=colour_black, body_text_font=font_poppins_small, button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
+def create_button(x, y, w, h, 
+                  heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, 
+                  body_text="Body text", body_text_offset=30, body_text_colour=colour_black, body_text_font=font_poppins_small, 
+                  button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
+    """
+    Create a button for choices in the game.
+
+    Parameters
+    ----------
+    x : int
+        The x-coordinate of the button.
+    y : int
+        The y-coordinate of the button.
+    w : int
+        The width of the button.
+    h : int
+        The height of the button.
+    heading_text : str, optional
+        The heading text of the button. Default is "Button".
+    heading_text_colour : tuple, optional
+        The colour of the heading text. Default is black.
+    heading_text_font : pygame.font.Font, optional
+        The font of the heading text. Default is font_poppins_bold_small.
+    body_text : str, optional
+        The body text of the button. Default is "Body text".
+    body_text_offset : int, optional
+        The offset of the body text from the top of the button. Default is 30.
+    body_text_colour : tuple, optional
+        The colour of the body text. Default is black.
+    body_text_font : pygame.font.Font, optional
+        The font of the body text. Default is font_poppins_small.
+    button_colour : tuple, optional
+        The colour of the button. Default is melon.
+    hover_colour : tuple, optional
+        The colour of the button when hovered over. Default is bright pink crayola.
+
+    Returns
+    -------
+    bool
+        True if the button is clicked, False otherwise.
+    """
     global button_cooldown_end
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
@@ -91,8 +141,32 @@ def create_button(x, y, w, h, heading_text="Button", heading_text_colour=colour_
 
 # Display heading function
 def display_heading(title="Title", title_colour=colour_white, title_pos=(10, 10), title_font=font_poppins_bold, subtext="Subtext", subtext_colour=colour_white, subtext_pos=(10, 60), subtext_font=font_poppins):
-    screen.fill((0, 0, 0))  # Clear screen with black background
-    
+    """
+    Display the heading of the game.
+
+    Parameters
+    ----------
+    title : str, optional
+        The title of the game. Default is "Title".
+    title_colour : tuple, optional
+        The colour of the title. Default is white.
+    title_pos : tuple, optional
+        The position of the title. Default is (10, 10).
+    title_font : pygame.font.Font, optional
+        The font of the title. Default is font_poppins_bold.
+    subtext : str, optional
+        The subtitle of the game. Default is "Subtext".
+    subtext_colour : tuple, optional
+        The colour of the subtitle. Default is white.
+    subtext_pos : tuple, optional
+        The position of the subtitle. Default is (10, 60).
+    subtext_font : pygame.font.Font, optional
+        The font of the subtitle. Default is font_poppins.
+
+    Returns
+    -------
+    None
+    """    
     # Render title using bold font
     draw_text(title, title_pos[0], title_pos[1], colour=title_colour, font=title_font)
     
@@ -111,13 +185,13 @@ while True:
     
     # GAME --------------------------------------------------------------------------------------------------------
 
-    if game_state == "main_menu":
+    if game_state == "main_menu": # Main menu
         display_heading(title="Choose Your Own Adventure", subtext="This code is written by Aaron")
         main_menu = create_button(x=10, y=120, w=200, h=75, heading_text="Start", body_text="Start the adventure")
         if main_menu:
             game_state = "story"
     
-    elif game_state == "story":
+    elif game_state == "story": # Sample page, stored as a story
         display_heading(title="Story", subtext="Just a test screen")
         exit_story = create_button(x=10, y=120, w=200, h=75, heading_text="Exit", body_text="Back to menu")
         if exit_story:
@@ -125,9 +199,9 @@ while True:
 
     # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
 
-    pygame.display.update()
+    pygame.display.update() # Update the display
 
-    pygame.time.Clock().tick(frame_rate)
+    pygame.time.Clock().tick(frame_rate) # Wait for the next frame
 
 # END OF GAME ------------------------------------------------------------------------------------------------------
 
