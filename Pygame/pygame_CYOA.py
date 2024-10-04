@@ -1,5 +1,6 @@
-# COMMANDS TO RUN
+# TO MAKE THIS WORK
 # pip install pygame
+# change the filenames for the fonts and images
 
 # NOTICES
 # This code is written by Aaron, please do not redistribute, claim, sell, or otherwise distribute this code. 
@@ -16,17 +17,19 @@ pygame.init()
 
 # Screen dimensions
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("CYOA Pygame")
+pygame.display.set_caption("Pygame Base Template")
 
 # Screen colour
-screen.fill((0, 0, 0))
+screen.fill((0, 0, 0)) # clear the display
 
 # START ---------------------------------------------------------------------------------------------------------
 
 # Colours
+## Basic colouts
 colour_white = (255, 255, 255)
 colour_black = (0, 0, 0)
 colour_blue = (0, 0, 255)
+## Colour palette 1, style: playful
 colour1_cambridge_blue = (131, 182, 146)
 colour1_melon = (249, 173, 160)
 colour1_bright_pink_crayola = (249, 98, 125)
@@ -34,6 +37,7 @@ colour1_blush = (198, 91, 124)
 colour1_violet_jtc = (91, 55, 88)
 
 # Fonts
+## Poppins
 font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
 font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 48)
 font_poppins_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 12)
@@ -43,15 +47,16 @@ font_poppins_bold_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fo
         # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
 
 # Settings
-game_state = "main_menu"
-frame_rate = 30
-button_cooldown = 500
-button_cooldown_end = 0
+game_state = "main_menu" # The game state, which is for choosing which screen to load
+frame_rate = 30 # The frame rate of the game, recommended to be 30
+button_cooldown = 500 # The cooldown of the button, in miliseconds, which makes a cooldown for the button after it is pressed
+button_cooldown_end = 0 # The cooldown end of the button, keep this at zero, unless you want to make a cooldown at the start of the game
 
 # CLASSES ------------------------------------------------------------------------------------------------------
 
 # FUNCTIONS ------------------------------------------------------------------------------------------------------
 
+# Function to quit Pygame
 def pygame_quit():
     """
     Quit Pygame.
@@ -63,7 +68,7 @@ def pygame_quit():
     pygame.quit()
     sys.exit()
 
-# Helper function to display text on the screen
+# Display text on the screen
 def draw_text(text, x, y, colour=colour_black, font=font_poppins):
     """
     Draw text on the screen.
@@ -93,7 +98,7 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
     text_rect = text_surface.get_rect(topleft=(x, y))
     screen.blit(text_surface, text_rect)
 
-# Helper function to create buttons for choices
+# Create buttons for choices
 def create_button(x=10, y=120, w=200, h=75, 
                   text_padding=10,
                   heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, 
@@ -305,4 +310,4 @@ while True:
 
 # END OF GAME ------------------------------------------------------------------------------------------------------
 
-pygame.quit()
+pygame_quit()
