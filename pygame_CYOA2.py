@@ -1,6 +1,18 @@
 import pygame
 import sys
 
+# PYGAME START ------------------------------------------------------------------------------------------------------
+
+# Initialize Pygame
+pygame.init()
+
+# Screen dimensions
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("CYOA Pygame")
+
+# Screen colour
+screen.fill((0, 0, 0))
+
 # START ---------------------------------------------------------------------------------------------------------
 
 # Colours
@@ -13,11 +25,9 @@ colour1_bright_pink_crayola = (249, 98, 125)
 colour1_blush = (198, 91, 124)
 colour1_violet_jtc = (91, 55, 88)
 
-
 # Fonts
-font_basic = pygame.font.Font(None, 32)
-font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
-font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
+font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
+font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 32)
     # POPPINS FONT CREDITS
         # Poppins
         # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
@@ -95,18 +105,6 @@ def create_button(text, x, y, w, h, text_colour=colour_black, text_font=font_pop
 
     draw_text(text, x + 10, y + 10, colour=text_colour, font=text_font)
     return False
-
-# PYGAME START ------------------------------------------------------------------------------------------------------
-
-# Initialize Pygame
-pygame.init()
-
-# Screen dimensions
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("CYOA Pygame")
-
-# Screen colour
-screen.fill((0, 0, 0))
 
 # MAIN LOOP --------------------------------------------------------------------------------------------------------
 
