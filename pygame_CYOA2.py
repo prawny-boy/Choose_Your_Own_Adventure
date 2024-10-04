@@ -1,33 +1,9 @@
 import pygame
-import time
+import sys
 
-# Initialize Pygame
-pygame.init()
+# CLASSES ------------------------------------------------------------------------------------------------------
 
-# Screen dimensions
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("CYOA Pygame")
-
-# Screen colour
-screen.fill((0, 0, 0))
-
-# Colors
-white = (255, 255, 255)
-black = (0, 0, 0)
-blue = (0, 0, 255)
-cambridge_blue = (131, 182, 146)
-melon = (249, 173, 160)
-bright_pink_crayola = (249, 98, 125)
-blush = (198, 91, 124)
-violet_jtc = (91, 55, 88)
-
-# Fonts
-font_basic = pygame.font.Font(None, 32)
-font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
-font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
-# POPPINS FONT CREDITS
-# Poppins
-# Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
+# FUNCTIONS ------------------------------------------------------------------------------------------------------
 
 # Helper function to display text on the screen
 def draw_text(text, x, y, color=black, font=font_poppins):
@@ -96,17 +72,58 @@ def create_button(text, x, y, w, h, text_color=black, text_font=font_poppins, bu
     draw_text(text, x + 10, y + 10, color=text_color, font=text_font)
     return False
 
+# PYGAME START ------------------------------------------------------------------------------------------------------
+
+# Initialize Pygame
+pygame.init()
+
+# Screen dimensions
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("CYOA Pygame")
+
+# Screen colour
+screen.fill((0, 0, 0))
+
+# Colors
+white = (255, 255, 255)
+black = (0, 0, 0)
+blue = (0, 0, 255)
+cambridge_blue = (131, 182, 146)
+melon = (249, 173, 160)
+bright_pink_crayola = (249, 98, 125)
+blush = (198, 91, 124)
+violet_jtc = (91, 55, 88)
+
+# Fonts
+font_basic = pygame.font.Font(None, 32)
+font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
+font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
+# POPPINS FONT CREDITS
+# Poppins
+# Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
+
+# MAIN LOOP --------------------------------------------------------------------------------------------------------
+
 while True:
+    # EVENTS ------------------------------------------------------------------------------------------------------
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
     
+    # GAME --------------------------------------------------------------------------------------------------------
+
     clicked = create_button("button text", 60, 60, 240, 60, button_color=melon, hover_color=bright_pink_crayola)
 
     if clicked:
         print("button clicked")
         break
 
+    # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
+
     pygame.display.update()
+
+# END OF GAME ------------------------------------------------------------------------------------------------------
 
 pygame.quit()
