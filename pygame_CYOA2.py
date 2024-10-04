@@ -37,6 +37,8 @@ font_poppins_bold_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fo
 # Settings
 game_state = "main_menu"
 frame_rate = 30
+button_cooldown = 500
+button_cooldown_end = 0
 
 # CLASSES ------------------------------------------------------------------------------------------------------
 
@@ -72,12 +74,14 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
 
 # Helper function to create buttons for choices
 def create_button(x, y, w, h, heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, body_text="Body text", body_text_offset=30, body_text_colour=colour_black, body_text_font=font_poppins_small, button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
+    global button_cooldown_end
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if x + w > mouse[0] > x and y + h > mouse[1] > y: # Check if mouse is hovering over button
         pygame.draw.rect(screen, hover_colour, (x, y, w, h))
-        if click[0] == 1:
-            return True  # Button is clicked
+        if click[0] == 1 and button_cooldown_end < pygame.time.get_ticks():
+            button_cooldown_end = pygame.time.get_ticks() + button_cooldown
+            return True
     else:
         pygame.draw.rect(screen, button_colour, (x, y, w, h))
 
@@ -95,8 +99,6 @@ def display_heading(title="Title", title_colour=colour_white, title_pos=(10, 10)
     # Render subtext using regular font
     draw_text(subtext, subtext_pos[0], subtext_pos[1], colour=subtext_colour, font=subtext_font)
 
-    pygame.display.flip()  # Update the display
-
 # MAIN LOOP --------------------------------------------------------------------------------------------------------
 
 while True:
@@ -111,6 +113,15 @@ while True:
 
     if game_state == "main_menu":
         display_heading(title="Choose Your Own Adventure", subtext="This code is written by Aaron")
+        main_menu = create_button(x=10, y=120, w=200, h=75, heading_text="Start", body_text="Start the adventure")
+        if main_menu:
+            game_state = "story"
+    
+    elif game_state == "story":
+        display_heading(title="Story", subtext="Just a test screen")
+        exit_story = create_button(x=10, y=120, w=200, h=75, heading_text="Exit", body_text="Back to menu")
+        if exit_story:
+            game_state = "main_menu"
 
     # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
 
