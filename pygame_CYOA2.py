@@ -1,12 +1,36 @@
 import pygame
 import sys
 
+# START ---------------------------------------------------------------------------------------------------------
+
+# Colours
+colour_white = (255, 255, 255)
+colour_black = (0, 0, 0)
+colour_blue = (0, 0, 255)
+colour1_cambridge_blue = (131, 182, 146)
+colour1_melon = (249, 173, 160)
+colour1_bright_pink_crayola = (249, 98, 125)
+colour1_blush = (198, 91, 124)
+colour1_violet_jtc = (91, 55, 88)
+
+
+# Fonts
+font_basic = pygame.font.Font(None, 32)
+font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
+font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
+    # POPPINS FONT CREDITS
+        # Poppins
+        # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
+
+# Settings
+game_state = "main_menu"
+
 # CLASSES ------------------------------------------------------------------------------------------------------
 
 # FUNCTIONS ------------------------------------------------------------------------------------------------------
 
 # Helper function to display text on the screen
-def draw_text(text, x, y, colour=black, font=font_poppins):
+def draw_text(text, x, y, colour=colour_black, font=font_poppins):
     """
     Draw text on the screen.
 
@@ -33,7 +57,7 @@ def draw_text(text, x, y, colour=black, font=font_poppins):
     screen.blit(text_surface, (x, y))
 
 # Helper function to create buttons for choices
-def create_button(text, x, y, w, h, text_colour=black, text_font=font_poppins, button_colour=melon, hover_colour=bright_pink_crayola):
+def create_button(text, x, y, w, h, text_colour=colour_black, text_font=font_poppins, button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
     """
     Create buttons for choices.
 
@@ -83,27 +107,6 @@ pygame.display.set_caption("CYOA Pygame")
 
 # Screen colour
 screen.fill((0, 0, 0))
-
-# Colours
-colour_white = (255, 255, 255)
-colour_black = (0, 0, 0)
-colour_blue = (0, 0, 255)
-colour1_cambridge_blue = (131, 182, 146)
-colour1_melon = (249, 173, 160)
-colour1_bright_pink_crayola = (249, 98, 125)
-colour1_blush = (198, 91, 124)
-colour1_violet_jtc = (91, 55, 88)
-
-# Fonts
-font_basic = pygame.font.Font(None, 32)
-font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
-font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
-    # POPPINS FONT CREDITS
-        # Poppins
-        # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
-
-# Settings
-game_state = "main_menu"
 
 # MAIN LOOP --------------------------------------------------------------------------------------------------------
 
