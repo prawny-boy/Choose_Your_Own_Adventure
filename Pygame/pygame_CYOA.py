@@ -52,6 +52,17 @@ button_cooldown_end = 0
 
 # FUNCTIONS ------------------------------------------------------------------------------------------------------
 
+def pygame_quit():
+    """
+    Quit Pygame.
+
+    Returns
+    -------
+    None
+    """
+    pygame.quit()
+    sys.exit()
+
 # Helper function to display text on the screen
 def draw_text(text, x, y, colour=colour_black, font=font_poppins):
     """
@@ -83,7 +94,8 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
     screen.blit(text_surface, text_rect)
 
 # Helper function to create buttons for choices
-def create_button(x, y, w, h, 
+def create_button(x=10, y=120, w=200, h=75, 
+                  text_padding=10,
                   heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, 
                   body_text="Body text", body_text_offset=30, body_text_colour=colour_black, body_text_font=font_poppins_small, 
                   button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
@@ -135,9 +147,74 @@ def create_button(x, y, w, h,
     else:
         pygame.draw.rect(screen, button_colour, (x, y, w, h))
 
-    draw_text(text=heading_text, x=x+10, y=y+10, colour=heading_text_colour, font=heading_text_font)
-    draw_text(text=body_text, x=x+10, y=y+10+body_text_offset, colour=body_text_colour, font=body_text_font)
+    draw_text(text=heading_text, x=x+text_padding, y=y+text_padding, colour=heading_text_colour, font=heading_text_font)
+    draw_text(text=body_text, x=x+text_padding, y=y+text_padding+body_text_offset, colour=body_text_colour, font=body_text_font)
     return False
+
+# Create multiple buttons
+def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Subheading"), ("Button 2 Heading", "Button 2 Subheading")], x=0, y=0, w=200, h=50, 
+                            text_padding=10,
+                            x_offset=0, y_offset=0, 
+                            heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, 
+                            body_text_colour=colour_black, body_text_font=font_poppins_small, 
+                            button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
+    
+    """
+    Create multiple buttons with headings and subheadings.
+
+    Parameters
+    ----------
+    button_text_list : list of tuple of str, optional
+        A list of tuples containing the heading and subheading for each button. Default is [("Button 1 Heading", "Button 1 Subheading"), ("Button 2 Heading", "Button 2 Subheading")].
+    x : int, optional
+        The x-coordinate of the first button. Default is 0.
+    y : int, optional
+        The y-coordinate of the first button. Default is 0.
+    w : int, optional
+        The width of each button. Default is 200.
+    h : int, optional
+        The height of each button. Default is 50.
+    text_padding : int, optional
+        The padding from the edge of the button to the text. Default is 10.
+    x_offset : int, optional
+        The offset from the previous button's x-coordinate to the next button's x-coordinate. Default is 0.
+    y_offset : int, optional
+        The offset from the previous button's y-coordinate to the next button's y-coordinate. Default is 0.
+    heading_text_colour : tuple, optional
+        The colour of the heading text. Default is black.
+    heading_text_font : pygame.font.Font, optional
+        The font of the heading text. Default is font_poppins_bold_small.
+    body_text_colour : tuple, optional
+        The colour of the body text. Default is black.
+    body_text_font : pygame.font.Font, optional
+        The font of the body text. Default is font_poppins_small.
+    button_colour : tuple, optional
+        The colour of the button. Default is melon.
+    hover_colour : tuple, optional
+        The colour of the button when hovered over. Default is bright pink crayola.
+
+    Returns
+    -------
+    int
+        The index (starting from 1) of the button that was clicked, or -1 if no button was clicked.
+    """
+
+    global button_cooldown_end
+    for index, (heading_text, body_text) in enumerate(button_text_list):
+        # Calculate position for each button based on index and offsets
+        button_x = x + index * x_offset # Start from x and add index * x_offset
+        button_y = y + index * y_offset # Start from y and add index * y_offset
+        
+        # Call create_button function for each button
+        clicked = create_button(button_x, button_y, w, h, 
+                                text_padding=text_padding,
+                                heading_text=heading_text, heading_text_colour=heading_text_colour, heading_text_font=heading_text_font,
+                                body_text=body_text, body_text_offset=30, body_text_colour=body_text_colour, body_text_font=body_text_font,
+                                button_colour=button_colour, hover_colour=hover_colour)
+        
+        if clicked:
+            return index + 1 # Return the index (starting from 1) of the clicked button
+    return False  # Return False if no button was clicked
 
 # Display heading function
 def display_heading(title="Title", title_colour=colour_white, title_pos=(10, 10), title_font=font_poppins_bold, subtext="Subtext", subtext_colour=colour_white, subtext_pos=(10, 60), subtext_font=font_poppins):
@@ -180,21 +257,44 @@ while True:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            pygame_quit()
     
     # GAME --------------------------------------------------------------------------------------------------------
 
     if game_state == "main_menu": # Main menu
-        display_heading(title="Choose Your Own Adventure", subtext="This code is written by Aaron")
-        main_menu = create_button(x=10, y=120, w=200, h=75, heading_text="Start", body_text="Start the adventure")
-        if main_menu:
+        screen.fill(colour_black) # clear the display
+
+        display_heading(title="Choose Your Own Adventure", subtext="This code is written by Aaron. WARNING: UNFINISHED")
+        start_story = create_button(x=10, y=120, w=200, h=75, heading_text="Start", body_text="Start the adventure")
+        if start_story:
             game_state = "story"
+        
+        go_to_multi_buttons = create_button(x=10, y=240, w=200, h=75, heading_text="Multi buttons", body_text="Test multiple buttons")
+        if go_to_multi_buttons:
+            game_state = "multi buttons"
     
     elif game_state == "story": # Sample page, stored as a story
+        screen.fill(colour_black) # clear the display
+
         display_heading(title="Story", subtext="Just a test screen")
         exit_story = create_button(x=10, y=120, w=200, h=75, heading_text="Exit", body_text="Back to menu")
         if exit_story:
+            game_state = "main_menu"
+    
+    elif game_state == "multi buttons":
+        screen.fill(colour_black) # clear the display
+
+        # Example button list
+        button_texts = [("Start", "Begin your adventure"), ("Menu", "Go to the main menu"), ("Exit", "Quit the game")]
+
+        # Inside the game loop
+        clicked_button = create_multiple_buttons(button_text_list=button_texts, x=10, y=10, w=600, h=75, x_offset=0, y_offset=120)
+        
+        if clicked_button == 1:
+            game_state = "story"
+        elif clicked_button == 2:
+            game_state = "main_menu"
+        elif clicked_button == 3:
             game_state = "main_menu"
 
     # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
