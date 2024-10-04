@@ -27,13 +27,16 @@ colour1_violet_jtc = (91, 55, 88)
 
 # Fonts
 font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
-font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 32)
+font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 48)
+font_poppins_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 12)
+font_poppins_bold_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 18)
     # POPPINS FONT CREDITS
         # Poppins
         # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
 
 # Settings
 game_state = "main_menu"
+frame_rate = 30
 
 # CLASSES ------------------------------------------------------------------------------------------------------
 
@@ -64,36 +67,11 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
         text_surface = pygame.font.Font.render(font, text, True, colour)
     except:
         text_surface = font_poppins.render(text, True, colour)
-    screen.blit(text_surface, (x, y))
+    text_rect = text_surface.get_rect(topleft=(x, y))
+    screen.blit(text_surface, text_rect)
 
 # Helper function to create buttons for choices
-def create_button(text, x, y, w, h, text_colour=colour_black, text_font=font_poppins, button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
-    """
-    Create buttons for choices.
-
-    Parameters
-    ----------
-    text : str
-        The text to display on the button.
-    x : int
-        The x-coordinate of the button.
-    y : int
-        The y-coordinate of the button.
-    w : int
-        The width of the button.
-    h : int
-        The height of the button.
-    colour : tuple
-        The colour of the button.
-    hover_colour : tuple
-        The colour of the button when the mouse hovers over it.
-
-    Returns
-    -------
-    bool
-        True if the button is clicked, False otherwise.
-    """
-
+def create_button(x, y, w, h, heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, body_text="Body text", body_text_offset=30, body_text_colour=colour_black, body_text_font=font_poppins_small, button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if x + w > mouse[0] > x and y + h > mouse[1] > y: # Check if mouse is hovering over button
@@ -103,8 +81,21 @@ def create_button(text, x, y, w, h, text_colour=colour_black, text_font=font_pop
     else:
         pygame.draw.rect(screen, button_colour, (x, y, w, h))
 
-    draw_text(text, x + 10, y + 10, colour=text_colour, font=text_font)
+    draw_text(text=heading_text, x=x+10, y=y+10, colour=heading_text_colour, font=heading_text_font)
+    draw_text(text=body_text, x=x+10, y=y+10+body_text_offset, colour=body_text_colour, font=body_text_font)
     return False
+
+# Display heading function
+def display_heading(title="Title", title_colour=colour_white, title_pos=(10, 10), title_font=font_poppins_bold, subtext="Subtext", subtext_colour=colour_white, subtext_pos=(10, 60), subtext_font=font_poppins):
+    screen.fill((0, 0, 0))  # Clear screen with black background
+    
+    # Render title using bold font
+    draw_text(title, title_pos[0], title_pos[1], colour=title_colour, font=title_font)
+    
+    # Render subtext using regular font
+    draw_text(subtext, subtext_pos[0], subtext_pos[1], colour=subtext_colour, font=subtext_font)
+
+    pygame.display.flip()  # Update the display
 
 # MAIN LOOP --------------------------------------------------------------------------------------------------------
 
@@ -119,11 +110,13 @@ while True:
     # GAME --------------------------------------------------------------------------------------------------------
 
     if game_state == "main_menu":
-        pass
+        display_heading(title="Choose Your Own Adventure", subtext="This code is written by Aaron")
 
     # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
 
     pygame.display.update()
+
+    pygame.time.Clock().tick(frame_rate)
 
 # END OF GAME ------------------------------------------------------------------------------------------------------
 
