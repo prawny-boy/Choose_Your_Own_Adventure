@@ -6,7 +6,7 @@ import sys
 # FUNCTIONS ------------------------------------------------------------------------------------------------------
 
 # Helper function to display text on the screen
-def draw_text(text, x, y, color=black, font=font_poppins):
+def draw_text(text, x, y, colour=black, font=font_poppins):
     """
     Draw text on the screen.
 
@@ -18,8 +18,8 @@ def draw_text(text, x, y, color=black, font=font_poppins):
         The x-coordinate of the text.
     y : int
         The y-coordinate of the text.
-    color : tuple, optional
-        The color of the text. Default is black.
+    colour : tuple, optional
+        The colour of the text. Default is black.
 
     Returns
     -------
@@ -27,13 +27,13 @@ def draw_text(text, x, y, color=black, font=font_poppins):
     """
 
     try:
-        text_surface = pygame.font.Font.render(font, text, True, color)
+        text_surface = pygame.font.Font.render(font, text, True, colour)
     except:
-        text_surface = font_poppins.render(text, True, color)
+        text_surface = font_poppins.render(text, True, colour)
     screen.blit(text_surface, (x, y))
 
 # Helper function to create buttons for choices
-def create_button(text, x, y, w, h, text_color=black, text_font=font_poppins, button_color=melon, hover_color=bright_pink_crayola):
+def create_button(text, x, y, w, h, text_colour=black, text_font=font_poppins, button_colour=melon, hover_colour=bright_pink_crayola):
     """
     Create buttons for choices.
 
@@ -49,10 +49,10 @@ def create_button(text, x, y, w, h, text_color=black, text_font=font_poppins, bu
         The width of the button.
     h : int
         The height of the button.
-    color : tuple
-        The color of the button.
-    hover_color : tuple
-        The color of the button when the mouse hovers over it.
+    colour : tuple
+        The colour of the button.
+    hover_colour : tuple
+        The colour of the button when the mouse hovers over it.
 
     Returns
     -------
@@ -63,13 +63,13 @@ def create_button(text, x, y, w, h, text_color=black, text_font=font_poppins, bu
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if x + w > mouse[0] > x and y + h > mouse[1] > y: # Check if mouse is hovering over button
-        pygame.draw.rect(screen, hover_color, (x, y, w, h))
+        pygame.draw.rect(screen, hover_colour, (x, y, w, h))
         if click[0] == 1:
             return True  # Button is clicked
     else:
-        pygame.draw.rect(screen, button_color, (x, y, w, h))
+        pygame.draw.rect(screen, button_colour, (x, y, w, h))
 
-    draw_text(text, x + 10, y + 10, color=text_color, font=text_font)
+    draw_text(text, x + 10, y + 10, colour=text_colour, font=text_font)
     return False
 
 # PYGAME START ------------------------------------------------------------------------------------------------------
@@ -84,23 +84,26 @@ pygame.display.set_caption("CYOA Pygame")
 # Screen colour
 screen.fill((0, 0, 0))
 
-# Colors
-white = (255, 255, 255)
-black = (0, 0, 0)
-blue = (0, 0, 255)
-cambridge_blue = (131, 182, 146)
-melon = (249, 173, 160)
-bright_pink_crayola = (249, 98, 125)
-blush = (198, 91, 124)
-violet_jtc = (91, 55, 88)
+# Colours
+colour_white = (255, 255, 255)
+colour_black = (0, 0, 0)
+colour_blue = (0, 0, 255)
+colour1_cambridge_blue = (131, 182, 146)
+colour1_melon = (249, 173, 160)
+colour1_bright_pink_crayola = (249, 98, 125)
+colour1_blush = (198, 91, 124)
+colour1_violet_jtc = (91, 55, 88)
 
 # Fonts
 font_basic = pygame.font.Font(None, 32)
 font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Regular 400.ttf", 32)
 font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/Poppins Bold 700.ttf", 32)
-# POPPINS FONT CREDITS
-# Poppins
-# Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
+    # POPPINS FONT CREDITS
+        # Poppins
+        # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
+
+# Settings
+game_state = "main_menu"
 
 # MAIN LOOP --------------------------------------------------------------------------------------------------------
 
@@ -114,11 +117,8 @@ while True:
     
     # GAME --------------------------------------------------------------------------------------------------------
 
-    clicked = create_button("button text", 60, 60, 240, 60, button_color=melon, hover_color=bright_pink_crayola)
-
-    if clicked:
-        print("button clicked")
-        break
+    if game_state == "main_menu":
+        pass
 
     # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
 
