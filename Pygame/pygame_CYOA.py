@@ -295,7 +295,7 @@ while True:
         elif clicked_button == 2:
             game_state = "main_menu"
         elif clicked_button == 3:
-            game_state = "main_menu"
+            pygame_quit()
 
     # DRAW AND UPDATE --------------------------------------------------------------------------------------------------------
 
