@@ -1,5 +1,6 @@
 This is a python game, developed by Oliver Liu, Sean Chan and Levi Laij.
 Run CYOA.py to play it.
+Watch this how to play video on youtube if you need: https://youtu.be/kYlHPEqLzto
 
 WARNING: 
 This program does not support users using the D: drive.
