@@ -7,7 +7,6 @@ from time import sleep
 from achievements import achievements
 from pygame import mixer
 from keyboard import is_pressed
-from inputimeout import inputimeout
 from os import getcwd
 
 
@@ -20,9 +19,9 @@ def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats
     if 'C:' in getcwd():
         return filepath # example return: Constants\\stats.txt
     elif 'D:' in getcwd():
-        return "Choose_Your_Own_Adventure/"+filepath.replace("\\", "/") # example return: Choose_Your_Own_Adventure/Constants/stats.txt
+        return "CYOA Beta/"+filepath.replace("\\", "/") # example return: Choose_Your_Own_Adventure/Constants/stats.txt
     else:
-        return getcwd()+"/"+filepath.replace("\\", "/") # example return: d:/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
+        return getcwd()+"/"+filepath.replace("\\", "/") # example return: $/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
 
 # Files
 s = ConvertFileName('Constants\\stats.txt')
