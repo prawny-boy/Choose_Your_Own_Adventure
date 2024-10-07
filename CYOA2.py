@@ -14,13 +14,27 @@ from os import getcwd
 # Initialisations
 mixer.init()
 
+# Get file path type
+if "D:" in getcwd():
+    try:
+        file_test = "Choose_Your_Own_Adventure/"+'Constants\\stats.txt'.replace("\\", "/")
+        with open(file_test, 'r') as file:
+            pass
+        file_path_type = "Choose_Your_Own_Adventure/"
+    except:
+        file_test = getcwd().split("\\")[-1]+"/"+'Constants\\stats.txt'.replace("\\", "/")
+        print(f"File test: {file_test}")
+        with open(file_test, 'r') as file:
+            pass
+        file_path_type = getcwd().split("/")[-1]
+
 # Program Presets
 # Functions
 def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
     if 'C:' in getcwd():
         return filepath # example return: Constants\\stats.txt
     elif 'D:' in getcwd():
-        return "Choose_Your_Own_Adventure/"+filepath.replace("\\", "/") # example return: Choose_Your_Own_Adventure/Constants/stats.txt
+        return file_path_type + filepath.replace("\\", "/")
     else:
         return getcwd()+"/"+filepath.replace("\\", "/") # example return: d:/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
 
