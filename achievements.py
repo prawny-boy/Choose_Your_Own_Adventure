@@ -3,7 +3,7 @@ amazon = {
     'Keep the Gem': ['Finish the story still with a gem in your inventory'],
     'Pilot Buddy': ['Win the story with the pilot still with you'],
     'Die of Boredom': ['Get the ending: Died of Boredom'],
-    'Bad Choices': ['Get the ending: Bad choices'],
+    'Bad Choices [Amazon Jungle]': ['Get the ending: Bad choices'],
     "Escape of the Jungle": ['Win Amazon Jungle'],
     'Again?!': ['Get the ending: Crashed again'],
     # Standard Achievements
@@ -31,7 +31,7 @@ time = {
     "Lumberjacked": ["Get your head chopped off by an axe."],
     'Bonker': ["Use The Bonker"],
     'Bonked': ["Get Bonked by the Bonker"],
-    'Bad Choices': ["Get the ending: bad choices"],
+    'Bad Choices [Time Travel]': ["Get the ending: bad choices"],
     "Back to reality": ["Win Time Travel"],
     "Finding Gold": ["Find gold"],
     "The Future is Bright": ["Save the future and win"],

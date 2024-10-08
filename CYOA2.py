@@ -1060,7 +1060,7 @@ When you wake up, you remember what happened and wish that you never went to Afr
                     story_amazon_adventure_search()
         else:
             ending("Bad Choices", 20, "amazon jungle")
-            addachievement("Bad Choices")
+            addachievement("Bad Choices [Amazon Jungle]")
 
     if "Gem" in inventoryList:
         addachievement("Keep The Gem")
@@ -1276,7 +1276,7 @@ def story_timetravel_4():
                         ending("Bombed", 30, "time travel")
                     else:
                         ending("Bad Choices", 29, "time travel")
-                        addachievement("Bad Choices")
+                        addachievement("Bad Choices [Time Travel]")
                 else:
                     ending("Buried Forever", 28, "time travel")
             else:
