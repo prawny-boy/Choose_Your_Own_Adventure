@@ -36,12 +36,21 @@ colour1_bright_pink_crayola = (249, 98, 125)
 colour1_blush = (198, 91, 124)
 colour1_violet_jtc = (91, 55, 88)
 
+try:
+    _ =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
+    file_path_type = "Choose_Your_Own_Adventure/"
+except:
+    file_path_type = ""
+
+def pConvertFileName(filepath:str):
+    return file_path_type + filepath
+
 # Fonts
 ## Poppins
-font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
-font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 48)
-font_poppins_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 12)
-font_poppins_bold_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 18)
+font_poppins =  pygame.font.Font(pConvertFileName("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf"), 32)
+font_poppins_bold =  pygame.font.Font(pConvertFileName("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf"), 48)
+font_poppins_small =  pygame.font.Font(pConvertFileName("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf"), 12)
+font_poppins_bold_small =  pygame.font.Font(pConvertFileName("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf"), 18)
     # POPPINS FONT CREDITS
         # Poppins
         # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
