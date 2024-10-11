@@ -10,27 +10,27 @@ from keyboard import is_pressed
 from inputimeout import inputimeout
 from os import getcwd
 
-
 # Initialisations
 mixer.init()
-
-# Get file path type
-if "D:" in getcwd():
-    try:
-        file_test = "Choose_Your_Own_Adventure/"+'Constants\\stats.txt'.replace("\\", "/")
-        with open(file_test, 'r') as file:
-            pass
-        file_path_type = "Choose_Your_Own_Adventure/"
-    except:
-        file_test = getcwd().split("\\")[-1]+"/"+'Constants\\stats.txt'.replace("\\", "/")
-        print(f"File test: {file_test}")
-        with open(file_test, 'r') as file:
-            pass
-        file_path_type = getcwd().split("/")[-1]
 
 # Program Presets
 # Functions
 def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    # Get file path type
+    if "D:" in getcwd():
+        try:
+            file_test = "Choose_Your_Own_Adventure/"+'Constants\\stats.txt'.replace("\\", "/")
+            with open(file_test, 'r') as file:
+                pass
+            file_path_type = "Choose_Your_Own_Adventure/"
+        except:
+            file_test = 'Constants\\stats.txt'.replace("\\", "/")
+            print(f"File test: {file_test}")
+            with open(file_test, 'r') as file:
+                pass
+            file_path_type = getcwd().split("/")[-1]
+    
+    # Change file name
     if 'C:' in getcwd():
         return filepath # example return: Constants\\stats.txt
     elif 'D:' in getcwd():
@@ -1681,8 +1681,7 @@ you wisely use the time to hold out the Ninja and heal {user.title()}."""], ['A'
                     ending('Cheats were enabled', 14, 'School')
                 elif c == 2:
                     ending('The calculator was in radians...', 13, 'School')
-                
-                
+                               
 def story_school_3():
     slowprint(f'POV: {user.title()}', 0.05, ['bold'], 'blue', 1, True, 'space')
     sleep(2)
@@ -1794,6 +1793,7 @@ this isn’t the last time you are going to see him. You flip him off one last t
 then jump off the last bit of floating rock and enter the portal, 
 awaiting your first day of school. """)
             ending('The Master of Death - Extended Remix', 16, 'School', 'win', True, 'Master of Fear')
+
 # ETHAN - TUTANKHAMUN'S TOMB
 def story_tomb():
     print("""You are a tomb explorer that explores ancient tombs. You recently decided to explore Tutankhamun's tomb. You took a plane over to Egypt, but while flying over Tutankhamun's tomb, the plane suddenly spluttered and crashed. You were flung out of the plane and landed near the tomb. You land without any food or water, but you have all the tools you need.""")
