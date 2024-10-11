@@ -28,16 +28,16 @@ Click on the issue name on the issues page. This should redirect you to the issu
 When you have assigned yourself to an issue (see 2.1), its time to start coding! <br>
 Go to VS code and open the folder with the repository. (see 1.1) In the terminal write `git checkout -b "[Your branch name (see next for formatting)]"` You should name your branch as `[Your Name]-[Shortened version of issue]` This should make a new branch, which is where you will edit the code so that you don't edit the main branch. Now you can edit code and fix the issue! <br>
 These are some other commands that are useful:
-  * `git checkout -b [branch name]` This is to make a new branch and switch to it. (see above)
-  * `git checkout [branch name]` This is to switch branches. You must commit before you do this. (see 2.3)
-  * `git branch` This gives you a list of all your branches, and highlights the one you are on.
+  * `git checkout -b [branch name]`: This is to make a new branch and switch to it. (see above)
+  * `git checkout [branch name]`: This is to switch branches. You must commit before you do this. (see 2.3)
+  * `git branch`: This gives you a list of all your branches, and highlights the one you are on.
 
 ### 2.3 Commiting and Pushing
 #### 2.3.1 Commiting
 After you edit the code, and finish one thing (this doesn't neccessarily have to finish the whole issue), you can commit to save your work so that you can get it back later. <br>
 To commit, run these commands in terminal:
-  1. `git add .` This prepares the changes to be commited
-  2. `git commit -m "[Summary of your changes/commit message]"` This commits all the readied code. Enter a commit message so that other people know what you changed. Please don't use "more code" as a commit. Be sensible about what you put in the message.
+  1. `git add .`: This prepares the changes to be commited
+  2. `git commit -m "[Summary of your changes/commit message]"`: This commits all the readied code. Enter a commit message so that other people know what you changed. Please don't use "more code" as a commit. Be sensible about what you put in the message.
 #### 2.3.2 Pushing
 *Before doing this step, make sure to commit! (see 2.3.1)* <br>
 To save code onto github, you have to push. <br>
@@ -53,7 +53,7 @@ Because Pull Requests are used to solve issues, you need to assign an issue to e
 
 ### 2.5 Pulling
 It is a good practice, to once in awhile, pull from github. Pulling is when you pull from the main branch to update your branch to the newest version of the game. <br>
-You can do this by running: `git pull origin main` <br>
+You can do this by running `git pull origin main` <br>
 After doing this there may be merge confilcts, so go through the files and accept which one is best.
 
 ## 3. Others

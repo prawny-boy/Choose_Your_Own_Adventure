@@ -3,7 +3,7 @@ amazon = {
     'Keep the Gem': ['Finish the story still with a gem in your inventory'],
     'Pilot Buddy': ['Win the story with the pilot still with you'],
     'Die of Boredom': ['Get the ending: Died of Boredom'],
-    'Bad Choices': ['Get the ending: Bad choices'],
+    'Bad Choices [Amazon Jungle]': ['Get the ending: Bad choices'],
     "Escape of the Jungle": ['Win Amazon Jungle'],
     'Again?!': ['Get the ending: Crashed again'],
     # Standard Achievements
@@ -29,10 +29,12 @@ space = {
 # Time Travel
 time = {
     "Lumberjacked": ["Get your head chopped off by an axe."],
-    'Bonker': ["Use The Bonker"], # not added
-    'Bonked': ["Get Bonked by the Bonker"], # not added
-    'Bad Choices': ["Get the ending: bad choices"],
+    'Bonker': ["Use The Bonker"],
+    'Bonked': ["Get Bonked by the Bonker"],
+    'Bad Choices [Time Travel]': ["Get the ending: bad choices"],
     "Back to reality": ["Win Time Travel"],
+    "Finding Gold": ["Find gold"],
+    "The Future is Bright": ["Save the future and win"],
     # Standard Achievements
     'Time Traveller': ['Play this story 1 time', 'time travel.play-1'],
     'Better Time Traveller': ['Play this story 10 times', 'time travel.play-10'],
@@ -67,7 +69,7 @@ tomb = {
 }
 
 mountain = {
-    'Yeti Man': ['Find the Abominable Snowman'], # not added
+    'Yeti Man': ['Find the Abominable Snowman'],
     # Standard Achievements
     'Rock Climber': ['Play this story 1 time', 'mountain.play-1'],
     'Hiker': ['Play this story 10 times', 'mountain.play-10'],
