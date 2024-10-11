@@ -7,35 +7,51 @@ from time import sleep
 from achievements import achievements
 from pygame import mixer
 from keyboard import is_pressed
-import os
+from inputimeout import inputimeout
+from os import getcwd
 
-# Inits
+
+# Initialisations
 mixer.init()
+
+# Get file path type
+if "D:" in getcwd():
+    try:
+        file_test = "Choose_Your_Own_Adventure/"+'Constants\\stats.txt'.replace("\\", "/")
+        with open(file_test, 'r') as file:
+            pass
+        file_path_type = "Choose_Your_Own_Adventure/"
+    except:
+        file_test = getcwd().split("\\")[-1]+"/"+'Constants\\stats.txt'.replace("\\", "/")
+        print(f"File test: {file_test}")
+        with open(file_test, 'r') as file:
+            pass
+        file_path_type = getcwd().split("/")[-1]
 
 # Program Presets
 # Functions
-def convertfilename(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
-    if 'C:' in os.getcwd():
-        return filepath
-    elif 'D:' in os.getcwd():
-        return os.getcwd()+"/"+filepath.replace("\\", "/")
+def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
+    if 'C:' in getcwd():
+        return filepath # example return: Constants\\stats.txt
+    elif 'D:' in getcwd():
+        return file_path_type + filepath.replace("\\", "/")
     else:
-        return os.getcwd()+"/"+filepath.replace("\\", "/")
+        return getcwd()+"/"+filepath.replace("\\", "/") # example return: d:/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
 
-# Constants
-s = convertfilename('Constants\\stats.txt')
-e = convertfilename('Constants\\allendings.txt')
-u = convertfilename('Constants\\updates.txt')
-t = convertfilename('Constants\\testers.txt')
-ins = convertfilename('Constants\\inspirational.txt')
+# Files
+s = ConvertFileName('Constants\\stats.txt')
+e = ConvertFileName('Constants\\allendings.txt')
+u = ConvertFileName('Constants\\updates.txt')
+t = ConvertFileName('Constants\\testers.txt')
+ins = ConvertFileName('Constants\\inspirational.txt')
 
 # Songs
-happy = convertfilename('Songs\\Happy.mp3')
-hope = convertfilename('Songs\\Hope.mp3')
-mystery = convertfilename('Songs\\Mystery.mp3')
-wii_music = convertfilename('Songs\\Wii-Music.mp3')
-wii_sports = convertfilename('Songs\\Wii-Sports.mp3')
-wii_shop = convertfilename('Songs\\Wii-Shop.mp3')
+happy = ConvertFileName('Songs\\Happy.mp3')
+hope = ConvertFileName('Songs\\Hope.mp3')
+mystery = ConvertFileName('Songs\\Mystery.mp3')
+wii_music = ConvertFileName('Songs\\Wii-Music.mp3')
+wii_sports = ConvertFileName('Songs\\Wii-Sports.mp3')
+wii_shop = ConvertFileName('Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
@@ -45,7 +61,7 @@ stories = {
     "space story": 12,
     'time travel': 45,
     'school': 20,
-    'mountain': 1,
+    'mountain': 12,
     # 'underwater': 1,
 } # name of story: amount of endings
 storyList = ['quit'] + list(stories.keys())
@@ -430,7 +446,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
     cprint(f"  Wins: ", "green", end="")
     print(wins)
 
-def choice(question:str, outcomes:list, options:list = ['y', 'n']) -> int:
+def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = False) -> int:
     cprint('-----------------------------', attrs=['bold'])
     choice = ''
     numoptions = []
@@ -646,7 +662,7 @@ def checkcommand(command:str) -> None:
             slowprint("\nTIME TRAVEL", 0.05,["bold"], 'red')
             story_timetravel()
         elif story == "school" or story == "4":
-            slowprint("\nSCHOOL - Made By Jayden Li",0.05,["bold"], 'yellow')
+            slowprint("\nLIGMA SCHOOL - Made By Jaden Li",0.05,["bold"], 'yellow')
             story_school()
         elif story == "tomb story" or story == "5":
             slowprint("\nTutankhamun's Tomb - Made By Ethan Wei", 0.05,["bold"],'magenta')
@@ -746,14 +762,14 @@ def checkcommand(command:str) -> None:
 
 ███████╗ ██████╗ ██╗     
 ██╔════╝██╔═══██╗██║     
-███████╗██║   ██║██║            \033[1mSean & Oliver Corporation Inc\033[0m
+███████╗██║   ██║██║            \033[1mSean Oliver & Levi Corporation Inc\033[0m
 ╚════██║██║   ██║██║     
 ███████║╚██████╔╝███████╗
 ╚══════╝ ╚═════╝ ╚══════╝
 
 ------------------------------------------------
-Version: 2.2 ("Updates" for latest changes)
-Coded in VS Code, by Oliver Liu and Sean Chan
+Version: 2.4 Beta ("Updates" for latest changes)
+Coded in VS Code, by Oliver Liu, Levi Laij and Sean Chan
 Logo: Aaron Zhang
 Testers: Use 'testers' command
 Story Writers: 
@@ -763,7 +779,6 @@ Story Writers:
     School - Jaden Li, imported by Oliver Liu
     Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
     Mountain - Levi Laij
-    Underwater - Oliver Liu
 ------------------------------------------------""")
         addachievement("Supporter")
     elif command == "testers":
@@ -1045,7 +1060,7 @@ When you wake up, you remember what happened and wish that you never went to Afr
                     story_amazon_adventure_search()
         else:
             ending("Bad Choices", 20, "amazon jungle")
-            addachievement("Bad Choices")
+            addachievement("Bad Choices [Amazon Jungle]")
 
     if "Gem" in inventoryList:
         addachievement("Keep The Gem")
@@ -1261,7 +1276,7 @@ def story_timetravel_4():
                         ending("Bombed", 30, "time travel")
                     else:
                         ending("Bad Choices", 29, "time travel")
-                        addachievement("Bad Choices")
+                        addachievement("Bad Choices [Time Travel]")
                 else:
                     ending("Buried Forever", 28, "time travel")
             else:
@@ -1522,7 +1537,7 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            m = randint(1,4)
+            m = randint(1,3)
             if m == 1:
                 mixer.music.load(wii_shop)
             elif m == 2:
@@ -1906,17 +1921,216 @@ def story_tomb_passageway():
 
 # LEVI - MOUNTAIN
 def story_mountain():
-    print('You are an experienced mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest.')
-    c = choice("""Who will you go with? 
+    def end():
+        print(f'Thanks for playing!')
+
+    cprint('Every choice you have to make, you only have 7 seconds to answer, to simulate being at Mount Everest. However, if you can make better decisions, you may have longer. Make your decisions quick!', 'blue')
+    print()
+    friend = ''
+    altitude = 5364
+    time = 7
+
+    print('You are an intermediate mountain climber. You are about to go on your greatest adventure yet, climbing Mt Everest, starting from the South Base Camp.') 
+    inventory('Climbing gloves', 2)
+    c1 = choice("""Who will you go with?
 Derek: Your best friend since 5th grade. You know him best, but it is his first time.
-William: A professional climber that has been climbing since 1994. He is experienced and has all the gear. 
-Pat: Your friendly neighborhood postman. A chill dude who is built like a bodybuilder on steroids.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'])
-    if c == 0:
-        pass
-    elif c == 1:
-        pass
-    elif c == 2:
-        pass
+William: A professional climber that has been climbing since 1994. He is experienced and has all the gear.
+Pat: Your loyal uber delivery man. A not-so-chill-but-chill guy who is built like a bodybuilder on steroids. He's done some rock climbing, but that's it.""", ['You choose Derek, and he is excited to go with you. You begin your journey up the mountain.', 'You choose William, he firmly shakes your hand and tells you that you are in good hands.', 'You choose Pat, who almost rips off your arm as he greets you. '], ['Derek', 'William', 'Pat'], mountain = time)
+
+    #Derek
+    if c1 == 0:
+        print('You chose Derek.')
+        friend = 'Derek'
+        print("You check what Derek has, and not to your surprise, he only has mountain apparel. You tell him he needs bottled oxygen, and he quickly finds a market just below where you are talking to buy some oxygen.")
+
+        dc2 = choice('''You have some spare time. What do you do?
+1. Go with Derek to buy oxygen.
+2. Use your phone for a bit.''', ['Derek is grateful that you went to get oxygen with him.', 'Derek goes off by himself to buy some oxygen.'], ['Go', 'Phone'], mountain = time)
+
+        if dc2 == 0:
+            print("On the way to the market, Derek keeps talking about his family and children. You on the other hand, have been annoyed, that you don't have a family, but feel better because you're more experienced in most things.")
+            print('You arrive to the market, and there are multiple bottles for sale.')
+            dc3 = choice('''Which bottle and what quantity do you choose?
+1. 3 400L tanks, fast speed
+2. 4 350L tanks, medium speed
+3. 5 300L tanks, slow speed
+''', ['You chose 3 400L tanks. Derek will walk at a fast pace. Therefore, you will have 10 seconds to make choices.', 'You chose 4 350L tanks, Derek will walk at a medium pace. Therefore, you will have 7 seconds to make choices.', 'You chose 5 300L tanks, Derek will walk at a slow pace. Therefore, you will have 4 seconds to make choices.'], ['1', '2', '3'], mountain = time)
+
+            if dc3 == 0:
+                #bought 3 400L tanks, fast walking pace
+                time = 10
+            elif dc3 == 1:
+                #bought 4 350L tanks, medium speed
+                time = 7
+            elif dc3 == 2:
+                #bought 5 300L tanks, slow speed
+                time = 4
+            elif dc3 == -1:
+                end()
+                return
+        elif dc2 == 1:
+            print('Derek goes by himself to get some oxygen. Unfortunately, he gets scammed and only bought 1 tank of 1200L oxygen. \nAnyways, you are about to start your climbing journey.')
+            print('Oh well, at least he has oxygen.')
+        elif dc2 == -1:
+            end()
+            return
+        print('After getting back to the base camp, you are ready to embark on your new journey.')
+        sleep(1)
+
+
+
+    #william    
+    elif c1 == 1:
+        print('You chose William.')
+        friend = 'William'
+        print('William was prepared, so he brought oxygen to start climbing.')
+
+    #pat
+    elif c1 == 2:
+        print("You were a bit shook from Pat's strength. Nevertheless, he is very enthusiastic to climb Mt. Everest with you.")
+        friend = 'Pat'
+        pat_inv = ['supposedly...steroids']
+        pc2 = choice("""You ask Pat about his strength, and he casually shrugs it off. He looks like a bodybuilder, but you remember he doens't have the time to go to the gym.
+You are intrigued as to why he is so muscly.
+Do you ask him about his strength?""", ['', ''], ['y', 'n'], mountain = time)
+        
+        if pc2 == 0:
+            print('After pestering him, he finally admits that he does indeed take steroids. He then suddenly snaps out of nowhere, and threatens to end you if you do one thing wrong.')
+            ending('Steroids...', 2, 'Mountain')
+            return
+        elif pc2 == 1:
+            print('He initiates a conversation with you, and you respond.')
+        elif pc2 == -1:
+            end()
+            return
+    elif c1 == -1:
+        end()
+        return
+    #all friends are here
+    sleep(1)
+    print(f'Your altitude is: {altitude}m.')
+    sleep(0.5)
+    print(f'As you start climbing on your way to Mount Everest, you encounter the Everest Camp 2 at an altitude of 6400m.')
+    altitude = 6400
+    a1 = choice(f'You realize that you\'re not hungry, but that {friend} is. At Everest Camp 2, there are some food options, but you yourself are not hungry. Do you eat or continue journeying?', outcomes=['', ''], options=['Eat', 'Journey'], mountain=time)
+    if a1 == 0:
+        print('You stop by, and now you have to decide what to eat.')
+        ae1 = choice("""
+What do you eat?
+1. Instant noodles
+2. Chicken and rice
+3. A small snack (candy bar).""", outcomes=['', '', ''], options=['1', '2', '3'], mountain=time)
+        if ae1 == 0:
+            print('You both eat instant noodles, and are left satisfied.')
+        elif ae1 == 1:
+            print('You both eat chicken and rice, but leave quite full.')
+        elif ae1 == 2:
+            print('You both eat a small candy bar, increasing the amount of sugar in your blood. You stumble around, as your body dies because of the lack of nutrients in your blood.')
+            ending('Sugar......yummy', 3, 'Mountain')
+            return
+        elif ae1 == -1:
+            end()
+            return
+    elif a1 == 1:
+        print(f"Both of you continue to hike up the mountain, but {friend} is feeling a bit sick. You walk at a slower pace to match {friend}'s pace.")
+        time -= 1
+        dead = 'almost'
+    elif a1 == -1:
+        end()
+        return
+    print('You depart Everest Camp 2, and continue hiking.')
+    print('As you climb up, the air pressure starts to lower.')
+    if friend == 'Derek':
+        d1 = choice("""Derek starts feeling faint, occasionally losing consciousness. Do you turn back?""", outcomes=['', ''], mountain=time)
+        if d1 == 0:
+            print('You turn back, as Derek cannot handle the pressure and altitude of the mountain\'s top. ')
+            ending('Wrong partner...', 5, story='Mountain')
+            end()
+            return
+        elif d1 == 1:
+            print('You convince Derek to power on, taking more time to slowly walk through the mountain. You now only have 2 seconds to make your decisions.')
+            sleep(1)
+            time = 2
+        elif d1 == -1:
+            end()
+            return
+    elif friend == 'William':
+        print('William, the most experienced mountain-climber you know, isn\'t scared as much as you are, about the increasingly countless amount of dead bodies on the snowy surface.')
+        w1 = choice(f'You see a body on the floor, but supposedly alive. Having seeing this, do you go and help the maybe dead climber? ', ['Out of compassion, you go to check on the climber.', 'You shrug it off, likely knowing that they are dead.'], mountain=time)
+        dead = randint(1, 2)
+        if w1 == 0:
+            print('William leaves you behind, as he has experience and has encountered this before, once looking at a dead climber.')
+            print('You give the climber some of your own oxygen, in the hopes that he will awaken...')
+            sleep(2)
+            if dead == 1:
+                print('Unfortunately, the climber is dead, and you waste your remaining oxygen.')
+                ending('Too compassionate...', 6, story='Mountain')
+                end()
+            else:
+                print('The climber revives, and you quickly help him get up. Rushingly, you carry him all the way down to the bottom of the mountain.')
+                ending('Saved him...', 7, story='Mountain', type='win')
+                end()
+        elif w1 == 1:
+            if dead == 1:
+                print('The climber was left to die, as he was actually alive. William leaves you, as you silently weep and faint.')
+                ending('Did he really die?', 8, story='Mountain')
+                end()
+            else:
+                print('The climber was dead, and William told you so.')
+                print('Anyway, you continue to climb, William warns you to not waste anymore time, as he is experienced and knows when to look out for others (he doesn\'t, as he has no compassion).')
+        elif w1 == -1:
+            end()
+            return
+    print('Hiking up, you need a moment to catch your breath. Suddenly, you hear a sharp, piercing sound. A nearby climber.')
+    print('Looking around in shock, you realise that you have found the Abominable Snowman.')
+    addachievement("Yeti Man")
+    a2 = choice(f'The sheer size of The Snowman scares you and {friend}. Do you stay still, fight, or run away?', outcomes=['Staying still, nothing happens...yet.', 'Where\'s Pat?', ''], options=['Stay still', 'Fight', 'Run away'], mountain=time)
+    if a2 == 0:
+        print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
+        sleep(1)
+        print(f'The ground finally gives way, as you, {friend} and the Snowman falls to death.')
+        ending("Well, now he is dead.", 9, story='Mountain')
+        end()
+        return
+    elif a2 == 1 and friend == 'Pat':
+        scared = randint(1, 2)
+        if scared == 1:
+            print('You call Pat, and find that he is no where to be seen, hiding away somewhere. Although he works out, he is a bit scared by the Abominable One.')
+            ending('Where did he go?', 10, story='Mountain')
+            end()
+            return
+        elif scared == 2:
+            print('Pat punches him, and the Snowman turns around. Pat finds that the gear he is in is quite restrictive, and so the offense is not so powerful, although he works out.')
+            print('His impulse kicks in, taking you down with him as he knows that he was going to die anyway.')
+            ending('Wrong partner...', 5, story='Mountain')
+            end()
+            return
+    elif a2 == 1 and friend != 'Pat':
+        print(f'You deduce that you have the best fighting skills, and punch the beast. The suit is very restrictive, and so the Snowman shrugs it off as he flings you and {friend} off the face of the earth.')
+        ending('Scary!!', 11, story='Mountain')
+        end()
+        return
+    elif a2 == 2:
+        print("You realise you have to run away, but have to find which way to go. Up or down the mountain? ")
+        a3 = choice('Do you go up or down?', outcomes=['', ''], options=['Up', 'Down'], mountain=time)
+        if a3 == 0:
+            print('You choose to go up. Good decision!')
+            print('You remember from physics class that it takes less work to go up for a body of less mass than a larger mass, so you outrun the Snowman and can continue your hike.')
+        elif a3 == 1:
+            print('Going down, the Snowman catches up to you because of his large inertia.')
+            ending("Now you're dinner.", 12, story='Mountain')
+            end()
+            return
+        elif a3 == -1:
+            end()
+            return
+    elif a2 == -1:
+        end()
+        return
+
+    
+    print('You win! Thanks for playing!')
+    ending('Reached the summit! Now how do I get down...', 4, story='mountain', type='win')
 
 # OLIVER - UNDERWATER
 # def story_underwater():
