@@ -38,3 +38,7 @@ User: /marcel
 Endings: //
 Achievements: //First Command/special
 Commands: //help
+User: /ibibibi simba
+Endings: //2/School/fail,2/Mountain/fail,6/amazon jungle/fail,2/tomb/win
+Achievements: //First Command/special,LIGMA BALLS/school,Year 7/school,Newbie/all stories,Rock Climber/mountain,Levi's Collection/all stories,Beginner Jungle/amazon jungle,Explorer/tomb
+Commands: //help,start,start,start,start

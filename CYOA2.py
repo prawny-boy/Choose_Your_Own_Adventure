@@ -450,10 +450,12 @@ def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(boo
     cprint('-----------------------------', attrs=['bold'])
     numoptions = []
     numtype = False
+    option = options[0]
     for i in range(1, len(options)+1):
         numoptions.append(str(i))
     print(question)
-    option = str(options).strip('[').strip(']').strip("'").strip('"').lower()
+    for i in range(1, len(options)):
+        option += f', {options[i]}'
     for a in range(0,len(options)):
         options[a] = str(options[a]).lower()
     print('Options: ' + option)
