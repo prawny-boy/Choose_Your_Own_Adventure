@@ -448,16 +448,12 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
 
 def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = False) -> int:
     cprint('-----------------------------', attrs=['bold'])
-    choice = ''
     numoptions = []
     numtype = False
     for i in range(1, len(options)+1):
         numoptions.append(str(i))
     print(question)
-    option = str(options)
-    option = option.replace('[', '')
-    option = option.replace(']', '')
-    option = option.replace("'", '')
+    option = str(options).strip('[').strip(']').strip("'").strip('"').lower()
     for a in range(0,len(options)):
         options[a] = str(options[a]).lower()
     print('Options: ' + option)
