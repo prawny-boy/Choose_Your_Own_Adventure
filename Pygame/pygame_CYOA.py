@@ -182,9 +182,9 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
                             heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, 
                             body_text_colour=colour_black, body_text_font=font_poppins_small, 
                             button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola,
-                            pages=False, next_page_button_settings=(740, 10, 150, 60, 5, "Next", colour_black, font_poppins_bold_small, "Next page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola), 
-                            previous_page_button_settings=(10, 10, 150, 60, 5, "Previous", colour_black, font_poppins_bold_small, "Previous page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola), 
-                            select_page_button_settings=(10, 530, 150, 60, 5, "Select", colour_black, font_poppins_bold_small, "Select option", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola)):
+                            pages=False, next_page_button_settings=(530, 10, 250, 60, 5, "Next", colour_black, font_poppins_bold_small, "Next page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola), 
+                            previous_page_button_settings=(10, 10, 250, 60, 5, "Previous", colour_black, font_poppins_bold_small, "Previous page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola), 
+                            select_page_button_settings=(10, 530, 250, 60, 5, "Select", colour_black, font_poppins_bold_small, "Select option", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola)):
     
     """
     Create multiple buttons with headings and subheadings.
@@ -219,13 +219,21 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
         The colour of the button. Default is melon.
     hover_colour : tuple, optional
         The colour of the button when hovered over. Default is bright pink crayola.
+    pages : bool, optional
+        Whether there are multiple pages of buttons. Default is False.
+    next_page_button_settings : tuple, optional
+        Contains the settings for next page button. In order of (x, y, w, h, text_padding, heading_text, heading_text_colour, heading_text_font, body_text, body_text_offset, body_text_colour, body_text_font, button_colour, hover_colour). Default is (530, 10, 250, 60, 5, "Next", colour_black, font_poppins_bold_small, "Next page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola).
+    previous_page_button_settings : tuple, optional
+        Contains the settings for previous page button. Same order as next_page_button_settings. Default is (10, 10, 250, 60, 5, "Previous", colour_black, font_poppins_bold_small, "Previous page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola).
+    select_page_button_settings : tuple, optional
+        Contains the settings for select option button. Same order as next_page_button_settings. Default is (10, 530, 250, 60, 5, "Select", colour_black, font_poppins_bold_small, "Select option", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola)).
 
     Returns
     -------
     int
         The index (starting from 1) of the button that was clicked.
     bool
-        False if the button is not clicked.
+        False if no button is clicked.
     """
 
     global button_cooldown_end, current_page
@@ -248,22 +256,29 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
     elif pages == True:
         page_amount = len(button_text_list)
 
-        # next button
-        next_button_clicked = create_button(*next_page_button_settings)
-        # previous button
-        previous_button_clicked = create_button(*previous_page_button_settings)
+        if current_page != page_amount - 1: # If not on the last page
+            # Next button
+            next_button_clicked = create_button(*next_page_button_settings)
+        else: next_button_clicked = False
 
-        if current_page == 0:
-            display_heading(title="Question", title_colour=heading_text_colour, title_pos=(x, y), title_font=heading_text_font,
-                            subtext=button_text_list[0], subtext_colour=body_text_colour, subtext_pos=(x, y+y_offset), subtext_font=body_text_font)
-        else:
+        if current_page != 0: # If not on the first page
+            # Previous button
+            previous_button_clicked = create_button(*previous_page_button_settings)
+        else: previous_button_clicked = False
+
+        if current_page == 0: # Question page
+            display_heading(title=button_text_list[0][0], title_colour=heading_text_colour, title_pos=(x, y), title_font=heading_text_font,
+                            subtext=button_text_list[0][1], subtext_colour=body_text_colour, subtext_pos=(x, y+y_offset), subtext_font=body_text_font)
+        else: # Choices page
             display_heading(title=button_text_list[current_page][0], title_colour=heading_text_colour, title_pos=(x, y), title_font=heading_text_font, 
                             subtext=button_text_list[current_page][1], subtext_colour=body_text_colour, subtext_pos=(x, y+y_offset), subtext_font=body_text_font)
             
             clicked = create_button(*select_page_button_settings)
 
             if clicked:
-                return current_page # Return the index (starting from 1) of the clicked button
+                return_page = current_page # Make a copy of the current page, to return
+                current_page = 0 # Reset current page, for the next time this function is used
+                return return_page # Return the index (starting from 1) of the clicked button
 
         if next_button_clicked and current_page < page_amount - 1: current_page += 1
 
@@ -379,7 +394,7 @@ while True:
     
 
         # Example button list
-        button_texts = ["TITLE text", ("Start", "Begin your adventure"), ("Menu", "Go to the main menu"), ("Exit", "Exit the game"), ("Testing", sample_text)]
+        button_texts = [("Question", "Testing pages"), ("Start", "Begin your adventure"), ("Menu", "Go to the main menu"), ("Exit", "Exit the game"), ("Testing", sample_text)]
 
         # Inside the game loop
         clicked_button = create_multiple_buttons(button_text_list=button_texts, pages=True, x=10, y=70, y_offset=30, heading_text_colour=colour_white, body_text_colour=colour_white)
