@@ -1,29 +1,29 @@
-import sys
-sys.dont_write_bytecode = True # makes sure _pycache_ is not created
+import sys as _sys
+_sys.dont_write_bytecode = True # makes sure _pycache_ is not created
 from moduleInstall import installIfNeeded
-from datetime import datetime
+from datetime import datetime as _datetime
 def log(message):
-    print(datetime.now().strftime("%a %b %d %H:%M:%S") + " - " + str(message))
+    print(_datetime.now().strftime("%a %b %d %H:%M:%S") + " - " + str(message))
 installIfNeeded("termcolor", "termcolor", log = log)
 installIfNeeded("keyboard", "keyboard", log = log)
 installIfNeeded("pygame", "pygame", log = log)
-from termcolor import cprint, colored
-from random import randint
-from time import sleep
+from termcolor import cprint as _cprint, colored as _colored
+from random import randint as _randint
+from time import sleep as _sleep
 from achievements import achievements
-import pygame
-from keyboard import is_pressed
-from os import getcwd, get_terminal_size
-import base64
+import pygame as _pygame
+from keyboard import is_pressed as _is_pressed
+from os import getcwd as _getcwd, get_terminal_size as _get_terminal_size
+import base64 as _base64
 
 # Initialisations
-pygame.mixer.init()
+_pygame.mixer.init()
 
 # Program Presets
 # Functions
 def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats.txt"
     # Get file path type
-    if "D:" in getcwd():
+    if "D:" in _getcwd():
         try:
             file_test = "Choose_Your_Own_Adventure/"+'Constants\\stats.txt'.replace("\\", "/")
             with open(file_test, 'r') as file:
@@ -34,15 +34,15 @@ def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats
             print(f"File test: {file_test}")
             with open(file_test, 'r') as file:
                 pass
-            file_path_type = getcwd().split("/")[-1]
+            file_path_type = _getcwd().split("/")[-1]
     
     # Change file name
-    if 'C:' in getcwd():
+    if 'C:' in _getcwd():
         return filepath # example return: Constants\\stats.txt
-    elif 'D:' in getcwd():
+    elif 'D:' in _getcwd():
         return file_path_type + filepath.replace("\\", "/")
     else:
-        return getcwd()+"/"+filepath.replace("\\", "/") # example return: d:/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
+        return _getcwd()+"/"+filepath.replace("\\", "/") # example return: d:/...filepath.../Choose_Your_Own_Adventure/Constants/stats.txt
 
 # Files
 s = ConvertFileName('Constants\\stats.txt')
@@ -94,33 +94,33 @@ wins = 0
 
 def b64_encode(s:str) -> str:
     sample_string_bytes = s.encode("ascii")
-    base64_bytes = base64.b64encode(sample_string_bytes)
+    base64_bytes = _base64.b64encode(sample_string_bytes)
     base64_string = base64_bytes.decode("ascii")
     return base64_string
 
 def b64_decode(s:str) -> str:
     base64_bytes = s.encode("ascii")
-    sample_string_bytes = base64.b64decode(base64_bytes)
+    sample_string_bytes = _base64.b64decode(base64_bytes)
     sample_string = sample_string_bytes.decode("ascii")
     return sample_string
 
 def slowprint(str:str, speed:float=0.05, attr:list=[], c='white', wait=3, skip=True, key:str = 'shift') -> None:
     start = 0
     for char in str:
-        cprint(char, end='', attrs=attr, color=c)
-        sys.stdout.flush()
-        sleep(speed)
-        if is_pressed(key) and start > wait and skip:
-            cprint(str[start+1:], end="", color=c, attrs=attr)
+        _cprint(char, end='', attrs=attr, color=c)
+        _sys.stdout.flush()
+        _sleep(speed)
+        if _is_pressed(key) and start > wait and skip:
+            _cprint(str[start+1:], end="", color=c, attrs=attr)
             break
         start += 1
-    sleep(speed)
+    _sleep(speed)
     print()
 
 def BetterPrint(text: str, fromtop:bool=True):
     text = text.replace("\n", "")
     length = 0
-    columns, rows = get_terminal_size()
+    columns, rows = _get_terminal_size()
     printlist = []
     words = text.split(" ")
     line = ""
@@ -141,10 +141,10 @@ def BetterPrint(text: str, fromtop:bool=True):
     for i in range(len(printlist)):
         line = printlist[i]
         if i > rows and fromtop:
-            while not is_pressed('down'):
-                sleep(0.01)
+            while not _is_pressed('down'):
+                _sleep(0.01)
             print(line)
-            sleep(0.1)
+            _sleep(0.1)
         else:
             print(line)
 
@@ -255,7 +255,7 @@ def addachievement(achname:str) -> None:
     else:
         if not (achname + "/" + achtype) in userach:
             userach.append(achname + "/" + achtype)
-            cprint(f"Completed {achtype.capitalize()} achievement: {achname}", "yellow")
+            _cprint(f"Completed {achtype.capitalize()} achievement: {achname}", "yellow")
 
 def checkachievements() -> None:
     # here we check the check-nessessary achievements, such as the number of commands, times played, etc.
@@ -305,11 +305,11 @@ def checkachievements() -> None:
 
 def listachievements() -> None:
     # when the user wants to see other achievements
-    cprint("\nACHIEVEMENTS", "yellow", attrs=["bold", "underline"])
+    _cprint("\nACHIEVEMENTS", "yellow", attrs=["bold", "underline"])
     for achdict in achievements.keys():
-        cprint(f"{achdict.capitalize()}:", attrs=["bold"])
+        _cprint(f"{achdict.capitalize()}:", attrs=["bold"])
         for ach in achievements[achdict].keys():
-            cprint(f"    - {ach}: {achievements[achdict][ach][0]}", color=("white" if (ach+"/"+achdict in userach) else "dark_grey"))
+            _cprint(f"    - {ach}: {achievements[achdict][ach][0]}", color=("white" if (ach+"/"+achdict in userach) else "dark_grey"))
 
 def checkusername(user:str) -> bool:    
     x = ''
@@ -433,8 +433,8 @@ def update_stats(user:str) -> None:
         file.writelines(lines)
 
 def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) -> None:
-    cprint(f"{str(user).capitalize()}'s Stats:", "green", attrs=["bold"])
-    cprint("  Endings:", "red")
+    _cprint(f"{str(user).capitalize()}'s Stats:", "green", attrs=["bold"])
+    _cprint("  Endings:", "red")
     # converts the list into a dictionary
     endingsdict = {}
     foundendings = []
@@ -463,7 +463,7 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
             print(f"      - '{str(item)}' {endingsdict[item][1]} times")
 
     # implement type and story sorting later
-    cprint("  Achievements:", "yellow")
+    _cprint("  Achievements:", "yellow")
     # converts the list into a dictionary
     achdict = {}
     for item in achievements:
@@ -487,13 +487,13 @@ def print_stats(user:str, endings:list, achievements:list, fails:int, wins:int) 
             print(f"      - {str(item).capitalize()}")
     
     # print fails & wins
-    cprint(f"  Fails: ", "red", end="")
+    _cprint(f"  Fails: ", "red", end="")
     print(fails)
-    cprint(f"  Wins: ", "green", end="")
+    _cprint(f"  Wins: ", "green", end="")
     print(wins)
 
 def choice(question:str, outcomes:list, options:list = ['y', 'n'], mountain:(bool | int) = False) -> int:
-    cprint('-----------------------------', attrs=['bold'])
+    _cprint('-----------------------------', attrs=['bold'])
     choice = ''
     numoptions = []
     numtype = False
@@ -535,7 +535,7 @@ def inventory(addItem, amount=1, type="add", toggle:bool = True) -> None:
         while amount != 0:
             inventoryList.append(addItem)
             amount -= 1
-        cprint("You recieved " + str(startamount) + " " + str(addItem) +"(s)", "green")
+        _cprint("You recieved " + str(startamount) + " " + str(addItem) +"(s)", "green")
     else:
         startamount = amount
         while amount != 0:
@@ -546,11 +546,11 @@ def inventory(addItem, amount=1, type="add", toggle:bool = True) -> None:
                 break
             amount -= 1
         if not stop:
-            cprint("You lost " + str(startamount) + " " + str(addItem) +"(s)", "red")
+            _cprint("You lost " + str(startamount) + " " + str(addItem) +"(s)", "red")
 
     if toggle:
         if not inventoryList == []:
-            cprint("\nINVENTORY:", attrs=["bold"])
+            _cprint("\nINVENTORY:", attrs=["bold"])
             found = []
             for item in inventoryList:
                 if item in found:
@@ -559,7 +559,7 @@ def inventory(addItem, amount=1, type="add", toggle:bool = True) -> None:
                     print(f"{inventoryList.count(item)} {item}")
                     found.append(item)
         else:
-            cprint("\nYour inventory is empty.", attrs=["bold"])
+            _cprint("\nYour inventory is empty.", attrs=["bold"])
         print()
 
 def ending(name:str, number:int, story:str, type:str = "fail", alt:bool=False, altname:str="") -> None:
@@ -573,12 +573,12 @@ def ending(name:str, number:int, story:str, type:str = "fail", alt:bool=False, a
         colour = "red"
         fails += 1
     if not alt:
-        cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} '{str(name)}')", colour)
+        _cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} '{str(name)}')", colour)
         endings.append(str(number)+"/"+story+"/"+type)
         addnewending(number, name, story.lower())
     else:
-        cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} Alternative '{str(name)}')", colour)
-        cprint("This is an alternative ending. It will save as the normal ending.\n", "dark_grey")
+        _cprint(f"(Ending {str(number)}/{str(stories[story.lower()])} Alternative '{str(name)}')", colour)
+        _cprint("This is an alternative ending. It will save as the normal ending.\n", "dark_grey")
         endings.append(str(number)+"/"+story+"/"+type)
         addnewending(number, altname, story.lower())
 
@@ -666,7 +666,7 @@ def checkcommand(command:str) -> None:
     command = command.lower()
     real = True
     story = ''
-    danger = colored('(Dangerous)', 'red')
+    danger = _colored('(Dangerous)', 'red')
     if command == "help":
         print(f"""List of commands:
   Help - brings up this list
@@ -682,13 +682,13 @@ def checkcommand(command:str) -> None:
   Credits - shows the credits & project info""")
     elif command == "start":
         print("""STORIES:""")
-        print(colored('1. Amazon Jungle', 'green'))
-        print(colored('2. Space Story', 'blue'))
-        print(colored('3. Time Travel', 'red'))
-        print(colored('4. School', 'yellow'))
-        print(colored('5. Tomb Story', 'magenta'))
-        print(colored('6. Mountain', 'light_grey'))
-        # print(colored('7. Underwater', 'cyan'))
+        print(_colored('1. Amazon Jungle', 'green'))
+        print(_colored('2. Space Story', 'blue'))
+        print(_colored('3. Time Travel', 'red'))
+        print(_colored('4. School', 'yellow'))
+        print(_colored('5. Tomb Story', 'magenta'))
+        print(_colored('6. Mountain', 'light_grey'))
+        # print(_colored('7. Underwater', 'cyan'))
         while True:
             story = input('Please select a story: ')
             if story == 'quit':
@@ -729,7 +729,7 @@ def checkcommand(command:str) -> None:
                 addachievement("Saved")
             elif command == "reset":
                 while True:
-                    confirm = input(colored("Are you sure you want to continue? This will reset ALL of your stats. (y/n) ", "red")).upper()
+                    confirm = input(_colored("Are you sure you want to continue? This will reset ALL of your stats. (y/n) ", "red")).upper()
                     if confirm == "Y":
                         resetstats(user)
                         endings, userach, usercommands, fails, wins = grab_stats(user)
@@ -744,7 +744,7 @@ def checkcommand(command:str) -> None:
                         print("Invalid. Enter 'y' or 'n'")
             elif command == "delete":
                 while True:
-                    confirm = input(colored("Are you sure you want to continue? This will delete your account. (y/n) ", "red")).upper()
+                    confirm = input(_colored("Are you sure you want to continue? This will delete your account. (y/n) ", "red")).upper()
                     if confirm == "Y":
                         deleteuser(user)
                         user = ""
@@ -786,17 +786,17 @@ def checkcommand(command:str) -> None:
             else:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
-        cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
+        _cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
         with open(ins, "r") as file:
             paralist = file.read().split("|")
         print("(shift to skip)")
         songlist = [hope, happy, mystery]
         for i in range(len(paralist)):
-            pygame.mixer.music.load(songlist[i])
-            pygame.mixer.music.play()
+            _pygame.mixer.music.load(songlist[i])
+            _pygame.mixer.music.play()
             slowprint(paralist[i], 0.05, ["bold"], skip=True)
         addachievement("Inspired")
-        pygame.mixer.music.fadeout(1000)
+        _pygame.mixer.music.fadeout(1000)
     elif command == "quit":
         exit()
     elif command == 'updates':
@@ -828,7 +828,7 @@ Story Writers:
 ------------------------------------------------""")
         addachievement("Supporter")
     elif command == "testers":
-        cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
+        _cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
         with open(t, "r") as file:
             for line in file.readlines():
                 print(line.strip("\n"))
@@ -1028,7 +1028,7 @@ def story_amazon_adventure_fix():
                 x = choice("Would you go and face the monster or stay and starve?", ["You go out to face the monster. You would die anyway, so beter die gloriously. Before you can even glimpse the monster, you are devoured. I don't think that was so glorious...", ""], ['face', 'stay'])
                 if x == 0:
                     ending("Not A Glorious Death", 10, "amazon jungle")
-                elif randint(1, 2) == 1:
+                elif _randint(1, 2) == 1:
                     print("You decide against fighting the monster, which stays there for a very long time, leading you into a slow and painful death. Starvation.")
                     ending("Starvation", 9, "amazon jungle")
                 else:
@@ -1410,7 +1410,7 @@ def story_timetravel_6_1():
     if "Bonker" in inventoryList:
         x = choice("Do you want to enter?", ["You enter the room, and see a zombie coming straight for you, quickly pulling out your Bonker, you swing it and hope for the best.", "You leave the room as it is, but when you are about to go, there is a crash and a zombie runs out and catches you... forever."])
         if x == 0:
-            if randint(0,10) == 5:
+            if _randint(0,10) == 5:
                 print("You swing your bonker, but suddenly it backfires onto you, causing you to bonk yourself. You pass out, and the zombies all fall onto you.")
                 addachievement("Bonked")
                 ending("Why did you bonk yourself, stupid?", 41, "time travel")
@@ -1490,17 +1490,17 @@ Because he was yapping for six billion years, that gave you the chance to reach 
                     ending('Mr White gave me a B for Maths...', 6, 'School')
                 elif c == 2:
                     slowprint('Ligma Lord: Well Done...')
-                    sleep(1)
+                    _sleep(1)
                     slowprint('Ligma Lord: I have lost my power to fight... For you have conquered fear itself...')
-                    sleep(1)
+                    _sleep(1)
                     slowprint('Ligma Lord: You are the one worthy of being a hero... Not just for students, but for the world...')
-                    sleep(1)
+                    _sleep(1)
                     slowprint('Ligma Lord: Take that portal over there, it will send you back to Perth Modern...')
-                    sleep(1)
+                    _sleep(1)
                     slowprint('Ligma Lord: I apologise for the Ligma, when you get back everything will be restored, except the ones who have died, not even I can deal with Death...')
-                    sleep(1)
+                    _sleep(1)
                     slowprint("Ligma Lord: I'm sorry...")
-                    sleep(1)
+                    _sleep(1)
                     print('''As the Ligma Lord vanishes, you pick up your school bag, and bow your head in silence, 
 then take a deep breath, and slowly walk towards the brightening portal. 
 You take one last look behind you, to see the platform and clouds turn into a stream of light, 
@@ -1536,7 +1536,7 @@ With a heavy heart, you trudge past Beasley and into Andrews, hoping to find som
     elif c == 1:
         ending('Absolute !^*#@?” Nerds', 9, "school")
     elif c == 2:
-        sleep(1)
+        _sleep(1)
         addachievement('With Great Power Comes Great Responsibility - Confucius (I think)')
         print(f"""You once again, bust open the locked doors and find the place a little creepy without the lights. You quietly walk past some lockers, 
 finding Ligma-ed Students lying down left and right. You have hope that there might be someone who might be a student still here, but there seems to be no sign.  
@@ -1583,14 +1583,14 @@ sinking feeling that you might just be cooked"""], ['1', '2', '3', '4'])
         if c == 0:
             ending('First Person to Move is Ga-', 10, 'School')
         elif c == 2:
-            m = randint(1,3)
+            m = _randint(1,3)
             if m == 1:
-                pygame.mixer.music.load(wii_shop)
+                _pygame.mixer.music.load(wii_shop)
             elif m == 2:
-                pygame.mixer.music.load(wii_music)
+                _pygame.mixer.music.load(wii_music)
             elif m == 3:
-                pygame.mixer.music.load(wii_sports)
-            pygame.mixer.music.play()
+                _pygame.mixer.music.load(wii_sports)
+            _pygame.mixer.music.play()
             print("""You unleash First Form: Brainrot Banishment, which he easily deflects using advanced calculus. He decides to skip all the plot build-up 
 and go straight for his almighty Seven Sinful Solutions, which creates a giant blackhole that turns the building 
 into rubble, as your limbs get pulled apart by the intense gravity. """)
@@ -1670,9 +1670,9 @@ who has caught the attention of Ligma Lord, who is levitating (because he’s ju
 You yell at Wingsley to run, as you use Fourth Form: Lighting Fast Leap to get in front of Wingsley just as the Ligma Lord shoots out a ray of Pure Ligma. 
 You feel the burn slice through your veins, but you have done enough for Wingsley to be unharmed. You feel your head get dizzy, and then the lights go out, 
 as you are stirred by the call of Ligma. """)
-                        sleep(2)
+                        _sleep(2)
                         slowprint('Wingsley Kong POV', 0.1, ['bold'], 'red')
-                        sleep(1)
+                        _sleep(1)
                         print(f"""You are in shock. 
 
 Your friend {user.title()} has just sacrificed themselves for you. That wasn’t supposed to happen. {user.title()} was the best of the Counter-Ligma users, 
@@ -1730,7 +1730,7 @@ you wisely use the time to hold out the Ninja and heal {user.title()}."""], ['A'
                                
 def story_school_3():
     slowprint(f'POV: {user.title()}', 0.05, ['bold'], 'blue', 1, True, 'space')
-    sleep(2)
+    _sleep(2)
     print("""You awake to find yourself in a train station. No one else is around you, apart from an old homeless man. 
 You slowly walk up to him, and ask “Hey, why is there no one around?”.  
 
@@ -1820,7 +1820,7 @@ black energy. Calmly, you reach into your bag and pull out your final choice of 
 The Ligma Lord, with blood trickling down his face, does his stupid laugh again. 
 
 “It’s over, {user}. I have the high ground advantage, and I always will.”""")
-            sleep(3)
+            _sleep(3)
             print("""As he launches the magic, the students around you cry in warning, but your 14-year-old senses kick in, 
 and you spin around, and PULL OUT THE UNO REVERSE CARD!!!!! 
 
@@ -1970,7 +1970,7 @@ def story_mountain():
     def end():
         print(f'Thanks for playing!')
 
-    cprint('Every choice you have to make, you only have 7 seconds to answer, to simulate being at Mount Everest. However, if you can make better decisions, you may have longer. Make your decisions quick!', 'blue')
+    _cprint('Every choice you have to make, you only have 7 seconds to answer, to simulate being at Mount Everest. However, if you can make better decisions, you may have longer. Make your decisions quick!', 'blue')
     print()
     friend = ''
     altitude = 5364
@@ -2021,7 +2021,7 @@ Pat: Your loyal uber delivery man. A not-so-chill-but-chill guy who is built lik
             end()
             return
         print('After getting back to the base camp, you are ready to embark on your new journey.')
-        sleep(1)
+        _sleep(1)
 
 
 
@@ -2053,9 +2053,9 @@ Do you ask him about his strength?""", ['', ''], ['y', 'n'], mountain = time)
         end()
         return
     #all friends are here
-    sleep(1)
+    _sleep(1)
     print(f'Your altitude is: {altitude}m.')
-    sleep(0.5)
+    _sleep(0.5)
     print(f'As you start climbing on your way to Mount Everest, you encounter the Everest Camp 2 at an altitude of 6400m.')
     altitude = 6400
     a1 = choice(f'You realize that you\'re not hungry, but that {friend} is. At Everest Camp 2, there are some food options, but you yourself are not hungry. Do you eat or continue journeying?', outcomes=['', ''], options=['Eat', 'Journey'], mountain=time)
@@ -2095,7 +2095,7 @@ What do you eat?
             return
         elif d1 == 1:
             print('You convince Derek to power on, taking more time to slowly walk through the mountain. You now only have 2 seconds to make your decisions.')
-            sleep(1)
+            _sleep(1)
             time = 2
         elif d1 == -1:
             end()
@@ -2103,11 +2103,11 @@ What do you eat?
     elif friend == 'William':
         print('William, the most experienced mountain-climber you know, isn\'t scared as much as you are, about the increasingly countless amount of dead bodies on the snowy surface.')
         w1 = choice(f'You see a body on the floor, but supposedly alive. Having seeing this, do you go and help the maybe dead climber? ', ['Out of compassion, you go to check on the climber.', 'You shrug it off, likely knowing that they are dead.'], mountain=time)
-        dead = randint(1, 2)
+        dead = _randint(1, 2)
         if w1 == 0:
             print('William leaves you behind, as he has experience and has encountered this before, once looking at a dead climber.')
             print('You give the climber some of your own oxygen, in the hopes that he will awaken...')
-            sleep(2)
+            _sleep(2)
             if dead == 1:
                 print('Unfortunately, the climber is dead, and you waste your remaining oxygen.')
                 ending('Too compassionate...', 6, story='Mountain')
@@ -2133,13 +2133,13 @@ What do you eat?
     a2 = choice(f'The sheer size of The Snowman scares you and {friend}. Do you stay still, fight, or run away?', outcomes=['Staying still, nothing happens...yet.', 'Where\'s Pat?', ''], options=['Stay still', 'Fight', 'Run away'], mountain=time)
     if a2 == 0:
         print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
-        sleep(1)
+        _sleep(1)
         print(f'The ground finally gives way, as you, {friend} and the Snowman falls to death.')
         ending("Well, now he is dead.", 9, story='Mountain')
         end()
         return
     elif a2 == 1 and friend == 'Pat':
-        scared = randint(1, 2)
+        scared = _randint(1, 2)
         if scared == 1:
             print('You call Pat, and find that he is no where to be seen, hiding away somewhere. Although he works out, he is a bit scared by the Abominable One.')
             ending('Where did he go?', 10, story='Mountain')
