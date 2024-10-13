@@ -92,17 +92,19 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
-def B64Encode(s:str) -> str:
-    sample_string_bytes = s.encode("ascii")
-    base64_bytes = _base64.b64encode(sample_string_bytes)
-    base64_string = base64_bytes.decode("ascii")
-    return base64_string
+def Encode(data:str, key:str) -> str:
+    # Change this to whatever encoding function
+    encoded = ""
+    for i in range(len(data)):
+        encoded += chr((ord(data[i]) + ord(key[i % len(key)])) % 256)
+    return encoded
 
-def B64Decode(s:str) -> str:
-    base64_bytes = s.encode("ascii")
-    sample_string_bytes = _base64.b64decode(base64_bytes)
-    sample_string = sample_string_bytes.decode("ascii")
-    return sample_string
+def Decode(data:str, key:str) -> str:
+    # Change this to whatever decoding function
+    decoded = ""
+    for i in range(len(data)):
+        decoded += chr((ord(data[i]) - ord(key[i % len(key)])) % 256)
+    return decoded
 
 def SlowPrint(str:str, speed:float=0.05, attr:list=[], c='white', wait=3, skip=True, key:str = 'shift') -> None:
     start = 0
