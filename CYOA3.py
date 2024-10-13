@@ -13,7 +13,6 @@ from time import sleep
 from achievements import achievements
 import pygame
 from keyboard import is_pressed
-from inputimeout import inputimeout
 from os import getcwd, get_terminal_size
 import base64
 
