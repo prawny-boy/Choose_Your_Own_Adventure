@@ -149,9 +149,6 @@ def BetterPrint(text: str, fromtop:bool=True):
         else:
             print(line)
 
-def get_color_escape(r, g, b, background=False) -> str:
-    return '\033[{};2;{};{};{}m'.format(48 if background else 38, r, g, b)
-
 def user_system() -> str:
     done = False
     # where we ask for username and save, get stats etc.
