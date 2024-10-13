@@ -36,12 +36,21 @@ colour1_bright_pink_crayola = (249, 98, 125)
 colour1_blush = (198, 91, 124)
 colour1_violet_jtc = (91, 55, 88)
 
+try:
+    _ =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
+    file_path_type = "Choose_Your_Own_Adventure/"
+except:
+    file_path_type = ""
+
+def pConvertFileName(filepath:str):
+    return file_path_type + filepath
+
 # Fonts
 ## Poppins
-font_poppins =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
-font_poppins_bold =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 48)
-font_poppins_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 12)
-font_poppins_bold_small =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsBold.ttf", 18)
+font_poppins =  pygame.font.Font(pConvertFileName("Pygame/Fonts/PoppinsRegular.ttf"), 32)
+font_poppins_bold =  pygame.font.Font(pConvertFileName("Pygame/Fonts/PoppinsBold.ttf"), 48)
+font_poppins_small =  pygame.font.Font(pConvertFileName("Pygame/Fonts/PoppinsRegular.ttf"), 12)
+font_poppins_bold_small =  pygame.font.Font(pConvertFileName("Pygame/Fonts/PoppinsBold.ttf"), 18)
     # POPPINS FONT CREDITS
         # Poppins
         # Designed by Indian Type Foundry, Jonny Pinhorn, Ninad Kale 
@@ -51,6 +60,7 @@ game_state = "main_menu" # The game state, which is for choosing which screen to
 frame_rate = 30 # The frame rate of the game, recommended to be 30
 button_cooldown = 500 # The cooldown of the button, in miliseconds, which makes a cooldown for the button after it is pressed
 button_cooldown_end = 0 # The cooldown end of the button, keep this at zero, unless you want to make a cooldown at the start of the game
+current_page = 0 # current page of create_multiple_buttons. keep at zero
 
 # CLASSES ------------------------------------------------------------------------------------------------------
 
@@ -69,7 +79,7 @@ def pygame_quit():
     sys.exit()
 
 # Display text on the screen
-def draw_text(text, x, y, colour=colour_black, font=font_poppins):
+def draw_text(text, x, y, colour=colour_black, font=font_poppins, line_spacing=5):
     """
     Draw text on the screen.
 
@@ -97,6 +107,15 @@ def draw_text(text, x, y, colour=colour_black, font=font_poppins):
         text_surface = font_poppins.render(text, True, colour)
     text_rect = text_surface.get_rect(topleft=(x, y))
     screen.blit(text_surface, text_rect)
+
+    # Split text into lines at newline characters
+    lines = text.split('\n')
+    
+    for line in lines:
+        text_surface = font.render(line, True, colour)
+        text_rect = text_surface.get_rect(topleft=(x, y))
+        screen.blit(text_surface, text_rect)
+        y += text_surface.get_height() + line_spacing  # Move down for the next line
 
 # Create buttons for choices
 def create_button(x=10, y=120, w=200, h=75, 
@@ -162,7 +181,10 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
                             x_offset=0, y_offset=0, 
                             heading_text_colour=colour_black, heading_text_font=font_poppins_bold_small, 
                             body_text_colour=colour_black, body_text_font=font_poppins_small, 
-                            button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
+                            button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola,
+                            pages=False, next_page_button_settings=(530, 10, 250, 60, 5, "Next", colour_black, font_poppins_bold_small, "Next page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola), 
+                            previous_page_button_settings=(10, 10, 250, 60, 5, "Previous", colour_black, font_poppins_bold_small, "Previous page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola), 
+                            select_page_button_settings=(10, 530, 250, 60, 5, "Select", colour_black, font_poppins_bold_small, "Select option", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola)):
     
     """
     Create multiple buttons with headings and subheadings.
@@ -197,28 +219,71 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
         The colour of the button. Default is melon.
     hover_colour : tuple, optional
         The colour of the button when hovered over. Default is bright pink crayola.
+    pages : bool, optional
+        Whether there are multiple pages of buttons. Default is False.
+    next_page_button_settings : tuple, optional
+        Contains the settings for next page button. In order of (x, y, w, h, text_padding, heading_text, heading_text_colour, heading_text_font, body_text, body_text_offset, body_text_colour, body_text_font, button_colour, hover_colour). Default is (530, 10, 250, 60, 5, "Next", colour_black, font_poppins_bold_small, "Next page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola).
+    previous_page_button_settings : tuple, optional
+        Contains the settings for previous page button. Same order as next_page_button_settings. Default is (10, 10, 250, 60, 5, "Previous", colour_black, font_poppins_bold_small, "Previous page/question", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola).
+    select_page_button_settings : tuple, optional
+        Contains the settings for select option button. Same order as next_page_button_settings. Default is (10, 530, 250, 60, 5, "Select", colour_black, font_poppins_bold_small, "Select option", 30, colour_black, font_poppins_small, colour1_melon, colour1_bright_pink_crayola)).
 
     Returns
     -------
     int
-        The index (starting from 1) of the button that was clicked, or -1 if no button was clicked.
+        The index (starting from 1) of the button that was clicked.
+    bool
+        False if no button is clicked.
     """
 
-    global button_cooldown_end
-    for index, (heading_text, body_text) in enumerate(button_text_list):
-        # Calculate position for each button based on index and offsets
-        button_x = x + index * x_offset # Start from x and add index * x_offset
-        button_y = y + index * y_offset # Start from y and add index * y_offset
-        
-        # Call create_button function for each button
-        clicked = create_button(button_x, button_y, w, h, 
-                                text_padding=text_padding,
-                                heading_text=heading_text, heading_text_colour=heading_text_colour, heading_text_font=heading_text_font,
-                                body_text=body_text, body_text_offset=30, body_text_colour=body_text_colour, body_text_font=body_text_font,
-                                button_colour=button_colour, hover_colour=hover_colour)
-        
-        if clicked:
-            return index + 1 # Return the index (starting from 1) of the clicked button
+    global button_cooldown_end, current_page
+    if pages == False:
+        for index, (heading_text, body_text) in enumerate(button_text_list):
+            # Calculate position for each button based on index and offsets
+            button_x = x + index * x_offset # Start from x and add index * x_offset
+            button_y = y + index * y_offset # Start from y and add index * y_offset
+            
+            # Call create_button function for each button
+            clicked = create_button(button_x, button_y, w, h, 
+                                    text_padding=text_padding,
+                                    heading_text=heading_text, heading_text_colour=heading_text_colour, heading_text_font=heading_text_font,
+                                    body_text=body_text, body_text_offset=30, body_text_colour=body_text_colour, body_text_font=body_text_font,
+                                    button_colour=button_colour, hover_colour=hover_colour)
+            
+            if clicked:
+                return index + 1 # Return the index (starting from 1) of the clicked button
+    
+    elif pages == True:
+        page_amount = len(button_text_list)
+
+        if current_page != page_amount - 1: # If not on the last page
+            # Next button
+            next_button_clicked = create_button(*next_page_button_settings)
+        else: next_button_clicked = False
+
+        if current_page != 0: # If not on the first page
+            # Previous button
+            previous_button_clicked = create_button(*previous_page_button_settings)
+        else: previous_button_clicked = False
+
+        if current_page == 0: # Question page
+            display_heading(title=button_text_list[0][0], title_colour=heading_text_colour, title_pos=(x, y), title_font=heading_text_font,
+                            subtext=button_text_list[0][1], subtext_colour=body_text_colour, subtext_pos=(x, y+y_offset), subtext_font=body_text_font)
+        else: # Choices page
+            display_heading(title=button_text_list[current_page][0], title_colour=heading_text_colour, title_pos=(x, y), title_font=heading_text_font, 
+                            subtext=button_text_list[current_page][1], subtext_colour=body_text_colour, subtext_pos=(x, y+y_offset), subtext_font=body_text_font)
+            
+            clicked = create_button(*select_page_button_settings)
+
+            if clicked:
+                return_page = current_page # Make a copy of the current page, to return
+                current_page = 0 # Reset current page, for the next time this function is used
+                return return_page # Return the index (starting from 1) of the clicked button
+
+        if next_button_clicked and current_page < page_amount - 1: current_page += 1
+
+        if previous_button_clicked and current_page > 0: current_page -= 1
+    
     return False  # Return False if no button was clicked
 
 # Display heading function
@@ -289,11 +354,50 @@ while True:
     elif game_state == "multi buttons":
         screen.fill(colour_black) # clear the display
 
+        sample_text = """
+    Create a button for choices in the game.
+
+    Parameters
+    ----------
+    x : int
+        The x-coordinate of the button.
+    y : int
+        The y-coordinate of the button.
+    w : int
+        The width of the button.
+    h : int
+        The height of the button.
+    heading_text : str, optional
+        The heading text of the button. Default is "Button".
+    heading_text_colour : tuple, optional
+        The colour of the heading text. Default is black.
+    heading_text_font : pygame.font.Font, optional
+        The font of the heading text. Default is font_poppins_bold_small.
+    body_text : str, optional
+        The body text of the button. Default is "Body text".
+    body_text_offset : int, optional
+        The offset of the body text from the top of the button. Default is 30.
+    body_text_colour : tuple, optional
+        The colour of the body text. Default is black.
+    body_text_font : pygame.font.Font, optional
+        The font of the body text. Default is font_poppins_small.
+    button_colour : tuple, optional
+        The colour of the button. Default is melon.
+    hover_colour : tuple, optional
+        The colour of the button when hovered over. Default is bright pink crayola.
+
+    Returns
+    -------
+    bool
+        True if the button is clicked, False otherwise.
+    """
+    
+
         # Example button list
-        button_texts = [("Start", "Begin your adventure"), ("Menu", "Go to the main menu"), ("Exit", "Quit the game")]
+        button_texts = [("Question", "Testing pages"), ("Start", "Begin your adventure"), ("Menu", "Go to the main menu"), ("Exit", "Exit the game"), ("Testing", sample_text)]
 
         # Inside the game loop
-        clicked_button = create_multiple_buttons(button_text_list=button_texts, x=10, y=10, w=600, h=75, x_offset=0, y_offset=120)
+        clicked_button = create_multiple_buttons(button_text_list=button_texts, pages=True, x=10, y=70, y_offset=30, heading_text_colour=colour_white, body_text_colour=colour_white)
         
         if clicked_button == 1:
             game_state = "story"
