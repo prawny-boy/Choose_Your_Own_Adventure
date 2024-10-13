@@ -49,3 +49,9 @@ Finished Easter Egg (Long)
 Added Ending functions across all stories with achievements also
 Added saving, deleting, resetting and printing of stats with colour and sorting (for achievements)
 Added more to some stories
+
+----------Update 2.4----------
+Finished School, Time travel and mountain story
+Fixed some bugs with accounts when signing in/out
+Added switch command to switch accounts with saving
+Beta version finished, release 6th October
