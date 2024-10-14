@@ -83,6 +83,7 @@ collections = {
     "levi": ['mountain'],
     "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
 }
+endingfilekeyname = "e"
 
 # Stat Variables
 user = ""
@@ -230,10 +231,10 @@ def ResetStats(user:str) -> None:
 def ResetEndingFile() -> None:
     resetlines = ""
     for story in stories.keys():
-        resetlines += str(story) + ":" + (stories[story]-1) * "|" + "\n"
-    with open(e, "w") as file:
+        resetlines += Encode(str(story) + ":" + (stories[story]-1) * "|", endingfilekeyname) + "\n"
+    with open(e, "w", encoding="utf-8") as file:
         file.writelines(resetlines)
-
+ResetEndingFile()
 def DeleteUser(user:str) -> None:
     # here we edit the stats file and reset everything
     with open(s, 'r') as file:
@@ -594,32 +595,33 @@ def Ending(name:str, number:int, story:str, type:str = "fail", alt:bool=False, a
 
 def AddNewEnding(ending_num:int, ending_name:str, story:str) -> None:
     # if the name doesnt exist yet, add it.
-    with open(e, 'r') as file:
+    with open(e, 'r', encoding="utf-8") as file:
         lines = file.readlines()
 
     i = 0
     for line in lines:
+        line = Decode(line.strip("\n"), endingfilekeyname)
         if story in line:
-            line = line.strip("\n").split(":")
+            line = line.split(":")
             linelist = line[1].split("|")
             if linelist[ending_num-1] == ending_name:
                 pass
             else:
                 # add ending to file
                 linelist[ending_num-1] = ending_name
-                line = str(line[0]) + ":" + "|".join(linelist)
+                line = Encode(str(line[0]) + ":" + "|".join(linelist), endingfilekeyname)
                 lines[i] = line + "\n"
         i += 1
     
-    with open(e, 'w') as file:
+    with open(e, 'w', encoding="utf-8") as file:
         file.writelines(lines)
 
 def GetEndingName(ending_num:int, story:str) -> str:
-    with open(e, "r") as file:
+    with open(e, "r", encoding="utf-8") as file:
         lines = file.readlines()
     for line in lines:
+        line = Decode(line.strip("\n"), endingfilekeyname)
         if story.lower() in line:
-            line = line.strip()
             storyendings = line.split(":")[1].split("|")
             return storyendings[ending_num-1]
     return "Error, story invalid."
