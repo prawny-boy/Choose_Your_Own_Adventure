@@ -1,20 +1,70 @@
+# Built-in modules
+from __future__ import print_function
+from subprocess import call
 import sys as _sys
 _sys.dont_write_bytecode = True # makes sure _pycache_ is not created
-from moduleInstall import installIfNeeded
+from random import randint as _randint
+from time import sleep as _sleep
+from os import getcwd as _getcwd, get_terminal_size as _get_terminal_size
+import base64 as _base64
 from datetime import datetime as _datetime
+
+# Functions for installing pip modules
+def installPip(log=print):
+    """
+    Pip is the standard package manager for Python. Starting with Python 3.4
+    it's included in the default installation, but older versions may need to
+    download and install it. This code should pretty cleanly do just that.
+    """
+    log("Installing pip, the standard Python Package Manager, first")
+    from os     import remove
+    from urllib import urlretrieve
+    urlretrieve("https://bootstrap.pypa.io/get-pip.py", "get-pip.py")
+    call(["python", "get-pip.py"])
+
+    # Clean up now...
+    remove("get-pip.py")
+
+def getPip(log=print):
+    """
+    Pip is the standard package manager for Python.
+    This returns the path to the pip executable, installing it if necessary.
+    """
+    from os.path import isfile, join
+    from sys     import prefix
+    # Generate the path to where pip is or will be installed... this has been
+    # tested and works on Windows, but will likely need tweaking for other OS's.
+    # On OS X, I seem to have pip at /usr/local/bin/pip?
+    pipPath = join(prefix, 'Scripts', 'pip.exe')
+
+    # Check if pip is installed, and install it if it isn't.
+    if not isfile(pipPath):
+        installPip(log)
+        if not isfile(pipPath):
+            raise("Failed to find or install pip!")
+    return pipPath
+
+def installIfNeeded(moduleName, nameOnPip=None, notes="", log=print):
+    """ Installs a Python library using pip, if it isn't already installed. """
+    from pkgutil import iter_modules
+
+    # Check if the module is installed
+    if moduleName not in [tuple_[1] for tuple_ in iter_modules()]:
+        log("Installing " + moduleName + notes + " Library for Python")
+        call([getPip(log), "install", nameOnPip if nameOnPip else moduleName])
+
 def log(message):
     print(_datetime.now().strftime("%a %b %d %H:%M:%S") + " - " + str(message))
+
+# Install pip modules if needed
 installIfNeeded("termcolor", "termcolor", log = log)
 installIfNeeded("keyboard", "keyboard", log = log)
 installIfNeeded("pygame", "pygame", log = log)
+
+# Importing pip modules
 from termcolor import cprint as _cprint, colored as _colored
-from random import randint as _randint
-from time import sleep as _sleep
-from achievements import achievements
 import pygame as _pygame
 from keyboard import is_pressed as _is_pressed
-from os import getcwd as _getcwd, get_terminal_size as _get_terminal_size
-import base64 as _base64
 
 # Initialisations
 _pygame.mixer.init()
@@ -47,17 +97,14 @@ def ConvertFileName(filepath:str): # use windows filepath e.g. "Constants\\stats
 # Files
 s = ConvertFileName('Constants\\stats.txt')
 e = ConvertFileName('Constants\\allendings.txt')
-u = ConvertFileName('Constants\\updates.txt')
-t = ConvertFileName('Constants\\testers.txt')
-ins = ConvertFileName('Constants\\inspirational.txt')
 
 # Songs
-happy = ConvertFileName('Songs\\Happy.mp3')
-hope = ConvertFileName('Songs\\Hope.mp3')
-mystery = ConvertFileName('Songs\\Mystery.mp3')
-wii_music = ConvertFileName('Songs\\Wii-Music.mp3')
-wii_sports = ConvertFileName('Songs\\Wii-Sports.mp3')
-wii_shop = ConvertFileName('Songs\\Wii-Shop.mp3')
+happy = ConvertFileName('Resources\\Songs\\Happy.mp3')
+hope = ConvertFileName('Resources\\Songs\\Hope.mp3')
+mystery = ConvertFileName('Resources\\Songs\\Mystery.mp3')
+wii_music = ConvertFileName('Resources\\Songs\\Wii-Music.mp3')
+wii_sports = ConvertFileName('Resources\\Songs\\Wii-Sports.mp3')
+wii_shop = ConvertFileName('Resources\\Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
@@ -84,6 +131,220 @@ collections = {
     "allplays": ["tomb", "amazon jungle", "space story", 'time travel', 'school', 'mountain']
 }
 endingfilekeyname = "e"
+updates = """----------Update 1.0----------
+Added first story: African Jungle
+Basic Functions
+  - If statements for story with input
+              
+----------Update 1.1----------
+Added new functions and commands
+  - Inventory
+  - Readanswer
+  - Commands (readcommand)
+              
+----------Update 2.0----------
+New updated readanswer function: choice
+*Old story african jungle has not been changed to use new choice function*
+Better inventory with printing of inventory (toggleable)
+Aesthetics:
+  - Nicer printing
+  - Cleaner Code
+Game rename to CYOA
+New story
+  - Space Story (Uncomplete)
+  
+----------Update 2.0.1----------
+Added credits
+  - Version Number
+  - Logo Design
+  - Testers
+
+----------Update 2.1----------
+changed 'african jungle' to 'amazon adventure'
+Coverted amazon adventure to use choice function
+Fixed bugs in choice and inventory functions
+Removed timeout
+Started on a user interface that gets username and saves stats
+
+----------Update 2.2----------
+Adding Time Travel, Tomb story and School
+Added saving, deleting, resetting and printing of stats with colour and sorting (for endings only)
+Changed deaths to fails
+More commands
+
+----------Update 2.3----------
+Changed "amazon adventure" to "amazon jungle"
+Added achievements with saving
+    Story Achievements
+    Special and Easter Egg Achievements
+    Command Achievements
+Finished Easter Egg (Long)
+Added Ending functions across all stories with achievements also
+Added saving, deleting, resetting and printing of stats with colour and sorting (for achievements)
+Added more to some stories
+
+----------Update 2.4----------
+Finished School, Time travel and mountain story
+Fixed some bugs with accounts when signing in/out
+Added switch command to switch accounts with saving
+Beta version finished, release 6th October"""
+testers = """Nelson Yan
+Jaden Li
+Matthew Lee
+Ethan Wei
+Kingsley Wong
+Mr Perling
+Dylan Chauhan
+Krish Chauhan
+Aaron Zhang
+Choon Kai Wee
+Harry Cassidy
+If you want to be a tester, join the discord in the README.md file"""
+inspirational = ["""
+                 In a cold and windy night, a person came up with an adventurous idea.
+That person was Sean. 
+That person came up with the idea of making a python game.
+Without help, he worked day and night to produce a small but promising game.
+A individual company was formed: S corporation
+Choose Your Own Adventure (1.0, Alpha)""", 
+"""After a bit, Sean gave up on the project. 
+It was not until another person joined a year later that he resumes progress.
+That person was Oliver. 
+Another person had joined the company, updating the name to SO corporation.
+Both Sean and Oliver worked hard to produce another better version.
+Oliver contributed with blood, sweat and tears.
+CYOA (2.0, Beta)""", 
+"""Well, well, another person joined.
+Someone called Levi, who still doesn't understand the code.
+He works in the back of the code, doing his own thing.
+He is working hard, we know that, but...
+I don't know what he is doing, but I know that it is something to do with CYOA (3.0)
+Well, our story ends here... for now.
+"""]
+
+
+    # Amazon Jungle
+
+class achievementdicts:
+    # Amazon
+    amazon = {
+        'Keep the Gem': ['Finish the story still with a gem in your inventory'],
+        'Pilot Buddy': ['Win the story with the pilot still with you'],
+        'Die of Boredom': ['Get the ending: Died of Boredom'],
+        'Bad Choices [Amazon Jungle]': ['Get the ending: Bad choices'],
+        "Escape of the Jungle": ['Win Amazon Jungle'],
+        'Again?!': ['Get the ending: Crashed again'],
+        # Standard Achievements
+        'Beginner Jungle': ['Play this story 1 time', 'amazon jungle.play-1'],
+        'Intermediate Jungle': ['Play this story 10 times', 'amazon jungle.play-10'],
+        'Advanced Jungle': ['Play this story 50 times', 'amazon jungle.play-50'],
+        'All Endings [Amazon Jungle]': ["Get all the endings in Amazon Jungle", 'amazon jungle.allendings-1'],
+    }
+    
+    # Space Story
+    space = {
+        "Bob the Alien": ['Die to Bob the Alien'],
+        "How did we get back?": ["Win Space Story"],
+        "Hubble Space Skill Issue": ['Die to the Hubble Space Telescope'], 
+        "Flamed": ['Die to Fire'],
+        # Standard Achievements
+        'Beginner space': ['Play this story 1 time', 'space story.play-1'],
+        'Intermediate space': ['Play this story 10 times', 'space story.play-10'],
+        'Advanced space': ['Play this story 50 times', 'space story.play-50'],
+        'All Endings [Space Story]': ["Get all the endings in Space Story", 'space story.allendings-1'],
+    }
+
+    # Time Travel
+    time = {
+        "Lumberjacked": ["Get your head chopped off by an axe."],
+        'Bonker': ["Use The Bonker"],
+        'Bonked': ["Get Bonked by the Bonker"],
+        'Bad Choices [Time Travel]': ["Get the ending: bad choices"],
+        "Back to reality": ["Win Time Travel"],
+        "Finding Gold": ["Find gold"],
+        "The Future is Bright": ["Save the future and win"],
+        # Standard Achievements
+        'Time Traveller': ['Play this story 1 time', 'time travel.play-1'],
+        'Better Time Traveller': ['Play this story 10 times', 'time travel.play-10'],
+        'Doctor Who': ['Play this story 50 times', 'time travel.play-50'],
+        'All Endings [Time Travel]': ["Get all the endings in Time Travel", 'time travel.allendings-1'],
+    }
+
+    # School
+    school = {
+        'LIGMA BALLS': ['Die to LIGMA'],
+        'Godslayer': ['Fight a god with your school bag'],
+        'Ligma Master': ["Win School"],
+        'With Great Power Comes Great Responsibility - Confucius (I think)': ["Get Power in school"],
+        'Luffy, that\'s not the real One Piece… that\'s Wingsley\'s pocket money.': ['Find the One Piece'],
+        # Standard Achievements
+        'Year 7': ['Play this story 1 time', 'school.play-1'],
+        'Year 9': ['Play this story 10 times', 'school.play-10'],
+        'Year 11': ['Play this story 50 times', 'school.play-50'],
+        'Graduated': ["Get all the endings in School", 'school.allendings-1'],
+    }
+
+    # Tombs
+    tomb = {
+        'I Want My Mummy!': ['Die to a Mummy'],
+        'The Rich': ['Win Tutankhamun\'s Tomb'],
+        'Killed by [Anubis]': ['Die to Anubis'],
+        # Standard Achievements
+        'Explorer': ['Play this story 1 time', 'tomb.play-1'],
+        'Excavator': ['Play this story 10 times', 'tomb.play-10'],
+        'Mummy Master': ['Play this story 50 times', 'tomb.play-50'],
+        'All Endings [Tutankhamun\'s Tomb]': ["Get all the endings in Tutankhamun's Tomb", 'tomb.allendings-1'],
+    }
+
+    # Mountain
+    mountain = {
+        'Yeti Man': ['Find the Abominable Snowman'],
+        # Standard Achievements
+        'Rock Climber': ['Play this story 1 time', 'mountain.play-1'],
+        'Hiker': ['Play this story 10 times', 'mountain.play-10'],
+        'Alpinist': ['Play this story 50 times', 'mountain.play-50'],
+        'All Endings [Mountain]': ['Get all endings in Mountain', 'mountain.allendings-1'],
+    }
+
+    # All stories
+    allstories = {
+        "Oliver's Collection": ['Play all stories written by Oliver', 'stories.oliver-1'],
+        "Sean's Collection": ['Play all stories written by Sean', 'stories.sean-1'],
+        "Levi's Collection": ['Play all stories written by Levi', 'stories.levi-1'],
+        "Newbie": ["Play 1 time", "stories.totalplays-1"],
+        "Good": ["Play 10 times", "stories.totalplays-10"],
+        "Pro": ["Play 100 times", "stories.totalplays-100"],
+        "Hacker": ["Play 1000 times", "stories.totalplays-1000"],
+        "Taster": ["Play all the stories at least once.", "stories.allplays-1"],
+    }
+
+    # Special
+    special = {
+    # Easter Egg
+    "The Long Egg": ["Find the longest Easter Egg in the game."],
+    # Commands
+    "Supporter": ["Use the credits command"],
+    "Saved": ["Save your progress"],
+    "Technician": ["Look at the updates"],
+    "Inspired": ["See the inspirational story"],
+    "First Command": ["Use 1 Command", "commands.amount-1"],
+    "Command User": ["Use 10 Commands", "commands.amount-10"],
+    "God of Commands": ["Use 100 Commands", "commands.amount-100"],
+    "Command Master": ["Use all types of commands", "commands.allcommands-1"],
+    # Others
+}
+
+# List of all achievements
+achievements = { #name: [description, code (Only if neccesary)]
+        "amazon jungle": achievementdicts.amazon,
+        "space story": achievementdicts.space,
+        "time travel": achievementdicts.time,
+        "school": achievementdicts.school,
+        "tomb": achievementdicts.tomb,
+        "mountain": achievementdicts.mountain,
+        "all stories": achievementdicts.allstories,
+        "special": achievementdicts.special,
+    }
 
 # Stat Variables
 user = ""
@@ -234,7 +495,7 @@ def ResetEndingFile() -> None:
         resetlines += Encode(str(story) + ":" + (stories[story]-1) * "|", endingfilekeyname) + "\n"
     with open(e, "w", encoding="utf-8") as file:
         file.writelines(resetlines)
-ResetEndingFile()
+
 def DeleteUser(user:str) -> None:
     # here we edit the stats file and reset everything
     with open(s, 'r') as file:
@@ -799,21 +1060,18 @@ def CheckCommand(command:str) -> None:
                 print("Invalid. Enter 'y' or 'n'")
     elif command == "inspiration":
         _cprint("Inpirational Story", "yellow", attrs=["bold", "underline"])
-        with open(ins, "r") as file:
-            paralist = file.read().split("|")
         print("(shift to skip)")
         songlist = [hope, happy, mystery]
-        for i in range(len(paralist)):
+        for i in range(len(inspirational)):
             _pygame.mixer.music.load(songlist[i])
             _pygame.mixer.music.play()
-            SlowPrint(paralist[i], 0.05, ["bold"], skip=True)
+            SlowPrint(inspirational[i], 0.05, ["bold"], skip=True)
         AddAchievement("Inspired")
         _pygame.mixer.music.fadeout(1000)
     elif command == "quit":
         exit()
     elif command == 'updates':
-        with open(u, "r") as file:
-            print(file.read())
+        print(updates)
         AddAchievement("Technician")
     elif command == 'credits':
         print("""
@@ -841,9 +1099,7 @@ Story Writers:
         AddAchievement("Supporter")
     elif command == "testers":
         _cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
-        with open(t, "r") as file:
-            for line in file.readlines():
-                print(line.strip("\n"))
+        print(testers)
     elif command == "198234":
         win = False
         answer = input("Question 1/5: How many times did you have to click in the second game to win? ").strip()
