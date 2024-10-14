@@ -6,6 +6,7 @@
 
 **1.2 Story function**
 1.2.1 Utilises 1.1 to print to the screen
+1.2.2 Should be like the previous choice function, list array mapping
 
 **1.3 Inventory**
 1.3 Global Inventory
@@ -22,7 +23,9 @@
 2.2 Should save all the users
 2.3 Give an option to delete user, create new user, reset progress
 
-**3. Post-Game**
+**3. Display, Pygame**
+3.1 Use pygame
+**4. Post-Game**
 3.1 Two Player mode
 3.1.1 Co-op
 3.1.2 VS
