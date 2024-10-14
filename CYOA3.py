@@ -99,12 +99,12 @@ s = ConvertFileName('Constants\\stats.txt')
 e = ConvertFileName('Constants\\allendings.txt')
 
 # Songs
-happy = ConvertFileName('Songs\\Happy.mp3')
-hope = ConvertFileName('Songs\\Hope.mp3')
-mystery = ConvertFileName('Songs\\Mystery.mp3')
-wii_music = ConvertFileName('Songs\\Wii-Music.mp3')
-wii_sports = ConvertFileName('Songs\\Wii-Sports.mp3')
-wii_shop = ConvertFileName('Songs\\Wii-Shop.mp3')
+happy = ConvertFileName('Resources\\Songs\\Happy.mp3')
+hope = ConvertFileName('Resources\\Songs\\Hope.mp3')
+mystery = ConvertFileName('Resources\\Songs\\Mystery.mp3')
+wii_music = ConvertFileName('Resources\\Songs\\Wii-Music.mp3')
+wii_sports = ConvertFileName('Resources\\Songs\\Wii-Sports.mp3')
+wii_shop = ConvertFileName('Resources\\Songs\\Wii-Shop.mp3')
 
 # Variables
 inventoryList = []
