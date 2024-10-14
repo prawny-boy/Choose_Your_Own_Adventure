@@ -93,17 +93,25 @@ fails = 0
 wins = 0
 
 def Encode(data:str, key:str) -> str:
+    data = str(data)
     # Change this to whatever encoding function
     encoded = ""
-    for i in range(len(data)):
-        encoded += chr((ord(data[i]) + ord(key[i % len(key)])) % 256)
+    rotation = 0
+    for i in key:
+        rotation += ord(i)
+    for i in data:
+        encoded += chr(ord(i) + rotation)
     return encoded
 
 def Decode(data:str, key:str) -> str:
+    data = str(data)
     # Change this to whatever decoding function
     decoded = ""
-    for i in range(len(data)):
-        decoded += chr((ord(data[i]) - ord(key[i % len(key)])) % 256)
+    rotation = 0
+    for i in key:
+        rotation += ord(i)
+    for i in data:
+        decoded += chr(ord(i) - rotation)
     return decoded
 
 def SlowPrint(str:str, speed:float=0.05, attr:list=[], c='white', wait=3, skip=True, key:str = 'shift') -> None:
@@ -186,7 +194,7 @@ def UserSystem() -> str:
         elif username == "quit":
             exit()
         else:
-            with open(s, 'r') as file:
+            with open(s, 'r', encoding="utf-8") as file:
                 content = file.readlines()
             if any(('User: /' + username.lower()) == i.strip("\n") for i in content):
                 print(f"Successfully signed in as {username}.")
@@ -199,7 +207,7 @@ def UserSystem() -> str:
 
 def ResetStats(user:str) -> None:
     # here we edit the stats file and reset everything
-    with open(s, 'r') as file:
+    with open(s, 'r', encoding="utf-8") as file:
         lines = file.readlines()
     
     for i in range(len(lines)):
@@ -211,12 +219,12 @@ def ResetStats(user:str) -> None:
             break
 
     for i in range(userline+1, userline+linesperuser):
-        lines[i] = initialstats[i-(userline+1)]
+        lines[i] = Encode(initialstats[i-(userline+1)], user)
     
     for i in range(len(lines)):
         lines[i] = lines[i] + "\n" # add newline characters
 
-    with open(s, 'w') as file:
+    with open(s, 'w', encoding="utf-8") as file:
         file.writelines(lines)
 
 def ResetEndingFile() -> None:
@@ -315,7 +323,7 @@ def ListAchievements() -> None:
 
 def CheckUsername(user:str) -> bool:    
     x = ''
-    file = open(s, 'r')
+    file = open(s, 'r', encoding="utf-8")
     content = file.readlines()
     if any(('User: /' + user.lower()) == i.strip("\n") for i in content):
         print('Username taken.')
@@ -328,17 +336,17 @@ def CheckUsername(user:str) -> bool:
             if x == "quit":
                 exit()
         if x == 'y':
-            file = open(s, 'a')
+            file = open(s, 'a', encoding="utf-8")
             file.write('User: /' + user.lower() + "\n")
             for i in range(linesperuser-1):
-                file.write(initialstats[i]+"\n")
+                file.write(Encode(initialstats[i], user)+"\n")
             print("Username registered. Don't forget this else you can't get your data!")
             return True
         elif x == 'n':
             return False
 
 def GrabStats(user:str) -> tuple[list, list, list, int, int]:
-    file = open(s, 'r')
+    file = open(s, 'r', encoding="utf-8")
     lines = file.readlines()
 
     for i in range(len(lines)):
@@ -351,7 +359,7 @@ def GrabStats(user:str) -> tuple[list, list, list, int, int]:
     
     stats = []
     for i in range(userline + 1, userline + linesperuser):
-        line = lines[i]
+        line = Decode(lines[i], user)
         n = 0
         while line[n] != "/":
             n += 1
@@ -371,7 +379,7 @@ def GrabStats(user:str) -> tuple[list, list, list, int, int]:
 def UpdateStats(user:str) -> None:
     global linesperuser, fails, wins
     # opens the file and saves the lines to a list
-    with open(s, 'r') as file:
+    with open(s, 'r', encoding="utf-8") as file:
         lines = file.readlines()
 
     for i in range(len(lines)):
@@ -386,7 +394,7 @@ def UpdateStats(user:str) -> None:
     # add stats, update
     for i in range(userline+1, linesperuser+userline):
         # variables reset each loop
-        line = lines[i]
+        line = Decode(lines[i], user)
         statstart = None
         statislist = False
         statstring = ""
@@ -425,13 +433,13 @@ def UpdateStats(user:str) -> None:
             statstring = stat
         
         # updates the line to new stats
-        lines[i] = lines[i][:statstart] + str(statstring)
+        lines[i] = Encode(Decode(lines[i][:statstart], user) + str(statstring), user)
     
     for i in range(len(lines)):
         lines[i] = lines[i] + "\n" # add newline characters
                 
     # writes the new list to the file
-    with open(s, 'w') as file:
+    with open(s, 'w', encoding="utf-8") as file:
         file.writelines(lines)
 
 def PrintStats(user:str, endings:list, achievements:list, fails:int, wins:int) -> None:
