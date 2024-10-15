@@ -369,9 +369,10 @@ colour1_blush = (198, 91, 124)
 colour1_violet_jtc = (91, 55, 88)
 
 # Fonts
-font_poppins =  _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 32)
-font_poppins_bold =  _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 48)
-font_poppins_small =  _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 12)
+_pygame.font.init()
+font_poppins = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 32)
+font_poppins_bold = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 48)
+font_poppins_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 12)
 font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 18)
 
 # Settings
@@ -386,6 +387,56 @@ def initalise_pygame():
     screen = _pygame.display.set_mode((800, 600))
     _pygame.display.set_caption("CYOA")
     screen.fill(colour_black) # clear the display
+    return screen, clock
+
+class Button:
+    def __init__(
+            self, 
+            text,
+            x_pos, y_pos, 
+            enabled, 
+            width=150, height=25, 
+            font: _pygame.font.Font=font_poppins, text_colour=colour_black, 
+            colour=colour_white, border_colour=colour_white,
+            accent_colour=colour_black, disabled_colour=colour_black):
+        
+        self.text = text
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.enabled = enabled
+        self.width = width
+        self.height = height
+        self.colour = colour
+        self.font = font
+        self.text_colour = text_colour
+        self.border_colour = border_colour
+        self.accent_colour = accent_colour
+        self.disabled_colour = disabled_colour
+        self.draw()
+    
+    def draw(self):
+        button_text = self.font.render(self.text, True, self.text_colour)
+        button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if self.enabled:
+            if self.check_click():
+                _pygame.draw.rect(screen, self.accent_colour, button_rect, 0, 5)
+            else:
+                _pygame.draw.rect(screen, self.colour, button_rect, 0, 5)
+        else:
+            _pygame.draw.rect(screen, self.disabled_colour, button_rect, 0, 5)
+        _pygame.draw.rect(screen, self.border_colour, button_rect, 2, 5)
+        screen.blit(button_text, (3 + self.x_pos, 3 + self.y_pos)) # fix this
+    
+    def check_click(self):
+        mouse_pos = _pygame.mouse.get_pos()
+        left_click = _pygame.mouse.get_pressed()[0]
+        button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if left_click and button_rect.collidepoint(mouse_pos) and self.enabled:
+            return True
+        else:
+            return False
+    
+
 
 # Normal functions
 def Encode(data:str, key:str) -> str:
@@ -2587,8 +2638,10 @@ if mode.lower() == "text":
 
 if mode.lower() == "pygame":
     # GAME LOOP - Pygame Based
-    initalise_pygame()
+    screen, clock = initalise_pygame()
     while True:
+        clock.tick(frame_rate)
+        my_button = Button("Start", 400, 300, True, 300, 200)
         for event in _pygame.event.get():
             if event.type == _pygame.QUIT:
                 _pygame.quit()
@@ -2597,4 +2650,10 @@ if mode.lower() == "pygame":
                 _pygame.quit()
                 _sys.exit()
             if event.type == _pygame.MOUSEBUTTONDOWN:
-                pass
+                if new_press:
+                    if my_button.check_click():
+                        print("OOOOOO")
+            else:
+                new_press = True
+        
+        _pygame.display.flip()
