@@ -375,6 +375,9 @@ font_poppins_bold = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\Poppins
 font_poppins_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 12)
 font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 18)
 
+# Sprites
+cyoa_logo = _pygame.image.load(ConvertFileName("Resources\\Sprites\\CYOALogo.png"))
+
 # Settings
 game_state = "title" # The game state, which is for choosing which screen to load
 frame_rate = 30 # The frame rate of the game, recommended to be 30
@@ -450,6 +453,8 @@ def manage_buttons():
         ("back button", ("Back", 15, 175, 300, 50), "menu"), 
         ("quit button", ("Quit", 15, 250, 300, 50), "menu"), 
         ("menu button", ("Menu", 15, 100, 300, 50), "title"),
+        ("credits button", ("Credits", 15, 175, 300, 50), "title"),
+        ("back credits button", ("Back", 15, 430, 300, 50), "credits"),
         ("amazon story", ("Amazon Adventure", 15, 100, 400, 50), "story selection"),
         ("space story", ("Space Story", 15, 160, 400, 50), "story selection"),
         ("time travel story", ("Time Travel", 15, 220, 400, 50), "story selection"),
@@ -457,6 +462,7 @@ def manage_buttons():
         ("tomb story", ("TUTANKHAMUN'S Tomb", 15, 340, 400, 50), "story selection"),
         ("mountain story", ("Mountain Adventure", 15, 400, 400, 50), "story selection"),
         ("underwater story", ("Underwater World", 15, 460, 400, 50), "story selection"),
+        ("story back", ("Back", 15, 520, 400, 50), "story selection"),
     ]
     for i in range(len(buttons)):
         button = buttons[i]
@@ -478,10 +484,43 @@ def draw_footnote(footnote_text, footnote_colour=colour_white, footnote_pos=(15,
     footnote_text = footnote_font.render(footnote_text, True, footnote_colour)
     screen.blit(footnote_text, footnote_pos)
 
+def draw_text(text:str, x, y, colour=colour_white, font=font_poppins, line_spacing=15):
+    # Split text into lines at newline characters
+    lines = text.split('\n')
+    for i, line in enumerate(lines):
+        line_surface = font.render(line, True, colour)
+        line_rect = line_surface.get_rect(topleft=(x, y + i * line_spacing))
+        screen.blit(line_surface, line_rect)
+
 def draw_page():
     title = game_state.capitalize()
     draw_page_title(title)
-    draw_footnote("CYOA Pygame v1.0. This program is only to be run at own leisure, not distributed, copied or sold. Made by SOL ©")
+    mouse_pos = _pygame.mouse.get_pos()
+    draw_footnote(f"CYOA Pygame v1.0. This program is only to be run at own leisure, not distributed, copied or sold. Made by SOL ©  x:{mouse_pos[0]} y:{mouse_pos[1]}")
+    if game_state == "credits":
+        draw_text("""
+███████╗ ██████╗ ██╗     
+██╔════╝██╔═══██╗██║     
+███████╗██║   ██║██║      Sean Oliver & Levi Corporation Inc
+╚════██║██║   ██║██║     
+███████║╚██████╔╝███████╗
+╚══════╝ ╚═════╝ ╚══════╝
+
+------------------------------------------------
+Version: 1.0 Pygame
+Coded in VS Code, by Oliver Liu, Levi Laij and Sean Chan
+Logo: Aaron Zhang
+Story Writers: 
+    Amazon Adventure - Sean Chan
+    Space Story - Oliver Liu
+    Time Travel - Sean Chan
+    School - Jaden Li, imported by Oliver Liu
+    Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
+    Mountain - Levi Laij
+------------------------------------------------""", 15, 100, colour=colour_white, font=font_poppins_small)
+    if game_state == "title" or game_state == "menu":
+        logo = _pygame.transform.scale(cyoa_logo.convert(), (400, 400))
+        screen.blit(logo, (360, 15))
 
 
 # Normal functions
@@ -2701,6 +2740,10 @@ if mode.lower() == "pygame":
                 if new_press:
                     if button_dict["menu button"].check_click():
                         game_state = "menu"
+                    elif button_dict["credits button"].check_click():
+                        game_state = "credits"
+                    elif button_dict["back credits button"].check_click():
+                        game_state = "title"
                     elif button_dict["start button"].check_click():
                         game_state = "story selection"
                     elif button_dict["quit button"].check_click():
@@ -2722,6 +2765,8 @@ if mode.lower() == "pygame":
                         game_state = "mountain story"
                     elif button_dict["underwater story"].check_click():
                         game_state = "underwater story"
+                    elif button_dict["story back"].check_click():
+                        game_state = "menu"
             else:
                 new_press = True
         
