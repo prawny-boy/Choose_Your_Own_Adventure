@@ -354,6 +354,32 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
+# Pygame Variables
+# Colours
+## Basic colouts
+colour_white = (255, 255, 255)
+colour_black = (0, 0, 0)
+colour_blue = (0, 0, 255)
+## Colour palette 1, style: playful
+colour1_cambridge_blue = (131, 182, 146)
+colour1_melon = (249, 173, 160)
+colour1_bright_pink_crayola = (249, 98, 125)
+colour1_blush = (198, 91, 124)
+colour1_violet_jtc = (91, 55, 88)
+
+font_poppins =  _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsRegular.ttf"), 32)
+font_poppins_bold =  _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsBold.ttf"), 48)
+font_poppins_small =  _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsRegular.ttf"), 12)
+font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsBold.ttf"), 18)
+
+# Pygame functions
+def initalise_pygame():
+    _pygame.init()
+    screen = _pygame.display.set_mode((800, 600))
+    _pygame.display.set_caption("CYOA")
+    screen.fill((0, 0, 0)) # clear the display
+
+# Normal functions
 def Encode(data:str, key:str) -> str:
     data = str(data)
     # Change this to whatever encoding function
@@ -2527,16 +2553,39 @@ What do you eat?
 #         SlowPrint(f'''You ended up in: HELL
 # {txt}''', 0.05, ['bold'], 'red')
 
-# GAME LOOP
 while True:
-    user = UserSystem()
-    if user != "":
-        endings, userach, usercommands, fails, wins = GrabStats(user)
-    running_commands = True
-    while running_commands:
-        print("")
-        CheckCommand(input("Enter a command ('Help' for options) > "))
-        if not user == "":
-            UpdateStats(user)
-            CheckAchievements()
-            UpdateStats(user)
+    mode = input("Which mode would you like to play? (Text or Pygame) > ")
+    if mode.lower() == "text":
+        break
+    elif mode.lower() == "pygame":
+        break
+    else:
+        print("Invalid input. Please try again.")
+
+if mode.lower() == "text":
+    # GAME LOOP - Text Based
+    while True:
+        user = UserSystem()
+        if user != "":
+            endings, userach, usercommands, fails, wins = GrabStats(user)
+        running_commands = True
+        while running_commands:
+            print("")
+            CheckCommand(input("Enter a command ('Help' for options) > "))
+            if not user == "":
+                UpdateStats(user)
+                CheckAchievements()
+                UpdateStats(user)
+if mode.lower() == "pygame":
+    # GAME LOOP - Pygame Based
+    initalise_pygame()
+    while True:
+        for event in _pygame.event.get():
+            if event.type == _pygame.QUIT:
+                _pygame.quit()
+                _sys.exit()
+            if event.type == _pygame.K_ESCAPE:
+                _pygame.quit()
+                _sys.exit()
+            if event.type == _pygame.MOUSEBUTTONDOWN:
+                pass
