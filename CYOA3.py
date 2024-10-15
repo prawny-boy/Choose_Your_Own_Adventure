@@ -355,6 +355,7 @@ fails = 0
 wins = 0
 
 # Pygame Variables
+
 # Colours
 ## Basic colouts
 colour_white = (255, 255, 255)
@@ -367,17 +368,24 @@ colour1_bright_pink_crayola = (249, 98, 125)
 colour1_blush = (198, 91, 124)
 colour1_violet_jtc = (91, 55, 88)
 
-font_poppins =  _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsRegular.ttf"), 32)
-font_poppins_bold =  _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsBold.ttf"), 48)
-font_poppins_small =  _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsRegular.ttf"), 12)
-font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Pygame/Fonts/PoppinsBold.ttf"), 18)
+# Fonts
+font_poppins =  _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 32)
+font_poppins_bold =  _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 48)
+font_poppins_small =  _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 12)
+font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 18)
+
+# Settings
+game_state = "main_menu" # The game state, which is for choosing which screen to load
+frame_rate = 30 # The frame rate of the game, recommended to be 30
 
 # Pygame functions
 def initalise_pygame():
     _pygame.init()
+    clock = _pygame.time.Clock()
+    clock.tick(frame_rate)
     screen = _pygame.display.set_mode((800, 600))
     _pygame.display.set_caption("CYOA")
-    screen.fill((0, 0, 0)) # clear the display
+    screen.fill(colour_black) # clear the display
 
 # Normal functions
 def Encode(data:str, key:str) -> str:
@@ -2576,6 +2584,7 @@ if mode.lower() == "text":
                 UpdateStats(user)
                 CheckAchievements()
                 UpdateStats(user)
+
 if mode.lower() == "pygame":
     # GAME LOOP - Pygame Based
     initalise_pygame()
