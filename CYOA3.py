@@ -376,7 +376,7 @@ font_poppins_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\Poppin
 font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 18)
 
 # Settings
-game_state = "main_menu" # The game state, which is for choosing which screen to load
+game_state = "title" # The game state, which is for choosing which screen to load
 frame_rate = 30 # The frame rate of the game, recommended to be 30
 
 # Pygame functions
@@ -386,7 +386,6 @@ def initalise_pygame():
     clock.tick(frame_rate)
     screen = _pygame.display.set_mode((800, 600))
     _pygame.display.set_caption("CYOA")
-    screen.fill(colour_black) # clear the display
     return screen, clock
 
 class Button:
@@ -394,8 +393,8 @@ class Button:
             self, 
             text,
             x_pos, y_pos, 
-            enabled, 
             width=150, height=25, 
+            enabled=True, 
             font: _pygame.font.Font=font_poppins, text_colour=colour_black, 
             colour=colour_white, border_colour=colour_white,
             accent_colour=colour_black, disabled_colour=colour_black):
@@ -418,14 +417,14 @@ class Button:
         button_text = self.font.render(self.text, True, self.text_colour)
         button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
         if self.enabled:
-            if self.check_click():
+            if self.check_hover():
                 _pygame.draw.rect(screen, self.accent_colour, button_rect, 0, 5)
             else:
                 _pygame.draw.rect(screen, self.colour, button_rect, 0, 5)
+            _pygame.draw.rect(screen, self.border_colour, button_rect, 2, 5)
+            screen.blit(button_text, (3 + self.x_pos, 3 + self.y_pos)) # fix this
         else:
-            _pygame.draw.rect(screen, self.disabled_colour, button_rect, 0, 5)
-        _pygame.draw.rect(screen, self.border_colour, button_rect, 2, 5)
-        screen.blit(button_text, (3 + self.x_pos, 3 + self.y_pos)) # fix this
+            pass
     
     def check_click(self):
         mouse_pos = _pygame.mouse.get_pos()
@@ -435,7 +434,54 @@ class Button:
             return True
         else:
             return False
+        
+    def check_hover(self):
+        mouse_pos = _pygame.mouse.get_pos()
+        button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if button_rect.collidepoint(mouse_pos) and self.enabled:
+            return True
+        else:
+            return False
     
+def manage_buttons():
+    buttons_dict = {}
+    buttons = [
+        ("start button", ("Start", 15, 100, 300, 50), "menu"),
+        ("back button", ("Back", 15, 175, 300, 50), "menu"), 
+        ("quit button", ("Quit", 15, 250, 300, 50), "menu"), 
+        ("menu button", ("Menu", 15, 100, 300, 50), "title"),
+        ("amazon story", ("Amazon Adventure", 15, 100, 400, 50), "story selection"),
+        ("space story", ("Space Story", 15, 160, 400, 50), "story selection"),
+        ("time travel story", ("Time Travel", 15, 220, 400, 50), "story selection"),
+        ("school story", ("Ligma School", 15, 280, 400, 50), "story selection"),
+        ("tomb story", ("TUTANKHAMUN'S Tomb", 15, 340, 400, 50), "story selection"),
+        ("mountain story", ("Mountain Adventure", 15, 400, 400, 50), "story selection"),
+        ("underwater story", ("Underwater World", 15, 460, 400, 50), "story selection"),
+    ]
+    for i in range(len(buttons)):
+        button = buttons[i]
+        if button[2] == game_state:
+            enabled = True
+        else:
+            enabled = False
+        buttons_dict[button[0]] = Button(*button[1], enabled=enabled)
+    
+    return buttons_dict
+
+def draw_page_title(title_text=game_state.capitalize(), title_colour=colour_white, title_pos=(15, 0), title_font=font_poppins_bold, subtext="CYOA Pygame", subtext_colour=colour_white, subtext_pos=(15, 60), subtext_font=font_poppins_small):
+    title_text = title_font.render(title_text, True, title_colour)
+    subtext_text = subtext_font.render(subtext, True, subtext_colour)
+    screen.blit(title_text, title_pos)
+    screen.blit(subtext_text, subtext_pos)
+
+def draw_footnote(footnote_text, footnote_colour=colour_white, footnote_pos=(15, 580), footnote_font=font_poppins_small):
+    footnote_text = footnote_font.render(footnote_text, True, footnote_colour)
+    screen.blit(footnote_text, footnote_pos)
+
+def draw_page():
+    title = game_state.capitalize()
+    draw_page_title(title)
+    draw_footnote("CYOA Pygame v1.0. This program is only to be run at own leisure, not distributed, copied or sold. Made by SOL ©")
 
 
 # Normal functions
@@ -2641,7 +2687,9 @@ if mode.lower() == "pygame":
     screen, clock = initalise_pygame()
     while True:
         clock.tick(frame_rate)
-        my_button = Button("Start", 400, 300, True, 300, 200)
+        screen.fill(colour_black) # clear the display
+        button_dict:dict[str, Button] = manage_buttons()
+        draw_page()
         for event in _pygame.event.get():
             if event.type == _pygame.QUIT:
                 _pygame.quit()
@@ -2651,8 +2699,29 @@ if mode.lower() == "pygame":
                 _sys.exit()
             if event.type == _pygame.MOUSEBUTTONDOWN:
                 if new_press:
-                    if my_button.check_click():
-                        print("OOOOOO")
+                    if button_dict["menu button"].check_click():
+                        game_state = "menu"
+                    elif button_dict["start button"].check_click():
+                        game_state = "story selection"
+                    elif button_dict["quit button"].check_click():
+                        _pygame.quit()
+                        _sys.exit()
+                    elif button_dict["back button"].check_click():
+                        game_state = "title"
+                    elif button_dict["amazon story"].check_click():
+                        game_state = "amazon story"
+                    elif button_dict["space story"].check_click():
+                        game_state = "space story"
+                    elif button_dict["time travel story"].check_click():
+                        game_state = "time travel story"
+                    elif button_dict["school story"].check_click():
+                        game_state = "school story"
+                    elif button_dict["tomb story"].check_click():
+                        game_state = "tomb story"
+                    elif button_dict["mountain story"].check_click():
+                        game_state = "mountain story"
+                    elif button_dict["underwater story"].check_click():
+                        game_state = "underwater story"
             else:
                 new_press = True
         
