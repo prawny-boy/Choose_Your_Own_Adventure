@@ -382,6 +382,8 @@ company_logo = _pygame.image.load(ConvertFileName("Resources\\Sprites\\CompanyLo
 # Settings
 game_state = "hello!" # The game state, which is for choosing which screen to load
 frame_rate = 30 # The frame rate of the game, recommended to be 30
+textbox_text = ""
+toggle = False
 
 # Pygame functions
 def initalise_pygame():
@@ -446,8 +448,37 @@ class Button:
             return True
         else:
             return False
+
+class TextBox:
+    def __init__(self, text, x_pos, y_pos, width=600, height=50, enabled=True, toggle=False):
+        self.text = text
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.width = width
+        self.height = height
+        self.enabled = enabled
+        self.toggle = toggle
+        self.draw()
+    def draw(self):
+        text_box_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if self.toggle:
+            _pygame.draw.rect(screen, colour_white, text_box_rect, 4, 5)
+        else:
+            _pygame.draw.rect(screen, colour_white, text_box_rect, 2, 5)
+        draw_text(self.text, self.x_pos+3, self.y_pos+3, colour_white, font_poppins)
+    def check_click(self):
+        mouse_pos = _pygame.mouse.get_pos()
+        left_click = _pygame.mouse.get_pressed()[0]
+        text_box_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if left_click:
+            if text_box_rect.collidepoint(mouse_pos):
+                return True
+            else:
+                return False
+        else: return None
     
-def manage_buttons():
+
+def manage_interactives():
     buttons_dict = {}
     buttons = [
         ("start button", ("Start", 15, 100, 300, 50), "menu"),
@@ -501,7 +532,7 @@ def draw_text(text:str, x, y, colour=colour_white, font=font_poppins, line_spaci
         line_rect = line_surface.get_rect(topleft=(x, y + i * line_spacing))
         screen.blit(line_surface, line_rect)
 
-def draw_page(user:str):
+def draw_page(user:str, textbox_string, toggle):
     title = game_state.capitalize()
     if user == "":
         if game_state in ["login", "sign up", "hello!"]:
@@ -533,7 +564,69 @@ Story Writers:
     if game_state == "title" or game_state == "menu":
         logo = _pygame.transform.scale(cyoa_logo.convert(), (400, 400))
         screen.blit(logo, (360, 15))
+    elif game_state in ["login", "sign up"]:
+        textbox = TextBox(textbox_string, 100, 200, toggle=toggle)
+        if textbox.check_click() == None:
+            pass
+        elif textbox.check_click():
+            toggle = True
+        else:
+            toggle = False
+    return toggle
 
+def check_buttons(game_state, user, toggle, textbox_text):
+    if button_dict["menu button"].check_click():
+        game_state = "menu"
+    elif button_dict["credits button"].check_click():
+        game_state = "credits"
+    elif button_dict["back credits button"].check_click():
+        game_state = "title"
+    elif button_dict["start button"].check_click():
+        game_state = "story selection"
+    elif button_dict["quit button"].check_click():
+        _pygame.quit()
+        _sys.exit()
+    elif button_dict["back button"].check_click():
+        game_state = "title"
+    elif button_dict["amazon story"].check_click():
+        game_state = "amazon story"
+    elif button_dict["space story"].check_click():
+        game_state = "space story"
+    elif button_dict["time travel story"].check_click():
+        game_state = "time travel story"
+    elif button_dict["school story"].check_click():
+        game_state = "school story"
+    elif button_dict["tomb story"].check_click():
+        game_state = "tomb story"
+    elif button_dict["mountain story"].check_click():
+        game_state = "mountain story"
+    elif button_dict["underwater story"].check_click():
+        game_state = "underwater story"
+    elif button_dict["story back"].check_click():
+        game_state = "menu"
+    elif button_dict["select login button"].check_click():
+        game_state = "login"
+        toggle = False
+    elif button_dict["login button"].check_click():
+        game_state = "title"
+        user = textbox_text
+    elif button_dict["sign up button"].check_click():
+        game_state = "title"
+        user = textbox_text
+    elif button_dict["anonymous button"].check_click():
+        game_state = "title"
+        user = ""
+    elif button_dict["select sign up button"].check_click():
+        game_state = "sign up"
+        toggle = False
+    elif button_dict["sign out button"].check_click():
+        game_state = "hello!"
+        user = ""
+    elif button_dict["login back"].check_click():
+        game_state = "hello!"
+    elif button_dict["sign up back"].check_click():
+        game_state = "hello!"
+    return game_state, user, toggle
 
 # Normal functions
 def Encode(data:str, key:str) -> str:
@@ -2739,8 +2832,8 @@ if mode.lower() == "pygame":
     while True:
         clock.tick(frame_rate)
         screen.fill(colour_black) # clear the display
-        button_dict:dict[str, Button] = manage_buttons()
-        draw_page(user)
+        button_dict:dict[str, Button] = manage_interactives()
+        toggle = draw_page(user, textbox_text, toggle)
         for event in _pygame.event.get():
             if event.type == _pygame.QUIT:
                 _pygame.quit()
@@ -2750,56 +2843,19 @@ if mode.lower() == "pygame":
                 _sys.exit()
             if event.type == _pygame.MOUSEBUTTONDOWN:
                 if new_press:
-                    if button_dict["menu button"].check_click():
-                        game_state = "menu"
-                    elif button_dict["credits button"].check_click():
-                        game_state = "credits"
-                    elif button_dict["back credits button"].check_click():
-                        game_state = "title"
-                    elif button_dict["start button"].check_click():
-                        game_state = "story selection"
-                    elif button_dict["quit button"].check_click():
-                        _pygame.quit()
-                        _sys.exit()
-                    elif button_dict["back button"].check_click():
-                        game_state = "title"
-                    elif button_dict["amazon story"].check_click():
-                        game_state = "amazon story"
-                    elif button_dict["space story"].check_click():
-                        game_state = "space story"
-                    elif button_dict["time travel story"].check_click():
-                        game_state = "time travel story"
-                    elif button_dict["school story"].check_click():
-                        game_state = "school story"
-                    elif button_dict["tomb story"].check_click():
-                        game_state = "tomb story"
-                    elif button_dict["mountain story"].check_click():
-                        game_state = "mountain story"
-                    elif button_dict["underwater story"].check_click():
-                        game_state = "underwater story"
-                    elif button_dict["story back"].check_click():
-                        game_state = "menu"
-                    elif button_dict["select login button"].check_click():
-                        game_state = "login"
-                    elif button_dict["login button"].check_click():
-                        game_state = "title"
-                        user = "test" # change this
-                    elif button_dict["sign up button"].check_click():
-                        game_state = "title"
-                        user = "test" # change this
-                    elif button_dict["anonymous button"].check_click():
-                        game_state = "title"
-                        user = ""
-                    elif button_dict["select sign up button"].check_click():
-                        game_state = "sign up"
-                    elif button_dict["sign out button"].check_click():
-                        game_state = "hello!"
-                        user = ""
-                    elif button_dict["login back"].check_click():
-                        game_state = "hello!"
-                    elif button_dict["sign up back"].check_click():
-                        game_state = "hello!"
+                    game_state, user, toggle = check_buttons(game_state, user, toggle, textbox_text)
                 new_press = False
+            elif event.type == _pygame.KEYDOWN:
+                # Check for backspace 
+                if event.key == _pygame.K_BACKSPACE: 
+                    # get text input from 0 to -1 i.e. end. 
+                    textbox_text = textbox_text[:-1] 
+                # Unicode standard is used for string 
+                # formation 
+                elif event.key == _pygame.K_RETURN:
+                    toggle = False
+                else: 
+                    textbox_text += event.unicode
             else:
                 new_press = True
         
