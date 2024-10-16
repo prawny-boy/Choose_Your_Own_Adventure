@@ -354,6 +354,188 @@ usercommands = [] # user commands
 fails = 0
 wins = 0
 
+# Pygame Variables
+
+# Colours
+## Basic colouts
+colour_white = (255, 255, 255)
+colour_black = (0, 0, 0)
+colour_blue = (0, 0, 255)
+## Colour palette 1, style: playful
+colour1_cambridge_blue = (131, 182, 146)
+colour1_melon = (249, 173, 160)
+colour1_bright_pink_crayola = (249, 98, 125)
+colour1_blush = (198, 91, 124)
+colour1_violet_jtc = (91, 55, 88)
+
+# Fonts
+_pygame.font.init()
+font_poppins = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 32)
+font_poppins_bold = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 48)
+font_poppins_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsRegular.ttf"), 12)
+font_poppins_bold_small = _pygame.font.Font(ConvertFileName("Resources\\Fonts\\PoppinsBold.ttf"), 18)
+
+# Sprites
+cyoa_logo = _pygame.image.load(ConvertFileName("Resources\\Sprites\\CYOALogo.png"))
+company_logo = _pygame.image.load(ConvertFileName("Resources\\Sprites\\CompanyLogo.png"))
+
+# Settings
+game_state = "hello!" # The game state, which is for choosing which screen to load
+frame_rate = 30 # The frame rate of the game, recommended to be 30
+
+# Pygame functions
+def initalise_pygame():
+    _pygame.init()
+    clock = _pygame.time.Clock()
+    clock.tick(frame_rate)
+    screen = _pygame.display.set_mode((800, 600))
+    _pygame.display.set_caption("CYOA")
+    return screen, clock
+
+class Button:
+    def __init__(
+            self, 
+            text,
+            x_pos, y_pos, 
+            width=150, height=25, 
+            enabled=True, 
+            font: _pygame.font.Font=font_poppins, text_colour=colour_black, 
+            colour=colour_white, border_colour=colour_white,
+            accent_colour=colour_black, disabled_colour=colour_black):
+        
+        self.text = text
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.enabled = enabled
+        self.width = width
+        self.height = height
+        self.colour = colour
+        self.font = font
+        self.text_colour = text_colour
+        self.border_colour = border_colour
+        self.accent_colour = accent_colour
+        self.disabled_colour = disabled_colour
+        self.draw()
+    
+    def draw(self):
+        button_text = self.font.render(self.text, True, self.text_colour)
+        button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if self.enabled:
+            if self.check_hover():
+                _pygame.draw.rect(screen, self.accent_colour, button_rect, 0, 5)
+            else:
+                _pygame.draw.rect(screen, self.colour, button_rect, 0, 5)
+            _pygame.draw.rect(screen, self.border_colour, button_rect, 2, 5)
+            screen.blit(button_text, (3 + self.x_pos, 3 + self.y_pos)) # fix this
+        else:
+            pass
+    
+    def check_click(self):
+        mouse_pos = _pygame.mouse.get_pos()
+        left_click = _pygame.mouse.get_pressed()[0]
+        button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if left_click and button_rect.collidepoint(mouse_pos) and self.enabled:
+            return True
+        else:
+            return False
+        
+    def check_hover(self):
+        mouse_pos = _pygame.mouse.get_pos()
+        button_rect = _pygame.rect.Rect((self.x_pos, self.y_pos), (self.width, self.height))
+        if button_rect.collidepoint(mouse_pos) and self.enabled:
+            return True
+        else:
+            return False
+    
+def manage_buttons():
+    buttons_dict = {}
+    buttons = [
+        ("start button", ("Start", 15, 100, 300, 50), "menu"),
+        ("back button", ("Back", 15, 175, 300, 50), "menu"), 
+        ("quit button", ("Quit", 15, 250, 300, 50), "menu"), 
+        ("menu button", ("Menu", 15, 100, 300, 50), "title"),
+        ("credits button", ("Credits", 15, 175, 300, 50), "title"),
+        ("sign out button", ("Sign Out", 15, 250, 300, 50), "title"),
+        ("back credits button", ("Back", 15, 430, 300, 50), "credits"),
+        ("amazon story", ("Amazon Adventure", 15, 100, 400, 50), "story selection"),
+        ("space story", ("Space Story", 15, 160, 400, 50), "story selection"),
+        ("time travel story", ("Time Travel", 15, 220, 400, 50), "story selection"),
+        ("school story", ("Ligma School", 15, 280, 400, 50), "story selection"),
+        ("tomb story", ("TUTANKHAMUN'S Tomb", 15, 340, 400, 50), "story selection"),
+        ("mountain story", ("Mountain Adventure", 15, 400, 400, 50), "story selection"),
+        ("underwater story", ("Underwater World", 15, 460, 400, 50), "story selection"),
+        ("story back", ("Back", 15, 520, 400, 50), "story selection"),
+        ("login button", ("Log In", 100, 400, 600, 75), "login"),
+        ("sign up button", ("Sign Up", 100, 400, 600, 75), "sign up"),
+        ("sign up back", ("Back", 100, 300, 600, 75), "sign up"),
+        ("login back", ("Back", 100, 300, 600, 75), "login"),
+        ("select sign up button", ("Signup to make a new account", 15, 100, 600, 50), "hello!"),
+        ("select login button", ("Login to existing account", 15, 175, 600, 50), "hello!"),
+        ("anonymous button", ("Stay Anonymous", 15, 250, 600, 50), "hello!"),
+    ]
+    for i in range(len(buttons)):
+        button = buttons[i]
+        if button[2] == game_state:
+            enabled = True
+        else:
+            enabled = False
+        buttons_dict[button[0]] = Button(*button[1], enabled=enabled)
+    
+    return buttons_dict
+
+def draw_page_title(title_text=game_state.capitalize(), title_colour=colour_white, title_pos=(15, 0), title_font=font_poppins_bold, subtext="CYOA Pygame", subtext_colour=colour_white, subtext_pos=(15, 60), subtext_font=font_poppins_small):
+    title_text = title_font.render(title_text, True, title_colour)
+    subtext_text = subtext_font.render(subtext, True, subtext_colour)
+    screen.blit(title_text, title_pos)
+    screen.blit(subtext_text, subtext_pos)
+
+def draw_footnote(footnote_text, footnote_colour=colour_white, footnote_pos=(15, 580), footnote_font=font_poppins_small):
+    footnote_text = footnote_font.render(footnote_text, True, footnote_colour)
+    screen.blit(footnote_text, footnote_pos)
+
+def draw_text(text:str, x, y, colour=colour_white, font=font_poppins, line_spacing=15):
+    # Split text into lines at newline characters
+    lines = text.split('\n')
+    for i, line in enumerate(lines):
+        line_surface = font.render(line, True, colour)
+        line_rect = line_surface.get_rect(topleft=(x, y + i * line_spacing))
+        screen.blit(line_surface, line_rect)
+
+def draw_page(user:str):
+    title = game_state.capitalize()
+    if user == "":
+        if game_state in ["login", "sign up", "hello!"]:
+            subtext = "Subscribe to TheBestCoolNelsonYan!"
+        else:
+            subtext = "CYOA Pygame (Anonymous)"
+    else:
+        subtext = f"Hello, {user.title()}!"
+    draw_page_title(title, subtext=subtext)
+    mouse_pos = _pygame.mouse.get_pos()
+    draw_footnote(f"CYOA Pygame v1.0. This program is only to be run at own leisure, not distributed, copied or sold. Made by SOL ©  x:{mouse_pos[0]} y:{mouse_pos[1]}")
+    if game_state == "credits":
+        draw_text("""
+Sean Oliver & Levi Corporation Inc
+------------------------------------------------
+Version: 1.0 Pygame
+Coded in VS Code, by Oliver Liu, Levi Laij and Sean Chan
+Logo: Aaron Zhang
+Story Writers: 
+    Amazon Adventure - Sean Chan
+    Space Story - Oliver Liu
+    Time Travel - Sean Chan
+    School - Jaden Li, imported by Oliver Liu
+    Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
+    Mountain - Levi Laij
+------------------------------------------------""", 15, 100, colour=colour_white, font=font_poppins_small)
+        logo = _pygame.transform.scale(company_logo.convert(), (60*5,36*5))
+        screen.blit(logo, (430, 100))
+    if game_state == "title" or game_state == "menu":
+        logo = _pygame.transform.scale(cyoa_logo.convert(), (400, 400))
+        screen.blit(logo, (360, 15))
+
+
+# Normal functions
 def Encode(data:str, key:str) -> str:
     data = str(data)
     # Change this to whatever encoding function
@@ -2527,16 +2709,98 @@ What do you eat?
 #         SlowPrint(f'''You ended up in: HELL
 # {txt}''', 0.05, ['bold'], 'red')
 
-# GAME LOOP
 while True:
-    user = UserSystem()
-    if user != "":
-        endings, userach, usercommands, fails, wins = GrabStats(user)
-    running_commands = True
-    while running_commands:
-        print("")
-        CheckCommand(input("Enter a command ('Help' for options) > "))
-        if not user == "":
-            UpdateStats(user)
-            CheckAchievements()
-            UpdateStats(user)
+    mode = input("Which mode would you like to play? (Text or Pygame) > ")
+    if mode.lower() == "text":
+        break
+    elif mode.lower() == "pygame":
+        break
+    else:
+        print("Invalid input. Please try again.")
+
+if mode.lower() == "text":
+    # GAME LOOP - Text Based
+    while True:
+        user = UserSystem()
+        if user != "":
+            endings, userach, usercommands, fails, wins = GrabStats(user)
+        running_commands = True
+        while running_commands:
+            print("")
+            CheckCommand(input("Enter a command ('Help' for options) > "))
+            if not user == "":
+                UpdateStats(user)
+                CheckAchievements()
+                UpdateStats(user)
+
+if mode.lower() == "pygame":
+    # GAME LOOP - Pygame Based
+    screen, clock = initalise_pygame()
+    while True:
+        clock.tick(frame_rate)
+        screen.fill(colour_black) # clear the display
+        button_dict:dict[str, Button] = manage_buttons()
+        draw_page(user)
+        for event in _pygame.event.get():
+            if event.type == _pygame.QUIT:
+                _pygame.quit()
+                _sys.exit()
+            if event.type == _pygame.K_ESCAPE:
+                _pygame.quit()
+                _sys.exit()
+            if event.type == _pygame.MOUSEBUTTONDOWN:
+                if new_press:
+                    if button_dict["menu button"].check_click():
+                        game_state = "menu"
+                    elif button_dict["credits button"].check_click():
+                        game_state = "credits"
+                    elif button_dict["back credits button"].check_click():
+                        game_state = "title"
+                    elif button_dict["start button"].check_click():
+                        game_state = "story selection"
+                    elif button_dict["quit button"].check_click():
+                        _pygame.quit()
+                        _sys.exit()
+                    elif button_dict["back button"].check_click():
+                        game_state = "title"
+                    elif button_dict["amazon story"].check_click():
+                        game_state = "amazon story"
+                    elif button_dict["space story"].check_click():
+                        game_state = "space story"
+                    elif button_dict["time travel story"].check_click():
+                        game_state = "time travel story"
+                    elif button_dict["school story"].check_click():
+                        game_state = "school story"
+                    elif button_dict["tomb story"].check_click():
+                        game_state = "tomb story"
+                    elif button_dict["mountain story"].check_click():
+                        game_state = "mountain story"
+                    elif button_dict["underwater story"].check_click():
+                        game_state = "underwater story"
+                    elif button_dict["story back"].check_click():
+                        game_state = "menu"
+                    elif button_dict["select login button"].check_click():
+                        game_state = "login"
+                    elif button_dict["login button"].check_click():
+                        game_state = "title"
+                        user = "test" # change this
+                    elif button_dict["sign up button"].check_click():
+                        game_state = "title"
+                        user = "test" # change this
+                    elif button_dict["anonymous button"].check_click():
+                        game_state = "title"
+                        user = ""
+                    elif button_dict["select sign up button"].check_click():
+                        game_state = "sign up"
+                    elif button_dict["sign out button"].check_click():
+                        game_state = "hello!"
+                        user = ""
+                    elif button_dict["login back"].check_click():
+                        game_state = "hello!"
+                    elif button_dict["sign up back"].check_click():
+                        game_state = "hello!"
+                new_press = False
+            else:
+                new_press = True
+        
+        _pygame.display.flip()
