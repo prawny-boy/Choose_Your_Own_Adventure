@@ -204,77 +204,77 @@ def DeleteUser(user:str) -> None:
     with open(s, 'w') as file:
         file.writelines(lines)
     
-def AddAchievement(achname:str) -> None:
-    done = False
-    for achdict in achievements.keys():
-        for ach in list(dict(achievements[achdict]).keys()):
-            if str(ach).lower() == achname.lower():
-                achname = ach
-                achtype = achdict
-                done = True
-                break
-        if done:
-            break
-    if not done:
-        print("Error: Achievement not found. Key: " + achname)
-    else:
-        if not (achname + "/" + achtype) in userach:
-            userach.append(achname + "/" + achtype)
-            cprint(f"Completed {achtype.capitalize()} achievement: {achname}", "yellow")
+# def AddAchievement(achname:str) -> None:
+#     done = False
+#     for achdict in achievements.keys(): 
+#         for ach in list(dict(achievements[achdict]).keys()):
+#             if str(ach).lower() == achname.lower():
+#                 achname = ach
+#                 achtype = achdict
+#                 done = True
+#                 break
+#         if done:
+#             break
+#     if not done:
+#         print("Error: Achievement not found. Key: " + achname)
+#     else:
+#         if not (achname + "/" + achtype) in userach:
+#             userach.append(achname + "/" + achtype)
+#             cprint(f"Completed {achtype.capitalize()} achievement: {achname}", "yellow")
 
-def CheckAchievements() -> None:
-    # here we check the check-nessessary achievements, such as the number of commands, times played, etc.
-    for achdict in achievements.keys():
-        for ach in achievements[achdict].keys():
-            if len(achievements[achdict][ach]) == 2:
-                done = False
-                code = achievements[achdict][ach][1]
-                atype = code.split(".")[0]
-                key = code.split(".")[1].split("-")[0]
-                if key == "allEndings":
-                    amount = stories[str(achdict).lower()]
-                else:
-                    amount = int(code.split(".")[1].split("-")[1])
-                if atype in stories.keys():
-                    Endingscount = countEndings(atype, key)
-                    if Endingscount >= amount:
-                        done = True
-                elif atype == "commands":
-                    if key == "amount":
-                        if len(usercommands) >= amount:
-                            done = True
-                    elif key == "allcommands":
-                        alldone = True
-                        for command in commandlist:
-                            if any((str(command).lower()) == i for i in usercommands):
-                                continue
-                            else:
-                                alldone = False
-                                break
-                        if alldone:
-                            done = True
-                elif atype == "stories":
-                    if key == "totalplays":
-                        playcount = countEndings(None, key)
-                        if playcount >= amount:
-                            done = True
-                    else:
-                        if countEndings(key, "collection") == 1:
-                            done = True
-                else:
-                    print("Error. Type not valid:", atype)
-                if done:
-                    AddAchievement(ach)
-            else:
-                continue
+# def CheckAchievements() -> None:
+#     # here we check the check-nessessary achievements, such as the number of commands, times played, etc.
+#     for achdict in achievements.keys():
+#         for ach in achievements[achdict].keys():
+#             if len(achievements[achdict][ach]) == 2:
+#                 done = False
+#                 code = achievements[achdict][ach][1]
+#                 atype = code.split(".")[0]
+#                 key = code.split(".")[1].split("-")[0]
+#                 if key == "allEndings":
+#                     amount = stories[str(achdict).lower()]
+#                 else:
+#                     amount = int(code.split(".")[1].split("-")[1])
+#                 if atype in stories.keys():
+#                     Endingscount = countEndings(atype, key)
+#                     if Endingscount >= amount:
+#                         done = True
+#                 elif atype == "commands":
+#                     if key == "amount":
+#                         if len(usercommands) >= amount:
+#                             done = True
+#                     elif key == "allcommands":
+#                         alldone = True
+#                         for command in commandlist:
+#                             if any((str(command).lower()) == i for i in usercommands):
+#                                 continue
+#                             else:
+#                                 alldone = False
+#                                 break
+#                         if alldone:
+#                             done = True
+#                 elif atype == "stories":
+#                     if key == "totalplays":
+#                         playcount = countEndings(None, key)
+#                         if playcount >= amount:
+#                             done = True
+#                     else:
+#                         if countEndings(key, "collection") == 1:
+#                             done = True
+#                 else:
+#                     print("Error. Type not valid:", atype)
+#                 if done:
+#                     #AddAchievement(ach)
+#             else:
+#                 continue
 
-def ListAchievements() -> None:
-    # when the user wants to see other achievements
-    cprint("\nACHIEVEMENTS", "yellow", attrs=["bold", "underline"])
-    for achdict in achievements.keys():
-        cprint(f"{achdict.capitalize()}:", attrs=["bold"])
-        for ach in achievements[achdict].keys():
-            cprint(f"    - {ach}: {achievements[achdict][ach][0]}", color=("white" if (ach+"/"+achdict in userach) else "dark_grey"))
+# def ListAchievements() -> None:
+#     # when the user wants to see other achievements
+#     cprint("\nACHIEVEMENTS", "yellow", attrs=["bold", "underline"])
+#     for achdict in achievements.keys():
+#         cprint(f"{achdict.capitalize()}:", attrs=["bold"])
+#         for ach in achievements[achdict].keys():
+#             cprint(f"    - {ach}: {achievements[achdict][ach][0]}", color=("white" if (ach+"/"+achdict in userach) else "dark_grey"))
 
 def CheckUsername(user:str) -> bool:    
     x = ''
@@ -689,7 +689,7 @@ def checkcommand(command:str) -> None:
                 print("Saving...")
                 UpdateStats(user)
                 print("Saved stats successfully.")
-                AddAchievement("Saved")
+                #AddAchievement("Saved")
             elif command == "reset":
                 while True:
                     confirm = input(colored("Are you sure you want to continue? This will reset ALL of your stats. (y/n) ", "red")).upper()
@@ -726,7 +726,8 @@ def checkcommand(command:str) -> None:
         else:
             print("You need to be signed in into a account to use this function.")
     elif command == "achievements":
-        ListAchievements()
+        #ListAchievements()
+        pass
     elif command == "switch":
         if user == "":
             print("You are currently anonymous.")
@@ -758,14 +759,14 @@ def checkcommand(command:str) -> None:
             mixer.music.load(songlist[i])
             mixer.music.play()
             SlowPrint(paralist[i], 0.05, ["bold"], skip=True)
-        AddAchievement("Inspired")
+        #AddAchievement("Inspired")
         mixer.music.fadeout(1000)
     elif command == "quit":
         exit()
     elif command == 'updates':
         with open(u, "r") as file:
             print(file.read())
-        AddAchievement("Technician")
+        #AddAchievement("Technician")
     elif command == 'credits':
         print("""
 
@@ -789,7 +790,7 @@ Story Writers:
     Tutankhamun's Tomb - Ethan Wei, imported by Sean Chan
     Mountain - Levi Laij
 ------------------------------------------------""")
-        AddAchievement("Supporter")
+        #AddAchievement("Supporter")
     elif command == "testers":
         cprint("TESTERS:", attrs=["bold", "underline"], color="blue")
         with open(t, "r") as file:
@@ -810,7 +811,7 @@ Story Writers:
                             win = True
         if win:
             print("Success!")
-            AddAchievement("The Long Egg")
+            #AddAchievement("The Long Egg")
         else:
             print("Wrong. Answer all questions correctly.")
     else:
@@ -852,7 +853,7 @@ Will you go to the boxes, or open the door?''', ['You go towards the boxes, and 
                     c = choice('What will you do now?', ['You slowly float towards the door, but something above sees and launches itself at you.', 'You slowly float towards the hatch, but something above sees and launches itself at you.'], ['Door', 'Hatch'])
                     print('You fiercely grapple with it, but to no avail. You die to [Bob the Alien]')
                     Ending('Bob the Alien, It Can Kill You!', 4, "space story")
-                    AddAchievement("Bob the Alien")
+                    #AddAchievement("Bob the Alien")
                     
                 elif c == 1:
                     Inventory('Oxygen', 1, 'lose')
@@ -869,13 +870,13 @@ Will you go to the boxes, or open the door?''', ['You go towards the boxes, and 
                     elif c == 1:
                         print('You died due to fire.')
                         Ending("Overheating", 5, "space story")
-                        AddAchievement('Flamed')
+                        #AddAchievement('Flamed')
                     elif c == 2:
                         print("""After fixing the thrusters, you jumpstart them using luck.
 They roar to life, throwing you back and bringing you back to earth.
 """)
                         Ending("Back to Earth", 11, "space story", "win")
-                        AddAchievement("How did we get back?")
+                        #AddAchievement("How did we get back?")
             elif c == 1:
                 Inventory('Oxygen', 1, "lose", False)
                 Inventory('Operation Manual', 1, "add")
@@ -978,7 +979,7 @@ def story_amazon_adventure_fix():
             x = choice("Do you want to defend yourself or go and hide?", ["You collect a pole standing not far off and hit the monster with it. 3 whacks and the monster is gone. Finally, you start the engine and go off in the plane, using the instruction manual as a guide.""", "You go and run to the back of the plane, but the creature follows you, breaking down the door and destroying all your hard work in fixing the plane. Before you can blink, you are devoured."""], ["defend", "hide"])
             if x == 0:
                 Ending("Defeated a Monster", 14, "amazon jungle", "win")
-                AddAchievement("Escape of the Jungle")
+                #AddAchievement("Escape of the Jungle")
             else:
                 Ending("So Close, But so Devoured", 15, "amazon jungle")
             end = True
@@ -997,7 +998,7 @@ def story_amazon_adventure_fix():
                 else:
                     print("You decide to not fight the monster, and after awhile it wonders away. You sit in the pilot's seat and admire your hard work in fixing the plane. You start the engine and take off successfully. But suddenly, your plane dips and when you realise you never knew how to drive a plane, you crash.")
                     Ending("Crashed Again", 13, "amazon jungle")
-                    AddAchievement("Again?!")
+                    #AddAchievement("Again?!")
                 end = True
             else:
                 print("""You think fast. Getting the Gem that you found earlier, you wave it in the air, distracing the animal. This successfully distracts the animal,
@@ -1006,8 +1007,8 @@ making it run away, pulling the book away from John's hands and stealing it. At 
         if not end:
             print("""You sit in the passengers seat and admire your hard work in fixing the plane. John drives the plane away from the forest, flying back home.""")
             Ending("Passenger Escape", 11, "amazon jungle", "win")
-            AddAchievement("Pilot Buddy")
-            AddAchievement("Escape of the Jungle")
+            #AddAchievement("Pilot Buddy")
+            #AddAchievement("Escape of the Jungle")
     
 def story_amazon_adventure():
     global foundpilot, end
@@ -1061,7 +1062,7 @@ When you wake up, you remember what happened and wish that you never went to Afr
                         x = choice("Do you want to fix it?", ["You start to try to fix it but you need tools to do it. That's quite sad. I've never heard of someone who has died of boredom, so I think your're the first one. Good Night.", "You start getting hungry once your food supply is used up so go searching for food. While wondering you find some conveniently placed food. 'Someone must have left their lunch behind!' you think. Taking the food, you turn back and... SNAP!!! A bear trap catches you. You scream for help, But after awhile your shouts die down as you lose too much blood."])
                         if x == 0:
                             Ending("Died of Boredom", 16, "amazon jungle")
-                            AddAchievement("Die of Boredom")
+                            #AddAchievement("Die of Boredom")
                         else:
                             Ending("Tomato Sauce Everywhere", 19, "amazon jungle")
                 else:
@@ -1069,10 +1070,11 @@ When you wake up, you remember what happened and wish that you never went to Afr
                     story_amazon_adventure_search()
         else:
             Ending("Bad Choices", 20, "amazon jungle")
-            AddAchievement("Bad Choices [Amazon Jungle]")
+            #AddAchievement("Bad Choices [Amazon Jungle]")
 
     if "Gem" in InventoryList:
-        AddAchievement("Keep The Gem")
+        #AddAchievement("Keep The Gem")
+        pass
     SlowPrint("\nTHE END", 0.05, ["bold"])
 
 # SEAN - TIME TRAVEL
@@ -1128,7 +1130,7 @@ def story_timetravel_2():
                     x = choice("What do you choose?", ["You creep towards the sound of thudding and see a clearing up ahead. As you peek, you see that an lumberjack is cutting trees with wood. Before you can react, the lumberjack spots you and races towards you, misthinking that you are an enemy. He swings his axe and everything goes black.", "You continue walking and find a small campfire area in the forest. Your box thing sits in the middle.", "You start heading back but walk into a simple but smart trap: A extremly well hidden hole. Falling down, you land hard, and break your legs. You sit there for the whole day, getting hungrier and hungrier until you can't take it anymore, with the pain from your leg throbbing and giving you an headache."], ["Investagate", "Continue", "Go Back"])
                     if x == 0:
                         Ending("Lumberjacked", 5, "time travel")
-                        AddAchievement("Lumberjacked")
+                        #AddAchievement("Lumberjacked")
                     elif x == 1:
                         x = choice("Do you want to get into the box?", ["You get into the box, and close the lid.", "You decide against getting into the box, and before you can do anything, a feral animal comes and attacks you. A moment later, all that is left of you is... nothing."])
                         if x == 0:
@@ -1285,7 +1287,7 @@ def story_timetravel_4():
                         Ending("Bombed", 30, "time travel")
                     else:
                         Ending("Bad Choices", 29, "time travel")
-                        AddAchievement("Bad Choices [Time Travel]")
+                        #AddAchievement("Bad Choices [Time Travel]")
                 else:
                     Ending("Buried Forever", 28, "time travel")
             else:
@@ -1298,7 +1300,7 @@ def story_timetravel_5():
     # Present
     print("The box whirls around again, and when you jump out, you realise that you are back in your cellar. What an adventure!")
     Ending("The Present", 22, "time travel", "win")
-    AddAchievement("Back to reality")
+    #AddAchievement("Back to reality")
 
 def story_timetravel_6():
     # Future
@@ -1323,7 +1325,7 @@ def story_timetravel_6():
                             if x == 0:
                                 Ending("Karma Dicer", 44, "time travel")
                             else:
-                                AddAchievement("The Future is Bright")
+                                #AddAchievement("The Future is Bright")
                                 Ending("Saved the Future", 45, "time travel", "win")
                         else:
                             Ending("A Huge Robot", 43, "time travel")
@@ -1375,12 +1377,12 @@ def story_timetravel_6_1():
         if x == 0:
             if randint(0,10) == 5:
                 print("You swing your bonker, but suddenly it backfires onto you, causing you to bonk yourself. You pass out, and the zombies all fall onto you.")
-                AddAchievement("Bonked")
+                #AddAchievement("Bonked")
                 Ending("Why did you bonk yourself, stupid?", 41, "time travel")
             else:
                 print("You beat up the zombies in the room and find your box. Sitting next to it is a whole pile of gold. You pick them all up and enter the box.")
-                AddAchievement("Finding Gold")
-                AddAchievement("Bonker")
+                #AddAchievement("Finding Gold")
+                #AddAchievement("Bonker")
                 story_timetravel_5()
         else:
             Ending("Caught by the Zombies", 36, "time travel")
@@ -1416,7 +1418,7 @@ What will you do?''', ['You instantly fail, as the man clicks his fingers, and t
         if c == 0:
             SlowPrint('FAIL', 0.05, ['bold'], 'red')
             Ending('LIGMA BALLS', 2, 'School')
-            AddAchievement('LIGMA BALLS')
+            #AddAchievement('LIGMA BALLS')
         elif c == 1:
             SlowPrint('FAIL', 0.05, ['bold'], 'red')
             Ending('Turned off...', 3, 'School')
@@ -1442,7 +1444,7 @@ and he has decided that you will be the first victim of the war.
 BUT!!!
 
 Because he was yapping for six billion years, that gave you the chance to reach into your bag and choose a weapon.''')
-                AddAchievement('Godslayer')
+                #AddAchievement('Godslayer')
                 c = choice('Choose your weapon: ', ['You summon your inner Kendrick Lamar and start roasting him. It seems to be working, as he catches on fire until your laptops battery dies. Ligma Lord recovers, then blasts your body into ashes.', 'As You find the Formula to solving any immortal, Mr White randomly spawns and says to use the formula you must solve this quadratic equation. While You are figuring it out, Ligma Lord Burns your maths notebook, and then opens a black hole that destroys you immediately.', 'You pitch the mochi and it lands perfectly into his throat. As he is choking, you grab your empty fire extinguisher and slam it at him, causing him to fall. As you stand over his helpless body, he whispers some final words.', 'You make a mad dash into for the portal, and plunge through, but you hear Ligma Lord laugh as you burst into the fresh air.'], ['Laptop', 'Math Book', 'Mochi', "Portal"])
 
                 if c == 0:
@@ -1469,7 +1471,7 @@ then take a deep breath, and slowly walk towards the brightening portal.
 You take one last look behind you, to see the platform and clouds turn into a stream of light, 
 then step through the portal, awaiting your first day of school.''')
                     Ending('Master of Fear', 7, 'School', 'win')
-                    AddAchievement('Ligma Master')
+                    #AddAchievement('Ligma Master')
                 elif c == 3:
                     story_school_2()
 
@@ -1500,7 +1502,7 @@ With a heavy heart, you trudge past Beasley and into Andrews, hoping to find som
         Ending('Absolute !^*#@?” Nerds', 9, "school")
     elif c == 2:
         sleep(1)
-        AddAchievement('With Great Power Comes Great Responsibility - Confucius (I think)')
+        #AddAchievement('With Great Power Comes Great Responsibility - Confucius (I think)')
         print(f"""You once again, bust open the locked doors and find the place a little creepy without the lights. You quietly walk past some lockers, 
 finding Ligma-ed Students lying down left and right. You have hope that there might be someone who might be a student still here, but there seems to be no sign.  
 
@@ -1599,7 +1601,7 @@ Wingsley Kong uses his cheering ability to boost the attack of Soul, who deliver
 You are in awe as they all stand looking really cool as Mr Black explodes into a shower of light. They tell you that because they were using google maps, 
 they got led to the grand line, but they found the way back after finding the One Piece. They pick up Duffy and start heading back towards the 
 classroom because plot twist, the One Piece was a cure to Karen. """)
-                    AddAchievement('Luffy, that’s not the real One Piece… that’s Wingsley’s pocket money.')
+                    #AddAchievement('Luffy, that’s not the real One Piece… that’s Wingsley’s pocket money.')
                     
                     print("""You get back to the classroom, where the students are happy to see you alive. The smart girl in your year (that you can’t remember the name of) 
 goes and injects the cure, which makes Mr White awake from his coma. He instantly starts calculating, and then spits out some prophetic lines 
@@ -1764,7 +1766,7 @@ students are slowly reverting to human form, healed by the vanquishing of Ligma 
 You watch as the realm slowly brightens and take a slow breath out. Tired, you haul {name} 
 over your back and slowly trudge back to school, awaiting the 3 hours of sleep that 
 you will get tonight.""")
-            AddAchievement('Just because you are the Main Character doesn’t mean you’re the hero. One Punch Man will always be your hero.')
+            #AddAchievement('Just because you are the Main Character doesn’t mean you’re the hero. One Punch Man will always be your hero.')
             
         elif c == 2:
             print(f"""Because you are 14, you instinctively perform some weird hand moves that trigger your 
@@ -1830,7 +1832,7 @@ def story_tomb():
 2. You choose to save yourself, so you push the captain towards the mummy, and you run.""", ["As you run, you hear the mummy slowly gaining on you. The captain is slowing you down and there is no hope for you and the captain, you are both doomed.", "You push the captain towards the mummy and run. The captain screams at you, but that is suddenly cut short. You run quickly out of the tomb. You feel bad, and that you are going to be haunted about what happened for the rest of your life, but at least you stayed alive."], ["1", "2"])
                 if x == 0:
                     Ending("Infinitely Doomed", 3, "tomb")
-                    AddAchievement('I Want My Mummy!')
+                    #AddAchievement('I Want My Mummy!')
                 else:
                     Ending("Sacrifices must be made", 4, "tomb")
             else:
@@ -1839,7 +1841,7 @@ def story_tomb():
 2. Run.""", ["You reach inside your bag, and you fumble for the metal rod, but it is hooked on something. The mummy jumps on top of you, and the bag tumbles out of your reach. You close your eyes for the inevitable.", "You turn around and run, and you hear the mummy's footsteps slowly fading away. You make it out alive, but you are traumatized forever."], ["1", "2"])
                 if x == 0:
                     Ending("R.I.P", 5, "tomb")
-                    AddAchievement('I Want My Mummy!')
+                    #AddAchievement('I Want My Mummy!')
                 else:
                     Ending("Mentally unstable... womp womp", 6, "tomb")
         elif x == 1:
@@ -1876,17 +1878,17 @@ def story_tomb_passageway():
 2. You get off the couch, realizing a God just spoke to you...""", ["You ignore the voice inside your head, and angers Anubis even more. He fires a beam of energy at your supplies, destroying all your tools and food, and he grants the beans that you just ate with powers. The beans burst out of your belly, causing many holes inside you.", "You get off the couch, but this doesn't make Anubis any happier. He decides to let you go for now, until you do something else to anger him."], ["1", "2"])
             if x == 0:
                 Ending("The turns have tabled", 8, "tomb")
-                AddAchievement('Killed By [Anubis]')
+                #AddAchievement('Killed By [Anubis]')
             else:
                 x = choice("""Choices:
 1. You abandon your food, having lost your appetite, and you make for the burial chamber.							
 2. You decide to go to the Annexe to find some utensils to finish your meal, as you are still hungry.""", ["When you enter the burial chamber, you notice that the coffin is sealed with magical markings, but you fail to notice the mummy behind the tomb staring at you, until it slashes your neck with an ancient weapon.", "You go into the annexe, and you spot some utensils with Anubis's marking on them. Without thinking, you scoop up some more of your beans and eat them. This angers Anubis even more, so he sends a blast of energy right at your face."], ["1", "2"])
                 if x == 0:
                     Ending("So close but so far...", 9, "tomb")
-                    AddAchievement('I Want My Mummy!')
+                    #AddAchievement('I Want My Mummy!')
                 else:
                     Ending("Deep Fried", 10, "tomb")
-                    AddAchievement('Killed By [Anubis]')
+                    #AddAchievement('Killed By [Anubis]')
         else:
             x = choice("""Choices:
 1. Continue into the annexe.
@@ -1897,7 +1899,7 @@ def story_tomb_passageway():
 2. You think that if you keep these, Anubis might get mad at you, so you put them safely on a stand.""", ["You put the utensils carefully into your bag, and you cross over to the burial chamber. The coffin is sealed with magical markings, so you ask Anubis how to open it. All this time you fail to notice the mummy behind you. It taps you on the shoulder, and you spin around with your metal rod in hand, but this time the mummy dodges your attack and slashes your neck.", "9d. You carefully set the utensils on the stand, making Anubis twice as happy with you! You cross over to the burial chamber, and you see the coffin sealed with magic. You also notice the mummy standing behind it."], ["1", "2"])
                 if x == 0:
                     Ending("Beheaded", 11, "tomb")
-                    AddAchievement('I Want My Mummy!')
+                    #AddAchievement('I Want My Mummy!')
                 else:
                     x = choice("""Choices:
 1. You ask Anubis to open the coffin while you take care of the mummy.
@@ -1905,7 +1907,7 @@ def story_tomb_passageway():
 3. ??? (mystery)""", ["Anubis slowly works undoing the magical binding on the coffin's lid, while you pull out your weapon and kill the mummy. But this time the mummy knows how to beat you. It dodges your first attack and slashes your neck.", "Anubis sends a beam of energy at the mummy, sEnding it flying, and it stops moving. You get to work on figuring out the magical binding, but you accidentally say the wrong hieroglyph and the coffin fires a magic bolt at your face.", "You remember that Anubis now owes you two favours, so you ask him to kill the mummy and unlock the coffin. Hearing your request, Anubis zaps the mummy and unlocks the coffin, revealing the mummified Tutankhamun and countless valuables."], ["1", "2", "3"]) # continue
                     if x == 0:
                         Ending("At least you tried...", 12, "tomb")
-                        AddAchievement('I Want My Mummy!')
+                        #AddAchievement('I Want My Mummy!')
                     elif x == 1:
                         Ending("Should've Studied Harder", 13, "tomb")
                     else:
@@ -1914,17 +1916,17 @@ def story_tomb_passageway():
 2. Not satisfied, you want to explore the last room inside Tutankhamun's tomb, the treasury.""", ["You pick up all the gold bracelets, masks and other valuables inside Tutankhamun's coffin, admiring each and every carving on them. You quickly put them in your bag and retrace your steps out of the tomb. You reach daylight again, and you heave a sigh of relief, having completed your most dangerous heist yet.", "You turn to your right to face the treasury of Tutankhamun's tomb, which must contain a huge amount of treasure. Excited, you enter the treasury, imagining all the riches that should be inside. But when you open your eyes, instead of treasure, 4 mummies stood there staring at you..."], ["1", "2"])
                         if x == 0:
                             Ending("The rich", 14, "tomb", "win")
-                            AddAchievement("The Rich")
+                            #AddAchievement("The Rich")
                         else:
                             Ending("Got too Greedy", 15, "tomb")
-                            AddAchievement('I Want My Mummy!')
+                            #AddAchievement('I Want My Mummy!')
             else:
                 x = choice("""Choices:
 1. Ask Anubis to tell you how to open Tutankhamun's coffin, and deal with the mummy yourself.
 2. Ask Anubis to kill the mummy, while you try to open Tutankhamun's coffin.""", ["Anubis slowly works undoing the magical binding on the coffin's lid, while you pull out your weapon and kill the mummy. But this time the mummy knows how to beat you. It dodges your first attack and slashes your neck.", "Anubis sends a beam of energy at the mummy, sEnding it flying, and it stops moving. You get to work on figuring out the magical binding, but you accidentally say the wrong hieroglyph and the coffin fires a magic bolt at your face."], ["1", "2"])
                 if x == 0:
                     Ending("At least you tried...", 12, "tomb")
-                    AddAchievement('I Want My Mummy!')
+                    #AddAchievement('I Want My Mummy!')
                 else:
                     Ending("Should've Studied Harder", 13, "tomb")
 
@@ -2092,7 +2094,7 @@ What do you eat?
             return
     print('Hiking up, you need a moment to catch your breath. Suddenly, you hear a sharp, piercing sound. A nearby climber.')
     print('Looking around in shock, you realise that you have found the Abominable Snowman.')
-    AddAchievement("Yeti Man")
+    #AddAchievement("Yeti Man")
     a2 = choice(f'The sheer size of The Snowman scares you and {friend}. Do you stay still, fight, or run away?', outcomes=['Staying still, nothing happens...yet.', 'Where\'s Pat?', ''], options=['Stay still', 'Fight', 'Run away'], mountain=time)
     if a2 == 0:
         print('The situation intensifies, with the ground beneath you slowly creaking as of the sheer weight of the Snowman.')
@@ -2205,7 +2207,7 @@ What do you eat?
 # tells you to stop, so you keep jumping. When he enters the cell and tazes you, 
 # you have a heart attack and die. Unlucky chap. """)
 #             story_afterlife_class.hell('Because you bullied some little children.')
-#             AddAchievement("Itsa mea Mario!")
+#             #AddAchievement("Itsa mea Mario!")
 #             Ending('Yahoo!', 2, 'Afterlife')  
 #     elif c == 1:
 #         pass
@@ -2233,5 +2235,5 @@ while True:
         checkcommand(input("Enter a command ('Help' for options) > "))
         if not user == "":
             UpdateStats(user)
-            CheckAchievements()
+            #CheckAchievements()
             UpdateStats(user)
