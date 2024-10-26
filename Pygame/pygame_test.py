@@ -17,7 +17,7 @@ pygame.init()
 
 # Screen dimensions
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Pygame Base Template")
+pygame.display.set_caption("CYOA Pygame")
 
 # Screen colour
 screen.fill((0, 0, 0)) # clear the display
@@ -25,16 +25,26 @@ screen.fill((0, 0, 0)) # clear the display
 # START ---------------------------------------------------------------------------------------------------------
 
 # Colours
-## Basic colouts
-colour_white = (255, 255, 255)
-colour_black = (0, 0, 0)
-colour_blue = (0, 0, 255)
-## Colour palette 1, style: playful
-colour1_cambridge_blue = (131, 182, 146)
-colour1_melon = (249, 173, 160)
-colour1_bright_pink_crayola = (249, 98, 125)
-colour1_blush = (198, 91, 124)
-colour1_violet_jtc = (91, 55, 88)
+## Basic colours
+class Colours:
+    Default = {
+        'white': (255, 255, 255),
+        'black': (0, 0, 0),
+        'blue': (0, 0, 255),
+    }
+        ## Colour palette 1, style: playful
+    Playful = {
+        'cambridge_blue': (131, 182, 146),
+        'melon': (249, 173, 160),
+        'bright_pink_crayola': (249, 98, 125),
+        'blush': (198, 91, 124),
+        'violet_jtc': (91, 55, 88)
+    }
+    
+    Space = {
+        'purple': (128, 0, 255)
+    }
+    
 
 try:
     _ =  pygame.font.Font("Choose_Your_Own_Adventure/Pygame/Fonts/PoppinsRegular.ttf", 32)
@@ -79,7 +89,7 @@ def pygame_quit():
     sys.exit()
 
 # Display text on the screen
-def draw_text(text, x, y, colour=colour_black, font=font_default, line_spacing=5):
+def draw_text(text:str, x:int, y:int, colour:tuple=Colours.Default["black"], font:pygame.font.Font=font_default, line_spacing:int=5):
     """
     Draw text on the screen.
 
@@ -95,6 +105,8 @@ def draw_text(text, x, y, colour=colour_black, font=font_default, line_spacing=5
         The colour of the text. Default is black.
     font : font, optional
         The font of the text. Default is Poppins.
+    line_spacing: int, optional
+        The spacing between lines. default is 5
 
     Returns
     -------
@@ -118,11 +130,11 @@ def draw_text(text, x, y, colour=colour_black, font=font_default, line_spacing=5
         y += text_surface.get_height() + line_spacing  # Move down for the next line
 
 # Create buttons for choices
-def create_button(x=10, y=120, w=200, h=75, 
+def create_button(x:int=10, y:int=120, w:int=200, h:int=75, 
                   text_padding=10,
-                  heading_text="Button", heading_text_colour=colour_black, heading_text_font=font_bold_small, 
-                  body_text="Body text", body_text_offset=30, body_text_colour=colour_black, body_text_font=font_small, 
-                  button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola):
+                  heading_text="Button", heading_text_colour=Colours.Default['black'], heading_text_font=font_bold_small, 
+                  body_text="Body text", body_text_offset=30, body_text_colour=Colours.Default['black'], body_text_font=font_small, 
+                  button_colour=Colours.Playful['melon'], hover_colour=Colours.Playful['bright_pink_crayola']):
     """
     Create a button for choices in the game.
 
@@ -179,12 +191,12 @@ def create_button(x=10, y=120, w=200, h=75,
 def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Subheading"), ("Button 2 Heading", "Button 2 Subheading")], x=0, y=0, w=200, h=50, 
                             text_padding=10,
                             x_offset=0, y_offset=0, 
-                            heading_text_colour=colour_black, heading_text_font=font_bold_small, 
-                            body_text_colour=colour_black, body_text_font=font_small, 
-                            button_colour=colour1_melon, hover_colour=colour1_bright_pink_crayola,
-                            pages=False, next_page_button_settings=(530, 10, 250, 60, 5, "Next", colour_black, font_bold_small, "Next page/question", 30, colour_black, font_small, colour1_melon, colour1_bright_pink_crayola), 
-                            previous_page_button_settings=(10, 10, 250, 60, 5, "Previous", colour_black, font_bold_small, "Previous page/question", 30, colour_black, font_small, colour1_melon, colour1_bright_pink_crayola), 
-                            select_page_button_settings=(10, 530, 250, 60, 5, "Select", colour_black, font_bold_small, "Select option", 30, colour_black, font_small, colour1_melon, colour1_bright_pink_crayola)):
+                            heading_text_colour=Colours.Default['black'], heading_text_font=font_bold_small, 
+                            body_text_colour=Colours.Default['black'], body_text_font=font_small, 
+                            button_colour=Colours.Playful['melon'], hover_colour=Colours.Playful['bright_pink_crayola'],
+                            pages=False, next_page_button_settings=(530, 10, 250, 60, 5, "Next", Colours.Default['black'], font_bold_small, "Next page/question", 30, Colours.Default['black'], font_small, Colours.Playful['melon'], Colours.Playful['bright_pink_crayola']), 
+                            previous_page_button_settings=(10, 10, 250, 60, 5, "Previous", Colours.Default['black'], font_bold_small, "Previous page/question", 30, Colours.Default['black'], font_small, Colours.Playful['melon'], Colours.Playful['bright_pink_crayola']), 
+                            select_page_button_settings=(10, 530, 250, 60, 5, "Select", Colours.Default['black'], font_bold_small, "Select option", 30, Colours.Default['black'], font_small, Colours.Playful['melon'], Colours.Playful['bright_pink_crayola'])):
     
     """
     Create multiple buttons with headings and subheadings.
@@ -222,11 +234,11 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
     pages : bool, optional
         Whether there are multiple pages of buttons. Default is False.
     next_page_button_settings : tuple, optional
-        Contains the settings for next page button. In order of (x, y, w, h, text_padding, heading_text, heading_text_colour, heading_text_font, body_text, body_text_offset, body_text_colour, body_text_font, button_colour, hover_colour). Default is (530, 10, 250, 60, 5, "Next", colour_black, font_bold_small, "Next page/question", 30, colour_black, font_small, colour1_melon, colour1_bright_pink_crayola).
+        Contains the settings for next page button. In order of (x, y, w, h, text_padding, heading_text, heading_text_colour, heading_text_font, body_text, body_text_offset, body_text_colour, body_text_font, button_colour, hover_colour). Default is (530, 10, 250, 60, 5, "Next", Colours.Default['black'], font_bold_small, "Next page/question", 30, Colours.Default['black'], font_small, Colours.Playful['melon'], Colours.Playful['bright_pink_crayola']).
     previous_page_button_settings : tuple, optional
-        Contains the settings for previous page button. Same order as next_page_button_settings. Default is (10, 10, 250, 60, 5, "Previous", colour_black, font_bold_small, "Previous page/question", 30, colour_black, font_small, colour1_melon, colour1_bright_pink_crayola).
+        Contains the settings for previous page button. Same order as next_page_button_settings. Default is (10, 10, 250, 60, 5, "Previous", Colours.Default['black'], font_bold_small, "Previous page/question", 30, Colours.Default['black'], font_small, Colours.Playful['melon'], Colours.Playful['bright_pink_crayola']).
     select_page_button_settings : tuple, optional
-        Contains the settings for select option button. Same order as next_page_button_settings. Default is (10, 530, 250, 60, 5, "Select", colour_black, font_bold_small, "Select option", 30, colour_black, font_small, colour1_melon, colour1_bright_pink_crayola)).
+        Contains the settings for select option button. Same order as next_page_button_settings. Default is (10, 530, 250, 60, 5, "Select", Colours.Default['black'], font_bold_small, "Select option", 30, Colours.Default['black'], font_small, Colours.Playful['melon'], Colours.Playful['bright_pink_crayola'])).
 
     Returns
     -------
@@ -287,7 +299,7 @@ def create_multiple_buttons(button_text_list=[("Button 1 Heading", "Button 1 Sub
     return False  # Return False if no button was clicked
 
 # Display heading function
-def display_heading(title="Title", title_colour=colour_white, title_pos=(10, 10), title_font=font_bold, subtext="Subtext", subtext_colour=colour_white, subtext_pos=(10, 60), subtext_font=font_default):
+def display_heading(title="Title", title_colour=Colours.Default['white'], title_pos=(10, 10), title_font=font_bold, subtext="Subtext", subtext_colour=Colours.Default['white'], subtext_pos=(10, 60), subtext_font=font_default):
     """
     Display the heading of the game.
 
@@ -332,7 +344,7 @@ while True:
     # GAME --------------------------------------------------------------------------------------------------------
 
     if game_state == "main_menu": # Main menu
-        screen.fill(colour_black) # clear the display
+        screen.fill(Colours.Default['black']) # clear the display
 
         display_heading(title="Choose Your Own Adventure", subtext="This code is written by Aaron. WARNING: UNFINISHED")
         start_story = create_button(x=10, y=120, w=200, h=75, heading_text="Start", body_text="Start the adventure")
@@ -344,15 +356,19 @@ while True:
             game_state = "multi buttons"
     
     elif game_state == "story": # Sample page, stored as a story
-        screen.fill(colour_black) # clear the display
+        screen.fill(Colours.Default['black']) # clear the display
 
         display_heading(title="Story", subtext="Just a test screen")
+        space_story = create_button(10, 250, 200, 75, heading_text='Space Story', body_text='Written by Oliver', button_colour=Colours.Default['blue'], hover_colour=Colours.Space['purple'], heading_text_colour=Colours.Default['white'], body_text_colour=Colours.Default['white'])
         exit_story = create_button(x=10, y=120, w=200, h=75, heading_text="Exit", body_text="Back to menu")
         if exit_story:
             game_state = "main_menu"
+        elif space_story:
+            #space_story()
+            print('hello')
     
     elif game_state == "multi buttons":
-        screen.fill(colour_black) # clear the display
+        screen.fill(Colours.Default['black']) # clear the display
 
         sample_text = """
     Create a button for choices in the game.
@@ -397,7 +413,7 @@ while True:
         button_texts = [("Question", "Testing pages"), ("Start", "Begin your adventure"), ("Menu", "Go to the main menu"), ("Exit", "Exit the game"), ("Testing", sample_text)]
 
         # Inside the game loop
-        clicked_button = create_multiple_buttons(button_text_list=button_texts, pages=True, x=10, y=70, y_offset=30, heading_text_colour=colour_white, body_text_colour=colour_white)
+        clicked_button = create_multiple_buttons(button_text_list=button_texts, pages=True, x=10, y=70, y_offset=30, heading_text_colour=Colours.Default['white'], body_text_colour=Colours.Default['white'])
         
         if clicked_button == 1:
             game_state = "story"
